@@ -10,8 +10,10 @@ const localeArray: LocaleType[] = ["ua", "ru"];
 
 export const LocaleSwitcher = () => {
   const localActive: LocaleType = useLocale() as LocaleType;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [isPending, startTransition] = useTransition();
+  if (isPending) {
+  }
   const router = useRouter();
   const clickHandler = (e: MouseEvent<HTMLLIElement>) => {
     const nextLocale = e.currentTarget.textContent;
