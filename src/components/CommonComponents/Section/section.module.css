@@ -1,0 +1,13 @@
+.section {
+  padding: 3rem 0;
+  text-align: center;
+  background-color: var(--section-back_color);
+}
+
+.section p {
+  margin: 0.5rem 0 0 0;
+}
+
+.backColorBlack {
+  background-color: #000000;
+}

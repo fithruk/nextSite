@@ -1,0 +1,87 @@
+.lotOfExpirience {
+  position: relative;
+  padding: 3rem 0;
+  display: flex;
+  justify-content: space-between;
+  margin: 5rem 0;
+}
+
+.lotOfExpirience p {
+  margin-top: 1.5rem;
+}
+
+.lotOfExpirience button {
+  margin-top: 1.5rem;
+}
+
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: brightness(5%);
+}
+.content {
+  width: 50%;
+}
+
+.imgBox {
+  position: relative;
+  z-index: 1;
+  top: 3rem;
+  right: 3rem;
+  width: 20vw;
+  height: 45.93vh;
+}
+
+.pullingMan {
+  height: 100%;
+  width: 100%;
+}
+
+.imgBox::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--secondary-text_color);
+  top: -3rem;
+  left: -3rem;
+  z-index: -1;
+}
+.imgBox::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #cccccc;
+  top: 3rem;
+  left: 3rem;
+  z-index: -1;
+}
+.img {
+}
+
+@media (max-width: 480px) {
+  .lotOfExpirience {
+    text-align: center;
+    flex-wrap: wrap;
+    /* height: 100vh; */
+  }
+
+  .lotOfExpirience button {
+    width: clamp(250px, 85vw, 450px);
+    margin: 10rem auto;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .imgBox {
+    width: 100%;
+    left: 7rem;
+  }
+}

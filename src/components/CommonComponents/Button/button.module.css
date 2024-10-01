@@ -1,0 +1,21 @@
+.button {
+  all: unset;
+  padding: 1rem 2.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(----foreground);
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: clamp(16px, 2rem, 25px);
+}
+
+.primary {
+  background-color: var(--secondary-text_color);
+}
+
+.secondary {
+  border: 1px solid var(--secondary-text_color);
+  background-color: transparent;
+  color: var(--secondary-text_color);
+}

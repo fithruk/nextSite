@@ -1,0 +1,12 @@
+.benefits {
+  margin-top: 2rem;
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cell {
+  text-align: start;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--secondary-text_color);
+}

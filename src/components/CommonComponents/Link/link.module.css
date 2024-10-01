@@ -1,0 +1,13 @@
+.link {
+  color: var(--foreground);
+  font-size: clamp(14px, 0.8rem, 20px);
+}
+
+.active {
+  color: var(--secondary-text_color);
+}
+@media (max-width: 480px) {
+  .link {
+    margin: 1rem 0;
+  }
+}

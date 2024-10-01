@@ -1,0 +1,35 @@
+.form {
+  display: grid;
+  grid-template-areas:
+    "upperLine upperLine"
+    "middleLine middleLine"
+    "lowerLine lowerLine";
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.upperLine {
+  grid-area: upperLine;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.middleLine {
+  grid-area: middleLine;
+}
+
+.lowerLine {
+  grid-area: lowerLine;
+}
+
+@media (max-width: 480px) {
+  .form {
+    gap: 3rem;
+  }
+
+  .form button {
+    margin: 0 auto;
+    width: clamp(250px, 85vw, 450px);
+  }
+}

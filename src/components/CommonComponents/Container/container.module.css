@@ -1,0 +1,22 @@
+.container {
+  max-width: 1920px;
+  width: auto;
+  margin: auto;
+  box-shadow: rgba(212, 17, 17, 0.25) 0px 54px 55px,
+    rgba(192, 11, 11, 0.12) 0px -12px 30px, rgba(218, 7, 7, 0.12) 0px 4px 6px,
+    rgba(204, 6, 6, 0.17) 0px 12px 13px, rgba(219, 5, 5, 0.09) 0px -3px 5px;
+}
+
+.inner {
+  max-width: 1920px;
+  padding: 0 2rem;
+  height: max-content;
+}
+
+.marginAuto {
+  margin: auto;
+}
+
+.marginTop7Rem {
+  margin-top: 4rem;
+}

@@ -1,0 +1,8 @@
+.input {
+  border: 1px solid var(--foreground);
+  padding: 1rem 1.5rem;
+  color: var(--foreground);
+  font-size: clamp(16px, 1rem, 30px);
+  display: block;
+  width: 100%;
+}

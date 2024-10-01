@@ -1,0 +1,52 @@
+.formSection {
+  clip-path: polygon(0 0, 100% 0, 97% 100%, 4% 94%);
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--section-back_color);
+}
+
+.formSection p {
+  margin: 2rem 0;
+}
+
+.innerWrapper {
+  padding: 2rem 0;
+}
+
+.part {
+  flex-grow: 1;
+  background-color: black;
+}
+
+.image {
+  position: relative;
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+@media (max-width: 991px) {
+  .image {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .part:first-child {
+    display: none;
+  }
+
+  .formSection {
+    clip-path: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .part:first-child {
+    display: none;
+  }
+
+  .formSection {
+    clip-path: none;
+  }
+}
