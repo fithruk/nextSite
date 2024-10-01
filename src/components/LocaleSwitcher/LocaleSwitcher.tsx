@@ -6,11 +6,9 @@ import { Select } from "../CommonComponents/Select/Select";
 
 type LocaleType = "ua" | "ru";
 
-type Props = {};
-
 const localeArray: LocaleType[] = ["ua", "ru"];
 
-export const LocaleSwitcher = ({}: Props) => {
+export const LocaleSwitcher = () => {
   const localActive: LocaleType = useLocale() as LocaleType;
   const [isPending, startTransition] = useTransition();
   const router = useRouter();

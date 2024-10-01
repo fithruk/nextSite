@@ -5,8 +5,7 @@ import { AppButton } from "../CommonComponents/Button/Button";
 import { useTranslations } from "next-intl";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-type Props = {};
-export const Form = ({}: Props) => {
+export const Form = () => {
   const b = useTranslations("ButtonText");
   const t = useTranslations("Form");
   const [form, setForm] = useState({ name: "", phone: "", email: "" });
