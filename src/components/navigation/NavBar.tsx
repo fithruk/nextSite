@@ -8,8 +8,9 @@ import styles from "./navBar.module.css";
 import { ForwardedRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { UseScrollIntoView } from "@/hooks/useScrollIntoView";
+import { useRouter } from "next/navigation";
 
-const navLinks: string[] = ["home", "about", "slider", "contacts"];
+const navLinks: string[] = ["home", "about", "slider", "contacts", "login"];
 
 type Props = {
   refs: ForwardedRef<HTMLDivElement>[];
@@ -18,14 +19,23 @@ type Props = {
 const NavBar = ({ refs }: Props) => {
   const t = useTranslations("Navigation");
   const b = useTranslations("ButtonText");
-
+  const router = useRouter();
   const [isActive, setIsActive] = useState(false);
 
   const toggleMenu = () => {
     setIsActive((isActive) => (isActive = !isActive));
   };
 
-  const handleScrollIntoView = (index: number) => {
+  const handleClick = (
+    index: number,
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const target = e.currentTarget as HTMLAnchorElement;
+
+    if (target.dataset.key === "login") {
+      return router.push("/login");
+    }
     if (refs[index]) {
       const ref = refs[index];
 
@@ -49,7 +59,12 @@ const NavBar = ({ refs }: Props) => {
         <nav className={styles.navigation}>
           <ul className={styles.navList}>
             {navLinks.map((key, i) => (
-              <AppLink href="#" key={i} onClick={() => handleScrollIntoView(i)}>
+              <AppLink
+                href="#"
+                key={i}
+                data-key={key}
+                onClick={(e) => handleClick(i, e)}
+              >
                 {t(key)}
               </AppLink>
             ))}
@@ -60,8 +75,9 @@ const NavBar = ({ refs }: Props) => {
                 {navLinks.map((key, i) => (
                   <AppLink
                     href="#"
+                    data-key={key}
                     key={i}
-                    onClick={() => handleScrollIntoView(i)}
+                    onClick={(e) => handleClick(i, e)}
                   >
                     {t(key)}
                   </AppLink>

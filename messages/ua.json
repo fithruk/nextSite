@@ -3,7 +3,8 @@
     "home": "додому",
     "about": "про мене",
     "slider": "слайдер",
-    "contacts": "контакти"
+    "contacts": "контакти",
+    "login": "увійти"
   },
   "Header": {
     "readyToTrain": "готові тренувати",

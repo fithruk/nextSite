@@ -9,13 +9,22 @@ export interface InputProps
   classnames?: string;
   name: string;
   placeholder: string;
-  type: "text" | "phone" | "email";
+  type: "text" | "phone" | "email" | "password";
+  labalValue?: string;
 }
 
-export const Input = ({ name, placeholder, type, ...props }: InputProps) => {
+export const Input = ({
+  name,
+  placeholder,
+  type,
+  labalValue,
+  ...props
+}: InputProps) => {
   return (
     <label htmlFor={name}>
+      {labalValue && labalValue}
       <input
+        autoComplete="off"
         className={`${inputStyles.input}`}
         name={name}
         placeholder={placeholder}

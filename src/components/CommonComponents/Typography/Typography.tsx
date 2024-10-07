@@ -3,7 +3,7 @@ type Components = "h1" | "h2" | "p" | "span";
 type Props = {
   type: Components;
   children: React.ReactNode;
-  classnames: string;
+  classnames?: string;
 };
 
 export const Typography = ({ type, children, classnames }: Props) => {
