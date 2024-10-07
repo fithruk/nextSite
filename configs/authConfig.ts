@@ -12,7 +12,7 @@ type AuthData = {
 };
 
 interface ExtendedUser extends User {
-  token?: string;
+  token: string;
 }
 
 export const authConfig: AuthOptions = {
