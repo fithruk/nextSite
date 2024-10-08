@@ -52,6 +52,53 @@
 .googleIcon {
   margin-right: 1rem;
   object-fit: contain;
-  width: minmax(16px, 25px);
-  height: minmax(16px, 25px);
+  width: 25px;
+  min-width: 16px;
+  height: 25px;
+  min-height: 16px;
+}
+
+/* Landscape phones and smaller */
+@media (max-width: 480px) {
+  .container {
+    position: static;
+    transform: translate(0, 0);
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .container button {
+    margin: 0;
+    width: auto;
+  }
+
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: stretch;
+    flex-grow: 2.5;
+  }
+
+  .form {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 0.4;
+  }
+
+  .imageBox {
+    display: flex;
+  }
+
+  .formImage {
+    align-self: flex-end;
+  }
+
+  .googleIcon {
+    width: 16px;
+    height: 16px;
+  }
 }

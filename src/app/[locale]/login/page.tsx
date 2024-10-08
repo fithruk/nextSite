@@ -60,8 +60,12 @@ const Login = () => {
   return (
     <div className={loginSlyles.container}>
       <div className={loginSlyles.formContainer}>
-        <Typography type="h1">Welcome back</Typography>
-        <Typography type="p">Please enter your details.</Typography>
+        <Typography classnames={`${typographyStyles.fontSize3Rem}`} type="h1">
+          Welcome back
+        </Typography>
+        <Typography classnames={`${typographyStyles.basicFontSize}`} type="p">
+          Please enter your details.
+        </Typography>
         <form className={loginSlyles.form} onSubmit={handleSubmit}>
           <Input
             placeholder="Enter email"
@@ -91,10 +95,10 @@ const Login = () => {
           />{" "}
           Sign in with Google
         </AppButton>
-        <Typography type="p">
+        <Typography classnames={`${typographyStyles.basicFontSize}`} type="p">
           Don’t have an account?{" "}
           <AppLink
-            className={typographyStyles.colorSecondary}
+            className={`${typographyStyles.colorSecondary} ${typographyStyles.basicFontSize}`}
             href={"/registration"}
           >
             Sign up for free!

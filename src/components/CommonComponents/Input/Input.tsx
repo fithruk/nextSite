@@ -1,4 +1,6 @@
 import { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { Typography } from "../Typography/Typography";
+import typographyStyles from "../Typography/typography.module.css";
 import inputStyles from "./input.module.css";
 
 export interface InputProps
@@ -22,7 +24,14 @@ export const Input = ({
 }: InputProps) => {
   return (
     <label htmlFor={name}>
-      {labalValue && labalValue}
+      {labalValue && (
+        <Typography
+          classnames={`${typographyStyles.basicFontSize}`}
+          type="span"
+        >
+          {labalValue}
+        </Typography>
+      )}
       <input
         autoComplete="off"
         className={`${inputStyles.input}`}

@@ -23,11 +23,12 @@ export default async function middleware(request: NextRequest) {
   // Проверка на приватные маршруты
   if (privateRoutes.some((route) => pathname.includes(route))) {
     const token = await getToken({ req: request });
+    console.log(token);
 
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));
     } else {
-      console.log("User is authenticated");
+      console.log(`${token.name} is authenticated`);
     }
   }
 
