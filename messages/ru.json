@@ -17,7 +17,10 @@
   "ButtonText": {
     "startedNow": "начать сейчас",
     "lestJoinNow": "присоедениться",
-    "aboutUs": "обо мне"
+    "aboutUs": "обо мне",
+    "signIn": "войти",
+    "signOut": "выйти",
+    "signinWithGoogle": "войти с гугл"
   },
   "WhyChooseUs": {
     "whyChooseUs1": "почему ",
@@ -50,5 +53,13 @@
     "namePlaceHolder": "Введите имя и фамилию",
     "emailPlaceHolder": "Введите адрес почты",
     "phonePlaceHolder": "Введите номер телефона"
+  },
+  "Login": {
+    "loginTitle": "добро пожаловать",
+    "loginSubTitle": "введите данные для входа",
+    "email": "эмеил",
+    "password": "пароль",
+    "callToRegistration1": "нет аккаунта?",
+    "callToRegistration2": " зарегистироваться"
   }
 }

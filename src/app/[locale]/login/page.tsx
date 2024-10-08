@@ -11,6 +11,7 @@ import { AppLink } from "@/components/CommonComponents/Link/Link";
 import { FormEvent, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type LoginType = {
   email: string;
@@ -23,7 +24,8 @@ const Login = () => {
     password: "",
   });
   const router = useRouter();
-
+  const t = useTranslations("Login");
+  const b = useTranslations("ButtonText");
   const session = useSession();
   console.log(session);
 
@@ -61,17 +63,17 @@ const Login = () => {
     <div className={loginSlyles.container}>
       <div className={loginSlyles.formContainer}>
         <Typography classnames={`${typographyStyles.fontSize3Rem}`} type="h1">
-          Welcome back
+          {t("loginTitle")}
         </Typography>
         <Typography classnames={`${typographyStyles.basicFontSize}`} type="p">
-          Please enter your details.
+          {t("loginSubTitle")}
         </Typography>
         <form className={loginSlyles.form} onSubmit={handleSubmit}>
           <Input
             placeholder="Enter email"
             type="email"
             name="email"
-            labalValue="Email"
+            labalValue={t("email")}
             onChange={handleChange}
             value={loginData?.email}
           />
@@ -79,12 +81,12 @@ const Login = () => {
             placeholder="Enter password"
             type="password"
             name="password"
-            labalValue="Password"
+            labalValue={t("password")}
             onChange={handleChange}
             value={loginData?.password}
           />
           <AppButton variant="primary" type="submit">
-            Sign in
+            {b("signIn")}
           </AppButton>
         </form>
         <AppButton variant="secondary" type="button" onClick={googleAuth}>
@@ -93,15 +95,15 @@ const Login = () => {
             src={googleIcon}
             alt="iconGoogle"
           />{" "}
-          Sign in with Google
+          {b("signinWithGoogle")}
         </AppButton>
         <Typography classnames={`${typographyStyles.basicFontSize}`} type="p">
-          Don’t have an account?{" "}
+          {t("callToRegistration1")}
           <AppLink
             className={`${typographyStyles.colorSecondary} ${typographyStyles.basicFontSize}`}
             href={"/registration"}
           >
-            Sign up for free!
+            {t("callToRegistration2")}
           </AppLink>
         </Typography>
       </div>

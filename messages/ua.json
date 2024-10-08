@@ -17,7 +17,10 @@
   "ButtonText": {
     "startedNow": "почати зараз",
     "lestJoinNow": "приєднатися",
-    "aboutUs": "про мене"
+    "aboutUs": "про мене",
+    "signIn": "увійти",
+    "signOut": "вийти",
+    "signinWithGoogle": "увійти з гугл"
   },
   "WhyChooseUs": {
     "whyChooseUs1": "чому ",
@@ -50,5 +53,13 @@
     "namePlaceHolder": "Введіть ім'я та прізвище",
     "emailPlaceHolder": "Введіть адресу пошти",
     "phonePlaceHolder": "Введіть номер телефону"
+  },
+  "Login": {
+    "loginTitle": "ласкаво просимо",
+    "loginSubTitle": "введіть дані для входу",
+    "email": "емеїл",
+    "password": "пароль",
+    "callToRegistration1": "немає облікового запису?",
+    "callToRegistration2": " зареєструватися"
   }
 }

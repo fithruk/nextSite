@@ -79,6 +79,11 @@ export const authConfig: AuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
+        const now = new Date();
+        const endOfDay = new Date(now);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        session.expires = endOfDay.toISOString();
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
