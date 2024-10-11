@@ -18,7 +18,7 @@ export const Header = forwardRef<HTMLDivElement, Props>(({ refs }, ref) => {
         alt="background foto"
       />
       <NavBar refs={refs} />
-      <HeaderContent />
+      <HeaderContent ref={refs[3]} />
     </header>
   );
 });

@@ -4,7 +4,7 @@ import imgMan from "../../assets/images/ex_man.png";
 import imgBack from "../../assets/images/ex_back.png";
 import { Typography } from "../CommonComponents/Typography/Typography";
 import { Container } from "../CommonComponents/Container/Container";
-import { AppButton } from "../CommonComponents/Button/Button";
+// import { AppButton } from "../CommonComponents/Button/Button";
 import typographyStyles from "../CommonComponents/Typography/typography.module.css";
 import lotOfExpirienceStyles from "./lotOfExpirience.module.css";
 import { useTranslations } from "next-intl";
@@ -44,9 +44,9 @@ export const LotOfExpirience = forwardRef<HTMLDivElement>((_, ref) => {
           >
             {t("lotOfExpirinceP2")}
           </Typography>
-          <AppButton variant="secondary" type="button">
-            {b("aboutUs")}
-          </AppButton>
+          {/* <AppButton variant="secondary" type="button" onClick={handleClick}>
+            {b("lestJoinNow")}
+          </AppButton> */}
         </div>
         <div className={lotOfExpirienceStyles.img}>
           <div className={lotOfExpirienceStyles.imgBox}>

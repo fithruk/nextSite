@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { AppButton } from "../CommonComponents/Button/Button";
 import { AppLink } from "../CommonComponents/Link/Link";
 import { Container } from "../CommonComponents/Container/Container";
@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { UseScrollIntoView } from "@/hooks/useScrollIntoView";
 import { useRouter } from "next/navigation";
 
-const navLinks: string[] = ["home", "about", "slider", "contacts", "login"];
+const navLinks: string[] = ["home", "about", "slider", "contacts"]; //"login"
 
 type Props = {
   refs: ForwardedRef<HTMLDivElement>[];
@@ -52,6 +52,13 @@ const NavBar = ({ refs }: Props) => {
     }
   };
 
+  const handleBtnClick = () => {
+    const ref = refs[3];
+    if (ref && "current" in ref && ref.current) {
+      UseScrollIntoView(ref);
+    }
+  };
+
   return (
     <Container type="inner">
       <div className={styles.navBar}>
@@ -82,7 +89,11 @@ const NavBar = ({ refs }: Props) => {
                     {t(key)}
                   </AppLink>
                 ))}
-                <AppButton type="button" variant="primary">
+                <AppButton
+                  type="button"
+                  variant="primary"
+                  onClick={handleBtnClick}
+                >
                   {b("startedNow")}
                 </AppButton>
               </ul>
@@ -90,7 +101,7 @@ const NavBar = ({ refs }: Props) => {
           )}
         </nav>
         <LocaleSwitcher />
-        <AppButton type="button" variant="primary">
+        <AppButton type="button" variant="primary" onClick={handleBtnClick}>
           {b("startedNow")}
         </AppButton>
         <BurgerMenu isActive={isActive} toggleMenu={toggleMenu} />

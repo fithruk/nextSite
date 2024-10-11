@@ -23,6 +23,7 @@ export const Form = () => {
 
       if (response.ok) {
         console.log("Сообщение отправлено");
+        alert("Сообщение отправлено");
       } else {
         console.error("Ошибка при отправке сообщения");
       }

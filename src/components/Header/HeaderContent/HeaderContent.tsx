@@ -6,15 +6,26 @@ import HeaderStat from "../HeaderStat/HeaderStat";
 import typographyStyles from "../../CommonComponents/Typography/typography.module.css";
 import headerContendStyles from "./headerContent.module.css";
 import containerStyles from "../../CommonComponents/Container/container.module.css";
+import { ForwardedRef, forwardRef } from "react";
+import { UseScrollIntoView } from "@/hooks/useScrollIntoView";
 
-//type Props = {};
+type Props = {
+  ref: ForwardedRef<HTMLDivElement>;
+};
 
-export const HeaderContent = () => {
+export const HeaderContent = forwardRef<HTMLDivElement, Props>((_, ref) => {
   const t = useTranslations("Header");
   const b = useTranslations("ButtonText");
+
+  const handleClick = () => {
+    if (ref && "current" in ref && ref.current) {
+      UseScrollIntoView(ref);
+    }
+  };
+
   return (
     <Container type="inner" classnames={containerStyles.marginTop7Rem}>
-      <div className={headerContendStyles.container}>
+      <div ref={ref} className={headerContendStyles.container}>
         <div>
           <Typography classnames={`${typographyStyles.h1}`} type="h1">
             {t("readyToTrain").toUpperCase()}
@@ -31,7 +42,7 @@ export const HeaderContent = () => {
           >
             {t("subTitle")}
           </Typography>
-          <AppButton type="button" variant="primary">
+          <AppButton type="button" variant="primary" onClick={handleClick}>
             {b("lestJoinNow")}
           </AppButton>
           <HeaderStat />
@@ -39,4 +50,6 @@ export const HeaderContent = () => {
       </div>
     </Container>
   );
-};
+});
+
+HeaderContent.displayName = "HeaderContent";

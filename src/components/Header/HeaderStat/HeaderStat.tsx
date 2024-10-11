@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 
 const stat: StatProps[] = [
   { statTitle: "yearsofExperience", statValue: 7 },
-  { statTitle: "membersJoin", statValue: 15 },
-  { statTitle: "happyMembers", statValue: 14 },
+  { statTitle: "membersJoin", statValue: 50 },
+  { statTitle: "happyMembers", statValue: 47 },
 ];
 
 type StatProps = {
