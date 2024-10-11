@@ -36,6 +36,10 @@ const SiteHead = () => {
         name="twitter:image"
         content="https://yourwebsite.com/path/to/image.jpg"
       />
+      <meta
+        name="google-site-verification"
+        content="qm-LsQJQ-II3eL1JDv-3BsJ58O76Al4FTvaJx4RuCK8"
+      />
     </Head>
   );
 };
