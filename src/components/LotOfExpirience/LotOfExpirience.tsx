@@ -12,7 +12,7 @@ import { useTranslations } from "next-intl";
 
 export const LotOfExpirience = forwardRef<HTMLDivElement>((_, ref) => {
   const t = useTranslations("LotOfExpirince");
-  const b = useTranslations("ButtonText");
+  // const b = useTranslations("ButtonText");
 
   return (
     <Container type="inner">
