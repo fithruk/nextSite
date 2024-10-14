@@ -1,0 +1,38 @@
+.layoutGrid {
+  text-align: center;
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: minmax(auto, 5rem) auto auto;
+  gap: 1rem;
+  /* grid-template-rows: ; */
+  grid-template-areas:
+    "logo search search"
+    "navigation main sideBar"
+    "navigation main sideBar";
+}
+
+.navigation {
+  grid-area: navigation;
+  display: flex;
+  flex-direction: column;
+}
+.search {
+  grid-area: search;
+  border-bottom: 1px solid var(--foreground);
+}
+
+.main {
+  grid-area: main;
+}
+.sideBar {
+  grid-area: sideBar;
+}
+
+.logo {
+  padding: 1rem 0 1rem 0;
+  grid-area: logo;
+  display: grid;
+  place-items: center;
+  border-bottom: 1px solid var(--foreground);
+}
