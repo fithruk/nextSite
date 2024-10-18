@@ -61,5 +61,14 @@
     "password": "пароль",
     "callToRegistration1": "нет аккаунта?",
     "callToRegistration2": " зарегистироваться"
+  },
+  "DashboardNavigation": {
+    "overview": "общее",
+    "workout": "тренировка",
+    "dietPlan": "план питания",
+    "goals": "цели",
+    "mySchedule": "мое расписание",
+    "progress": "прогресс",
+    "logOut": "выйти"
   }
 }

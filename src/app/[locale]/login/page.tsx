@@ -47,7 +47,7 @@ const Login = () => {
 
   const googleAuth = () => {
     signIn("google", {
-      callbackUrl: "/private",
+      callbackUrl: "/dashboard/overview",
     });
   };
 

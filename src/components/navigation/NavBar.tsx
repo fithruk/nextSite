@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { UseScrollIntoView } from "@/hooks/useScrollIntoView";
 import { useRouter } from "next/navigation";
 
-const navLinks: string[] = ["home", "about", "slider", "contacts"]; //"login"
+const navLinks: string[] = ["home", "about", "slider", "contacts", "login"];
 
 type Props = {
   refs: ForwardedRef<HTMLDivElement>[];

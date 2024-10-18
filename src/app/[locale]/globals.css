@@ -6,6 +6,7 @@
   --secondary-text_color: #ff0000;
   --subHeader-subTitle: #f1f1f1;
   --section-back_color: #121212;
+  /* #161616 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -43,6 +44,7 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  transition: 0.1s linear;
 }
 
 a {

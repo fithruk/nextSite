@@ -4,7 +4,7 @@
   min-height: 100vh;
   grid-template-columns: auto 1fr auto;
   grid-template-rows: minmax(auto, 5rem) auto auto;
-  gap: 1rem;
+  /* row-gap: 1rem; */
   /* grid-template-rows: ; */
   grid-template-areas:
     "logo search search"
@@ -16,6 +16,8 @@
   grid-area: navigation;
   display: flex;
   flex-direction: column;
+  padding: 0 1rem 0 0;
+  max-height: 90vh;
 }
 .search {
   grid-area: search;
@@ -24,9 +26,24 @@
 
 .main {
   grid-area: main;
+  padding-top: 1rem;
+  background-color: var(--section-back_color);
 }
 .sideBar {
+  position: relative;
+  padding-top: 1rem;
   grid-area: sideBar;
+  background-color: var(--section-back_color);
+}
+
+.sideBar::after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 2rem;
+  right: -2rem;
+  top: 0;
+  background-color: var(--section-back_color);
 }
 
 .logo {

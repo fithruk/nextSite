@@ -2,5 +2,4 @@
   fill: var(--foreground);
   height: clamp(24px, 2rem, 50px);
   width: clamp(24px, 2rem, 50px);
-  margin: 0 0.25rem 0 0;
 }

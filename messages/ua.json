@@ -61,5 +61,14 @@
     "password": "пароль",
     "callToRegistration1": "немає облікового запису?",
     "callToRegistration2": " зареєструватися"
+  },
+  "DashboardNavigation": {
+    "overview": "загальне",
+    "workout": "тренування",
+    "dietPlan": "план харчування",
+    "goals": "цілі",
+    "mySchedule": "мій розклад",
+    "progress": "прогрес",
+    "logOut": "вийти"
   }
 }

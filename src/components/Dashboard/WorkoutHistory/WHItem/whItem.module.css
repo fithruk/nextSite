@@ -1,0 +1,53 @@
+.card {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--foreground);
+  padding: 1rem;
+  width: clamp(200px, 22vw, 420px);
+  text-align: start;
+  transition: 1s linear;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: var(--secondary-text_color);
+}
+
+.cartHeader {
+  margin-bottom: 1rem;
+}
+
+.cartBody {
+}
+
+.WHList {
+}
+
+@keyframes detailsApearing {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.WHistoryItem {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation-name: detailsApearing;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+}
+
+.WHistoryItemImage {
+  width: clamp(16px, 5rem, 100px);
+  height: clamp(16px, 5rem, 100px);
+}
+
+.WHistoryItemContent {
+  flex-grow: 0.75;
+}
