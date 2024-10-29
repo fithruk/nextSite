@@ -1,0 +1,22 @@
+.weekFoodItem {
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--foreground);
+  padding: 1rem;
+  width: clamp(200px, 22vw, 420px);
+  text-align: start;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header span:last-child {
+  color: #f97316;
+  background-color: #ffdcb0;
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+}

@@ -6,6 +6,8 @@ import Overview from "@/components/Dashboard/Overview/Overview";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import typographyStyles from "@/components/CommonComponents/Typography/typography.module.css";
 import WorkoutHistory from "@/components/Dashboard/WorkoutHistory/WorkoutHistory";
+import DietPlan from "@/components/Dashboard/DietPlan/DietPlan";
+import WeekFoodPlan from "@/components/Dashboard/WeekFoodPlan/WeekFoodPlan";
 
 interface DashboardProps {
   params: {
@@ -15,6 +17,7 @@ interface DashboardProps {
 
 enum RoutesEnum {
   overview = "overview",
+  dietPlan = "dietPlan",
 }
 
 const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
@@ -43,10 +46,12 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
           </div>
           <div className={dashboardStyles.main}>
             {route === RoutesEnum.overview && <Overview />}
+            {route === RoutesEnum.dietPlan && <DietPlan />}
           </div>
           <div className={dashboardStyles.sideBar}>
-            <WorkoutHistory />
+            {route === RoutesEnum.overview && <WorkoutHistory />}
             {route === RoutesEnum.overview && <p>jopa</p>}
+            {route === RoutesEnum.dietPlan && <WeekFoodPlan />}
           </div>
         </div>
       </Container>

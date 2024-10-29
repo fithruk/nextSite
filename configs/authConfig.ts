@@ -1,6 +1,7 @@
 import { AuthOptions, User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import JWT, { JwtPayload } from "jsonwebtoken";
 import axios from "axios";
 
 type AuthData = {
@@ -78,17 +79,21 @@ export const authConfig: AuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        const now = new Date();
-        const endOfDay = new Date(now);
-        endOfDay.setHours(23, 59, 59, 999);
+      const decoded = JWT.verify(
+        token.token as string,
+        process.env.JWT_ACCES_REFRESH!
+      ) as JwtPayload;
 
-        session.expires = endOfDay.toISOString();
+      if (session.user) {
+        if (decoded.exp) {
+          session.expires = decoded.exp.toString();
+        }
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.token = token.token as string;
       }
+
       return session;
     },
   },

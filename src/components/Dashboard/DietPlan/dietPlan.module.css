@@ -1,0 +1,19 @@
+.container {
+  padding: 0rem 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "mainBanner"
+    "foodTable";
+  row-gap: 1rem;
+}
+
+.mainBanner {
+  grid-area: mainBanner;
+}
+
+.foodTable {
+  grid-area: foodTable;
+}

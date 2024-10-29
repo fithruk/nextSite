@@ -3,9 +3,7 @@
   display: grid;
   min-height: 100vh;
   grid-template-columns: auto 1fr auto;
-  grid-template-rows: minmax(auto, 5rem) auto auto;
-  /* row-gap: 1rem; */
-  /* grid-template-rows: ; */
+  grid-template-rows: minmax(auto, 5rem) minmax(7rem, auto) auto;
   grid-template-areas:
     "logo search search"
     "navigation main sideBar"

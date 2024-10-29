@@ -1,0 +1,41 @@
+.li {
+  padding: 0.25rem;
+  border: 1px solid var(--foreground);
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  box-shadow: 3px 9px 18px -10px rgba(240, 228, 228, 0.5);
+}
+
+.li svg {
+  margin-right: 0.5rem;
+}
+
+.container {
+  padding: 0.25rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.textContent {
+  flex-grow: 1;
+}
+
+.textContent p {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.imgContainer {
+  flex-grow: 0.25;
+  flex-basis: clamp(50px, 8rem, 122px);
+}
+
+.img {
+  width: clamp(50px, 8rem, 130px);
+  height: clamp(50px, 8rem, 130px);
+  object-fit: cover;
+}

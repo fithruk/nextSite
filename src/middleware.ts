@@ -5,7 +5,7 @@ import { getToken } from "next-auth/jwt";
 
 // Создаем middleware
 // Определите свои приватные маршруты
-const privateRoutes = ["/private", "/dashboard", "/settings"];
+const privateRoutes = ["/dashboard", "/settings"];
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -23,7 +23,6 @@ export default async function middleware(request: NextRequest) {
   // Проверка на приватные маршруты
   if (privateRoutes.some((route) => pathname.includes(route))) {
     const token = await getToken({ req: request });
-    console.log(token);
 
     if (!token) {
       return NextResponse.redirect(new URL("/login", request.url));

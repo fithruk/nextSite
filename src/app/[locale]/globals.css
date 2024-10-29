@@ -26,6 +26,12 @@ body {
   height: 100vh;
 }
 
+table,
+th,
+td {
+  border: none;
+}
+
 ol,
 ul {
   margin: 0;

@@ -1,5 +1,6 @@
 "use client";
 import dashNavStyles from "./navigation.module.css";
+import { signOut } from "next-auth/react";
 import { AppLink } from "@/components/CommonComponents/Link/Link";
 import { iconsArr } from "./icons";
 import SVGIcon from "@/components/CommonComponents/IconSVG/SVG";
@@ -22,6 +23,10 @@ const DashboadrNavigation = () => {
     return link.substring(0, 1).toUpperCase() + link.substring(1);
   };
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
+
   return (
     <div className={dashNavStyles.container}>
       <nav>
@@ -40,7 +45,7 @@ const DashboadrNavigation = () => {
         </ul>
       </nav>
       <div>
-        <AppLink href={`/`}>
+        <AppLink href={`#`} onClick={handleLogout}>
           {" "}
           <SVGIcon SVG={iconsArr[iconsArr.length - 1]} /> {t("logOut")}
         </AppLink>
