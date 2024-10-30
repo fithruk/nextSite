@@ -25,10 +25,12 @@ export async function GET(req: NextRequest) {
   const apiFoodService = new ApiService(url, token);
 
   try {
-    const response = await apiFoodService.get<FoodTypeResponce>(
+    const { data, status } = await apiFoodService.get<FoodTypeResponce>(
       "/foods/getAllFood"
     );
-    return NextResponse.json(response.data);
+    if (status === 200) {
+      return NextResponse.json(data);
+    }
   } catch (error) {
     console.error("Ошибка получения данных:", error);
     return NextResponse.json(

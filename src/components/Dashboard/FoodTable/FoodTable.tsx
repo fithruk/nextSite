@@ -1,59 +1,27 @@
 "use client";
 import foodTableStyles from "./foodTable.module.css";
-import meatIcon from "../../../assets/images/meatIcon.png";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
-import { StaticImageData } from "next/image";
-import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-
+import Pagination from "@/components/CommonComponents/Pagination/Pagination";
 import { FoodType, FoodTypeResponce } from "@/app/api/foodService/route";
-
-const foodData = [
-  {
-    img: meatIcon,
-    food: "Meat",
-    meal: "Break Fast",
-    calories: "receiving",
-    priorities: "08:00 AM",
-    carbs: 20,
-  },
-  {
-    img: meatIcon,
-    food: "Meat",
-    meal: "Break Fast",
-    calories: "receiving",
-    priorities: "08:00 AM",
-    carbs: 20,
-  },
-  {
-    img: meatIcon,
-    food: "Meat",
-    meal: "Break Fast",
-    calories: "receiving",
-    priorities: "08:00 AM",
-    carbs: 20,
-  },
-];
+import { usePagination } from "@/hooks/usePagination";
 
 type FoodItemProps = {
-  img: StaticImageData;
+  img: string;
   food: string;
   meal: string;
-  calories: string;
-  priorities: string;
-  carbs: number;
+  tableData?: {
+    calories: string;
+    proteins: string;
+    carbs: string;
+    fats: string;
+    fiber: string | null | undefined;
+  };
 };
 
-const FoodItem = ({
-  img,
-  food,
-  meal,
-  calories,
-  priorities,
-  carbs,
-}: FoodItemProps) => {
+const FoodItem = ({ img, food, meal, tableData }: FoodItemProps) => {
   return (
     <tr className={foodTableStyles.tableRow}>
       <td>
@@ -61,26 +29,32 @@ const FoodItem = ({
         <div className={foodTableStyles.firstTdContent}>
           <div className={foodTableStyles.foodImageContainer}>
             {" "}
-            <Image
+            <img
               src={img}
               alt={food}
               className={foodTableStyles.foodImage}
             />{" "}
           </div>
-          {food}
+          {food.trim().split(":")[1]}
         </div>
       </td>
       <td>{meal}</td>
-      <td>{calories}</td>
-      <td>{priorities}</td>
-      <td>{carbs}</td>
+      <td>{tableData?.calories}</td>
+      <td>{tableData?.carbs}</td>
+      <td>{tableData?.fats}</td>
+      <td>{tableData?.proteins}</td>
+      <td>{tableData?.fiber}</td>
     </tr>
   );
 };
 
 const FoodTable = () => {
-  const [foodDatas, setFoodData] = useState<FoodType[]>([]);
-
+  const [foodData, setFoodData] = useState<FoodType[]>([]);
+  const [totalPageCount, currentPage, indStart, indEnd, onOpageChange] =
+    usePagination({
+      data: foodData,
+      itemsPerPage: 20,
+    });
   const { data: session } = useSession();
   useEffect(() => {
     (async () => {
@@ -93,6 +67,7 @@ const FoodTable = () => {
             },
           }
         );
+        // Добавить редирект при статусе не 200
         setFoodData(data);
         console.log(status);
       }
@@ -100,33 +75,52 @@ const FoodTable = () => {
   }, []);
 
   return (
-    <table className={foodTableStyles.table}>
-      <thead className="main-table-list__header">
-        <tr className="main-table-list__row">
-          <th className="main-table-list__item">
-            {" "}
-            <Typography type="span">Food</Typography>
-          </th>
-          <th className="main-table-list__item">
-            <Typography type="span">Meal</Typography>
-          </th>
-          <th className="main-table-list__item">
-            <Typography type="span">Calories</Typography>
-          </th>
-          <th className="main-table-list__item">
-            <Typography type="span">Priorities</Typography>
-          </th>
-          <th className="main-table-list__item">
-            <Typography type="span">Carbs</Typography>
-          </th>
-        </tr>
-      </thead>
-      <tbody className={foodTableStyles.tableBody}>
-        {foodData.map((foodItem, ind) => (
-          <FoodItem {...foodItem} key={ind} />
-        ))}
-      </tbody>
-    </table>
+    <>
+      <table className={foodTableStyles.table}>
+        <thead className="main-table-list__header">
+          <tr className="main-table-list__row">
+            <th className="main-table-list__item">
+              {" "}
+              <Typography type="span">Food</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">Meal</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">Calories</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">Carbs</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">fats</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">proteins</Typography>
+            </th>
+            <th className="main-table-list__item">
+              <Typography type="span">fiber</Typography>
+            </th>
+          </tr>
+        </thead>
+        <tbody className={foodTableStyles.tableBody}>
+          {foodData.slice(indStart, indEnd).map((foodItem, ind) => (
+            <FoodItem
+              img={foodItem.imgUrls[foodItem.imgUrls.length - 1]}
+              food={foodItem.title}
+              meal={foodItem.category}
+              tableData={foodItem.tableData}
+              key={ind}
+            />
+          ))}
+        </tbody>
+      </table>
+      <Pagination
+        totalPageCount={totalPageCount as number}
+        currentPage={currentPage as number}
+        onPageChange={onOpageChange}
+      />
+    </>
   );
 };
 

@@ -4,12 +4,19 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // images: {
+  //   domains: [
+  //     "gymbeam.cz",
+  //     "gymbeam.com",
+  //     "gymbeam.sk",
+  //     "wpstatic.gymbeam.com",
+  //   ],
+  // },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
 };

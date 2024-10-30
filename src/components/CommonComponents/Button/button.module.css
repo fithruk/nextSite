@@ -4,10 +4,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(----foreground);
+  color: var(--foreground);
   text-transform: uppercase;
   cursor: pointer;
   font-size: clamp(16px, 2rem, 25px);
+}
+
+.paginationButton {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5em;
+  background-color: var(--foreground);
+  border-radius: 4px;
+  color: var(--background);
+  width: clamp(32px, 1.5rem, 64px);
+  height: clamp(32px, 1.5rem, 64px);
+  cursor: pointer;
+}
+
+.paginationButton:disabled {
+  background-color: grey;
+  cursor: auto;
+}
+
+.paginationActive {
+  background: var(--pagination-active_color);
 }
 
 .primary {
