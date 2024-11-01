@@ -2,11 +2,13 @@
 import foodTableStyles from "./foodTable.module.css";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { useSession } from "next-auth/react";
 import Pagination from "@/components/CommonComponents/Pagination/Pagination";
 import { FoodType, FoodTypeResponce } from "@/app/api/foodService/route";
 import { usePagination } from "@/hooks/usePagination";
+import { foodSortReducer, actionEnam } from "@/reducers/sortReducer";
+import SortPannel from "@/components/CommonComponents/SortPannel/SortPannel";
 
 type FoodItemProps = {
   img: string;
@@ -22,6 +24,8 @@ type FoodItemProps = {
 };
 
 const FoodItem = ({ img, food, meal, tableData }: FoodItemProps) => {
+  const title = food.trim().split(":")[1];
+  if (!title) return;
   return (
     <tr className={foodTableStyles.tableRow}>
       <td>
@@ -35,11 +39,15 @@ const FoodItem = ({ img, food, meal, tableData }: FoodItemProps) => {
               className={foodTableStyles.foodImage}
             />{" "}
           </div>
-          {food.trim().split(":")[1]}
+          {title}
         </div>
       </td>
       <td>{meal}</td>
-      <td>{tableData?.calories}</td>
+      <td>
+        {isNaN(Number(tableData?.calories))
+          ? tableData?.calories
+          : `${tableData?.calories} ккал`}
+      </td>
       <td>{tableData?.carbs}</td>
       <td>{tableData?.fats}</td>
       <td>{tableData?.proteins}</td>
@@ -50,9 +58,13 @@ const FoodItem = ({ img, food, meal, tableData }: FoodItemProps) => {
 
 const FoodTable = () => {
   const [foodData, setFoodData] = useState<FoodType[]>([]);
+  const [state, dispatch] = useReducer(foodSortReducer, {
+    foodData,
+    filteredData: [],
+  });
   const [totalPageCount, currentPage, indStart, indEnd, onOpageChange] =
     usePagination({
-      data: foodData,
+      data: state.filteredData,
       itemsPerPage: 20,
     });
   const { data: session } = useSession();
@@ -70,12 +82,14 @@ const FoodTable = () => {
         // Добавить редирект при статусе не 200
         setFoodData(data);
         console.log(status);
+        dispatch({ type: actionEnam.setData, payload: data });
       }
     })();
   }, []);
 
   return (
     <>
+      <SortPannel dispatch={dispatch} />
       <table className={foodTableStyles.table}>
         <thead className="main-table-list__header">
           <tr className="main-table-list__row">
@@ -104,7 +118,7 @@ const FoodTable = () => {
           </tr>
         </thead>
         <tbody className={foodTableStyles.tableBody}>
-          {foodData.slice(indStart, indEnd).map((foodItem, ind) => (
+          {state.filteredData.slice(indStart, indEnd).map((foodItem, ind) => (
             <FoodItem
               img={foodItem.imgUrls[foodItem.imgUrls.length - 1]}
               food={foodItem.title}

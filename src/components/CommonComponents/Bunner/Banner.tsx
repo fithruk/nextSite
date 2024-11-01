@@ -67,7 +67,6 @@ export const drawLine = (
       x + frequency,
       basePointY
     );
-    console.log(basePointY);
   }
 
   // Закрываем путь до нижней границы канваса, чтобы заполнить область под волной
