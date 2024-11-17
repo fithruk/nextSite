@@ -1,4 +1,4 @@
-import WFPlanStyles from "./weekFoodPlan.module.css";
+//import WFPlanStyles from "./weekFoodPlan.module.css";
 
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 
