@@ -2,7 +2,7 @@
 import statisticsStyles from "./statistics.module.css";
 import { Chart, Column } from "@ant-design/plots";
 
-type DataProps = { data: any[] };
+type DataProps = { data: unknown[] };
 
 const Statistics = ({ data }: DataProps) => {
   //Вынести в configs
