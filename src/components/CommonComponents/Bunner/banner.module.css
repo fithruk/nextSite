@@ -1,7 +1,7 @@
 .mainBanner {
   position: relative;
   display: flex;
-  background-color: #fc6212;
+  background-color: var(--banner-hover_color);
   border-radius: 12px;
   overflow: hidden;
 }

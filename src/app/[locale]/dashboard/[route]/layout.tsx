@@ -22,7 +22,6 @@ enum RoutesEnum {
 
 const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
   const { route } = params;
-  console.log(route);
 
   return (
     <Container>

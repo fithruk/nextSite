@@ -94,9 +94,9 @@ const Overview = () => {
       <div className={overviewStyles.statistics}>
         <Statistics data={data} />
       </div>
-      <div className={overviewStyles.foodTable}>
+      {/* <div className={overviewStyles.foodTable}>
         <FoodTable />
-      </div>
+      </div> */}
     </div>
   );
 };

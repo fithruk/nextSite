@@ -1,3 +1,7 @@
+.container {
+  position: relative;
+}
+
 .table {
   width: 100%;
   height: auto;
@@ -20,6 +24,35 @@
   border-radius: 4px;
   color: var(--background);
   cursor: pointer;
+  position: relative;
+}
+
+.tableRow:hover {
+  background-color: var(--banner-hover_color);
+}
+
+.routePannel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.routePannel button {
+  padding: 0.3rem 2.2rem;
+  flex-grow: 1;
+}
+
+.routePannel button:hover {
+  background-color: var(--background);
+}
+
+.tableRow:hover .routePannel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tableRow td {

@@ -1,33 +1,16 @@
 import ApiService from "@/apiService/apiService";
 import { NextRequest, NextResponse } from "next/server";
-
-export type FoodType = {
-  title: string;
-  paragraphs: string[];
-  tableData: {
-    calories: string;
-    proteins: string;
-    carbs: string;
-    fats: string;
-    fiber: string | null;
-  };
-  imgUrls: string[];
-  category: string;
-  ingredients: { [key: string]: string[] };
-  _id: string;
-};
-
-export type FoodTypeResponce = [FoodType];
+import { FoodType } from "../route";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const token = searchParams.get("token") || "";
+  const id = searchParams.get("id");
   const url = process.env.API_URL!;
   const apiFoodService = new ApiService(url, token);
-
   try {
-    const { data, status } = await apiFoodService.get<FoodTypeResponce>(
-      "/foods/getAllFood"
+    const { data, status } = await apiFoodService.get<FoodType>(
+      `/foods/getlFoodById/${id}`
     );
     if (status === 200) {
       return NextResponse.json(data);
@@ -35,7 +18,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Ошибка получения данных:", error);
     return NextResponse.json(
-      { error: "Не удалось получить данные" },
+      { error: "Не удалось получить данные для указанного ID" },
       { status: 500 }
     );
   }

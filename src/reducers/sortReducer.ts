@@ -59,8 +59,6 @@ const foodSortReducer = (
       return { ...state, filteredData: newState };
 
     case actionEnam.sortAction:
-      console.log(action.payload);
-
       const sortedData = [...state.filteredData].sort((a, b) => {
         for (const sortParam of action.payload as sortValues[]) {
           let comparison = 0;

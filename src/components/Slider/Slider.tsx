@@ -47,10 +47,24 @@ const items = [
   />,
 ];
 
-export const Slider = forwardRef<HTMLDivElement>((_, ref) => {
+interface SliderProps {
+  images?: React.ReactElement[];
+}
+
+export interface imagesProps {
+  className?: string;
+  alt: string;
+  key: React.Key;
+  src: string;
+  onDragStart?: React.DragEventHandler<HTMLImageElement>;
+  role?: React.AriaRole;
+}
+
+export const Slider = forwardRef<HTMLDivElement, SliderProps>((props, ref) => {
+  const imagesForSlides = props.images ? props.images : items;
   return (
     <div className={slyderStyles.slider} ref={ref}>
-      <AliceCarousel mouseTracking items={items} />
+      <AliceCarousel mouseTracking items={imagesForSlides} />
     </div>
   );
 });
