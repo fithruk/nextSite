@@ -14,6 +14,7 @@ const dashboadrNavigationLinks: string[] = [
   "goals",
   "mySchedule",
   "progress",
+  "profile",
 ];
 
 const DashboadrNavigation = () => {

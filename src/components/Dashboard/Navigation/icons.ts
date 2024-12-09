@@ -5,7 +5,17 @@ import Progress from "../../../assets/icons/progress.svg";
 import Goals from "../../../assets/icons/goals.svg";
 import Shredule from "../../../assets/icons/shredule.svg";
 import Logout from "../../../assets/icons/logout.svg";
+import Profile from "../../../assets/icons/profile.svg";
 
-const iconsArr = [Overview, Workout, Plan, Goals, Shredule, Progress, Logout];
+const iconsArr = [
+  Overview,
+  Workout,
+  Plan,
+  Goals,
+  Shredule,
+  Progress,
+  Profile,
+  Logout,
+];
 
 export { iconsArr };

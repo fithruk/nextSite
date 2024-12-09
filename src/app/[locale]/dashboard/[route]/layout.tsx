@@ -8,6 +8,7 @@ import typographyStyles from "@/components/CommonComponents/Typography/typograph
 import WorkoutHistory from "@/components/Dashboard/WorkoutHistory/WorkoutHistory";
 import DietPlan from "@/components/Dashboard/DietPlan/DietPlan";
 import WeekFoodPlan from "@/components/Dashboard/WeekFoodPlan/WeekFoodPlan";
+import Profile from "@/components/Dashboard/Profile/Profile";
 
 interface DashboardProps {
   params: {
@@ -18,6 +19,7 @@ interface DashboardProps {
 enum RoutesEnum {
   overview = "overview",
   dietPlan = "dietPlan",
+  profile = "profile",
 }
 
 const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
@@ -46,6 +48,7 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
           <div className={dashboardStyles.main}>
             {route === RoutesEnum.overview && <Overview />}
             {route === RoutesEnum.dietPlan && <DietPlan />}
+            {route === RoutesEnum.profile && <Profile />}
           </div>
           <div className={dashboardStyles.sideBar}>
             {route === RoutesEnum.overview && <WorkoutHistory />}

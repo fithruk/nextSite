@@ -11,7 +11,7 @@ export interface InputProps
   classnames?: string;
   name: string;
   placeholder: string;
-  type: "text" | "phone" | "email" | "password";
+  type: "text" | "phone" | "email" | "password" | "range";
   labalValue?: string;
 }
 
