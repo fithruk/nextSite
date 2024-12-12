@@ -3,6 +3,7 @@
 }
 
 .columns {
+  margin-top: 1rem;
   display: flex;
   justify-content: space-between;
 }
@@ -14,6 +15,10 @@
 .column label {
   margin: 0.5rem 0 0 0;
   display: inline-block;
+}
+
+.container button {
+  margin: auto;
 }
 
 .container input[type="range"] {

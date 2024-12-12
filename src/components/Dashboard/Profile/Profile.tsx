@@ -2,33 +2,35 @@
 import profileStyles from "./profile.module.css";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import { Input } from "@/components/CommonComponents/Input/Input";
-import { ChangeEvent, useEffect, useState, useRef } from "react";
+import { ChangeEvent, useEffect, useState, useRef, FormEvent } from "react";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const surfaceVolume = [
   "weight",
   "waist",
-  "lefthip",
+  "leftHip",
   "rightHip",
   "chest",
   "neck",
   "leftBiceps",
   "rightBiceps",
-  "leftcalve",
-  "rightcalve",
+  "leftCalve",
+  "rightCalve",
 ];
 
 type FormImputsProps = {
   weight: number;
   waist: number;
-  lefthip: number;
+  leftHip: number;
   rightHip: number;
   chest: number;
   neck: number;
   leftBiceps: number;
   rightBiceps: number;
-  leftcalve: number;
-  rightcalve: number;
+  leftCalve: number;
+  rightCalve: number;
 };
 
 const Profile = () => {
@@ -37,15 +39,16 @@ const Profile = () => {
   const [formsInputs, setFormsInputs] = useState<FormImputsProps>({
     weight: 0,
     waist: 0,
-    lefthip: 0,
+    leftHip: 0,
     rightHip: 0,
     chest: 0,
     neck: 0,
     leftBiceps: 0,
     rightBiceps: 0,
-    leftcalve: 0,
-    rightcalve: 0,
+    leftCalve: 0,
+    rightCalve: 0,
   });
+  const session = useSession();
 
   const inputsParrentRef = useRef<HTMLDivElement | null>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +63,12 @@ const Profile = () => {
         ((+value - minRangeValue) / (maxRangeValue - minRangeValue)) * 100;
       e.currentTarget.style.background = `linear-gradient(to right, #ff0000 0%, #ff0000 ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
     }
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(session.data?.user.email);
+    console.log(session.data?.user.name);
   };
   useEffect(() => {
     if (inputsParrentRef.current) {
@@ -86,10 +95,25 @@ const Profile = () => {
     }
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const { data, status } = await axios.get("/api/shapeVolumeService", {
+        params: {
+          token: session.data?.user.token,
+          email: session.data?.user.email,
+        },
+      });
+    })();
+  }, []);
+
   return (
     <div className={profileStyles.container}>
       <Typography type="h2">Edit your profile</Typography>
-      <form>
+      <Typography type="p">
+        Here you can change the volume of your figure and compare it with
+        previous indicators, as well as check the progress.
+      </Typography>
+      <form onSubmit={handleSubmit}>
         <div className={profileStyles.columns} ref={inputsParrentRef}>
           {" "}
           <div className={profileStyles.column}>
@@ -109,7 +133,7 @@ const Profile = () => {
                       value={formsInputs[item as keyof FormImputsProps]}
                     />
                     <Typography type="p">
-                      {formsInputs[item as keyof FormImputsProps]}
+                      {formsInputs[item as keyof FormImputsProps]} см.
                     </Typography>
                   </>
                 );

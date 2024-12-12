@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error("Ошибка получения данных:", error);
     return NextResponse.json(
-      { error: "Не удалось получить данные для указанного ID" },
+      { error: "Не удалось получить данные" },
       { status: 500 }
     );
   }
