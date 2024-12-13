@@ -1,23 +1,21 @@
 import { NextResponse } from "next/server";
 import ApiService from "@/apiService/apiService";
 
-type ResponceType = {
+export type ResponceType = {
   email: string;
   date: Date;
-  shapeRingsValues: [
-    {
-      weight: number;
-      waist: number;
-      leftHip: number;
-      rightHip: number;
-      chest: number;
-      neck: number;
-      leftBiceps: number;
-      rightBiceps: number;
-      leftCalve: number;
-      rightCalve: number;
-    }
-  ];
+  shapeRingsValues: {
+    weight: number;
+    waist: number;
+    leftHip: number;
+    rightHip: number;
+    chest: number;
+    neck: number;
+    leftBiceps: number;
+    rightBiceps: number;
+    leftCalve: number;
+    rightCalve: number;
+  };
 };
 
 export async function POST(request: Request) {
@@ -36,9 +34,11 @@ export async function GET(request: Request) {
     const { data, status } = await apiShapeService.get<ResponceType>(
       `/bodyShape/getCurrentBodyShapeValuesByEmail/${email}`
     );
-    console.log(status);
-    console.log(data);
+    if (status === 200) {
+      console.log(status);
+      console.log(data);
+      return NextResponse.json({ ...data }, { status });
+    }
   } catch (error) {}
-
-  return NextResponse.json({ success: true });
+  //return NextResponse.json({ success: true });
 }

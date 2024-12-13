@@ -6,6 +6,7 @@ import { ChangeEvent, useEffect, useState, useRef, FormEvent } from "react";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { ResponceType } from "@/app/api/shapeVolumeService/route";
 
 const surfaceVolume = [
   "weight",
@@ -48,6 +49,9 @@ const Profile = () => {
     leftCalve: 0,
     rightCalve: 0,
   });
+  const [dateOfLastDataChange, setDateOfLastDataChange] = useState<Date | null>(
+    null
+  );
   const session = useSession();
 
   const inputsParrentRef = useRef<HTMLDivElement | null>(null);
@@ -64,12 +68,33 @@ const Profile = () => {
       e.currentTarget.style.background = `linear-gradient(to right, #ff0000 0%, #ff0000 ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
     }
   };
+  // `Preview value of ${item} is 56, it was chaked 23.05.2025 (90 days ago)`
+  const prepareLabelString = (muscleName: string, date: Date) => {};
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(session.data?.user.email);
     console.log(session.data?.user.name);
   };
+
+  useEffect(() => {
+    (async () => {
+      const { data: responce, status } = await axios.get<ResponceType>(
+        "/api/shapeVolumeService",
+        {
+          params: {
+            token: session.data?.user.token,
+            email: session.data?.user.email,
+          },
+        }
+      );
+
+      if (status === 200) {
+        setFormsInputs(responce.shapeRingsValues);
+      }
+    })();
+  }, []);
+
   useEffect(() => {
     if (inputsParrentRef.current) {
       const elements = Array.from(inputsParrentRef.current.children);
@@ -93,18 +118,7 @@ const Profile = () => {
         });
       });
     }
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const { data, status } = await axios.get("/api/shapeVolumeService", {
-        params: {
-          token: session.data?.user.token,
-          email: session.data?.user.email,
-        },
-      });
-    })();
-  }, []);
+  }, [formsInputs]);
 
   return (
     <div className={profileStyles.container}>

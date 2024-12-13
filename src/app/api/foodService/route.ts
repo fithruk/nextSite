@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       "/foods/getAllFood"
     );
     if (status === 200) {
-      return NextResponse.json(data);
+      return NextResponse.json(data, { status });
     }
   } catch (error) {
     console.error("Ошибка получения данных:", error);
