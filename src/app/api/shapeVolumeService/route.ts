@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import ApiService from "@/apiService/apiService";
+import { UserService } from "@/apiService/userServise";
 
 export type ResponceType = {
   email: string;
@@ -18,11 +19,11 @@ export type ResponceType = {
   };
 };
 
-export async function POST(request: Request) {
-  const body = await request.json();
+// export async function POST(request: Request) {
+//   const body = await request.json();
 
-  return NextResponse.json({ success: true });
-}
+//   return NextResponse.json({ success: true });
+// }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -30,14 +31,26 @@ export async function GET(request: Request) {
   const email = searchParams.get("email") || "";
   const url = process.env.API_URL!;
   const apiShapeService = new ApiService(url, token);
+
+  const userService = new UserService(
+    url,
+    "/auth/isRegistrationComplited",
+    token
+  );
+  const isUserCompliteRegistration: boolean =
+    await userService.isUserCompliteRegistration(email!);
+
   try {
     const { data, status } = await apiShapeService.get<ResponceType>(
       `/bodyShape/getCurrentBodyShapeValuesByEmail/${email}`
     );
+    console.log(status);
+
     if (status === 200) {
-      console.log(status);
-      console.log(data);
-      return NextResponse.json({ ...data }, { status });
+      return NextResponse.json(
+        { ...data, isUserCompliteRegistration },
+        { status }
+      );
     }
   } catch (error) {}
   //return NextResponse.json({ success: true });

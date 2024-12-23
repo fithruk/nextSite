@@ -24,7 +24,7 @@ interface ApiServiceTypes {
 }
 
 class ApiService implements ApiServiceTypes {
-  private axiosInstance: AxiosInstance;
+  protected axiosInstance: AxiosInstance;
 
   constructor(baseURL: string, token?: string) {
     this.axiosInstance = axios.create({

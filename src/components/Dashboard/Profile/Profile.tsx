@@ -7,6 +7,7 @@ import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { ResponceType } from "@/app/api/shapeVolumeService/route";
+import FinishRegistrationForm from "./finishRegistrationForm";
 
 const surfaceVolume = [
   "weight",
@@ -34,6 +35,10 @@ type FormImputsProps = {
   rightCalve: number;
 };
 
+type ResponceTypeSpreaded = ResponceType & {
+  isUserCompliteRegistration: boolean;
+};
+
 const Profile = () => {
   const minRangeValue = 1;
   const maxRangeValue = 200;
@@ -49,9 +54,26 @@ const Profile = () => {
     leftCalve: 0,
     rightCalve: 0,
   });
+
+  const [formsInputsPreview, setFormsInputsPreview] = useState<FormImputsProps>(
+    {
+      weight: 0,
+      waist: 0,
+      leftHip: 0,
+      rightHip: 0,
+      chest: 0,
+      neck: 0,
+      leftBiceps: 0,
+      rightBiceps: 0,
+      leftCalve: 0,
+      rightCalve: 0,
+    }
+  );
   const [dateOfLastDataChange, setDateOfLastDataChange] = useState<Date | null>(
     null
   );
+
+  const [isFullRegistration, setIsFullRegistration] = useState<boolean>(false);
   const session = useSession();
 
   const inputsParrentRef = useRef<HTMLDivElement | null>(null);
@@ -68,8 +90,23 @@ const Profile = () => {
       e.currentTarget.style.background = `linear-gradient(to right, #ff0000 0%, #ff0000 ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
     }
   };
-  // `Preview value of ${item} is 56, it was chaked 23.05.2025 (90 days ago)`
-  const prepareLabelString = (muscleName: string, date: Date) => {};
+
+  const prepareLabelString = (
+    muscleName: string,
+    value?: number,
+    date?: Date | null
+  ): string => {
+    if (value && date) {
+      const currentDate = new Date();
+      const differenceInTime = currentDate.getTime() - new Date(date).getTime();
+      const dayRange = Math.floor(differenceInTime / (1000 * 60 * 60 * 24)); // Разница в днях
+
+      return `Preview value of ${muscleName} is ${value} cm, it was checked ${new Date(
+        date
+      ).toLocaleDateString()} (${dayRange} days ago)`;
+    }
+    return `Preview value of ${muscleName} was not chaked, create value now`;
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,7 +116,7 @@ const Profile = () => {
 
   useEffect(() => {
     (async () => {
-      const { data: responce, status } = await axios.get<ResponceType>(
+      const { data: responce, status } = await axios.get<ResponceTypeSpreaded>(
         "/api/shapeVolumeService",
         {
           params: {
@@ -91,6 +128,9 @@ const Profile = () => {
 
       if (status === 200) {
         setFormsInputs(responce.shapeRingsValues);
+        setFormsInputsPreview(responce.shapeRingsValues);
+        setDateOfLastDataChange(responce.date);
+        setIsFullRegistration(!responce.isUserCompliteRegistration);
       }
     })();
   }, []);
@@ -140,7 +180,11 @@ const Profile = () => {
                       name={item}
                       key={item}
                       placeholder={item}
-                      labalValue={`Preview value of ${item} is 56, it was chaked 23.05.2025 (90 days ago)`}
+                      labalValue={prepareLabelString(
+                        item,
+                        formsInputsPreview[item as keyof FormImputsProps],
+                        dateOfLastDataChange
+                      )}
                       max={maxRangeValue}
                       min={minRangeValue}
                       type="range"
@@ -164,14 +208,18 @@ const Profile = () => {
                       name={item}
                       key={item}
                       placeholder={item}
-                      labalValue={`Preview value of ${item} is 56, it was chaked 23.05.2025 (90 days ago)`}
+                      labalValue={prepareLabelString(
+                        item,
+                        formsInputsPreview[item as keyof FormImputsProps],
+                        dateOfLastDataChange
+                      )}
                       max={maxRangeValue}
                       min={minRangeValue}
                       type="range"
                       value={formsInputs[item as keyof FormImputsProps]}
                     />
                     <Typography type="p">
-                      {formsInputs[item as keyof FormImputsProps]}
+                      {formsInputs[item as keyof FormImputsProps]} см.
                     </Typography>
                   </>
                 );
@@ -183,6 +231,7 @@ const Profile = () => {
           Submit
         </AppButton>
       </form>
+      {isFullRegistration && <FinishRegistrationForm />}
     </div>
   );
 };

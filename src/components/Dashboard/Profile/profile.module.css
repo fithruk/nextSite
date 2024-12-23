@@ -54,3 +54,30 @@
   background: #007bff;
   cursor: pointer;
 }
+
+/* Finish Registration */
+
+.finishRegistration {
+  padding-top: 1rem;
+}
+
+.finishRegistration > div {
+  margin-top: 0.5rem;
+}
+
+.finishRegistration > div p {
+  text-align: start;
+}
+
+.finishRegistration label {
+  display: flex;
+}
+
+.finishRegistration label span {
+  order: 1;
+}
+
+.finishRegistration label input {
+  margin-right: 0.5rem;
+  order: 0;
+}

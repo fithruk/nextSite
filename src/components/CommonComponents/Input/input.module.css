@@ -6,3 +6,99 @@
   display: block;
   width: 100%;
 }
+
+.input[type="radio"],
+.input[type="checkbox"],
+.input[type="date"] {
+  position: relative;
+  display: inline;
+  width: fit-content;
+  width: 24px;
+  height: 24px;
+}
+
+.input[type="radio"]::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: var(--foreground);
+  cursor: pointer;
+}
+
+.input[type="radio"]::before {
+  content: "";
+  z-index: 1;
+  display: none;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: var(--secondary-text_color);
+}
+
+.input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 4px;
+  background-color: var(--foreground);
+  cursor: pointer;
+}
+
+.input[type="checkbox"]::before {
+  content: "";
+  z-index: 1;
+  display: none;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  background-color: var(--secondary-text_color);
+}
+
+.input[type="radio"]:checked::before {
+  display: block;
+}
+
+.input[type="checkbox"]:checked::before {
+  display: block;
+}
+
+.input[type="date"] {
+  /* appearance: none; */
+  position: relative;
+  width: fit-content;
+
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  color: #2c3e50;
+  background-color: var(--foreground);
+  cursor: pointer;
+}
+
+.input[type="date"]::-webkit-calendar-picker-indicator {
+  color: transparent;
+  opacity: 1;
+  color: red;
+}
+
+.input[type="date"]:focus {
+  outline: none;
+  border-color: var(--secondary-text_color); /* Цвет при фокусе */
+  box-shadow: 0 0 5px rgba(var(--secondary-text_color));
+}

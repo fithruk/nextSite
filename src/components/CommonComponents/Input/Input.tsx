@@ -10,8 +10,16 @@ export interface InputProps
   > {
   classnames?: string;
   name: string;
-  placeholder: string;
-  type: "text" | "phone" | "email" | "password" | "range";
+  placeholder?: string;
+  type:
+    | "text"
+    | "phone"
+    | "email"
+    | "password"
+    | "range"
+    | "radio"
+    | "checkbox"
+    | "date";
   labalValue?: string;
 }
 
@@ -20,10 +28,11 @@ export const Input = ({
   placeholder,
   type,
   labalValue,
+  classnames,
   ...props
 }: InputProps) => {
   return (
-    <label htmlFor={name}>
+    <label htmlFor={labalValue}>
       {labalValue && (
         <Typography
           classnames={`${typographyStyles.basicFontSize}`}
@@ -33,8 +42,13 @@ export const Input = ({
         </Typography>
       )}
       <input
+        id={labalValue}
         autoComplete="off"
-        className={`${inputStyles.input}`}
+        className={
+          classnames
+            ? `${inputStyles.input} ${classnames}`
+            : `${inputStyles.input}`
+        }
         name={name}
         placeholder={placeholder}
         type={type}
