@@ -76,6 +76,9 @@ const Profile = () => {
   const [isFullRegistration, setIsFullRegistration] = useState<boolean>(false);
   const session = useSession();
 
+  const token = session.data?.user.token;
+  const email = session.data?.user.email;
+
   const inputsParrentRef = useRef<HTMLDivElement | null>(null);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -116,21 +119,29 @@ const Profile = () => {
 
   useEffect(() => {
     (async () => {
-      const { data: responce, status } = await axios.get<ResponceTypeSpreaded>(
-        "/api/shapeVolumeService",
-        {
-          params: {
-            token: session.data?.user.token,
-            email: session.data?.user.email,
-          },
-        }
-      );
+      try {
+        const { data: responce, status } =
+          await axios.get<ResponceTypeSpreaded>("/api/shapeVolumeService", {
+            params: {
+              token,
+              email,
+            },
+            validateStatus(status) {
+              return status === 200 || status === 202;
+            },
+          });
 
-      if (status === 200) {
-        setFormsInputs(responce.shapeRingsValues);
-        setFormsInputsPreview(responce.shapeRingsValues);
-        setDateOfLastDataChange(responce.date);
-        setIsFullRegistration(!responce.isUserCompliteRegistration);
+        if (status === 200) {
+          setFormsInputs(responce.shapeRingsValues);
+          setFormsInputsPreview(responce.shapeRingsValues);
+          setDateOfLastDataChange(responce.date);
+          setIsFullRegistration(!responce.isUserCompliteRegistration);
+        }
+        if (status === 202) {
+          setIsFullRegistration(!responce.isUserCompliteRegistration);
+        }
+      } catch (error) {
+        console.log(error);
       }
     })();
   }, []);

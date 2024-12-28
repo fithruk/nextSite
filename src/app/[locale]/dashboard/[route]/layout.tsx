@@ -9,6 +9,7 @@ import WorkoutHistory from "@/components/Dashboard/WorkoutHistory/WorkoutHistory
 import DietPlan from "@/components/Dashboard/DietPlan/DietPlan";
 import WeekFoodPlan from "@/components/Dashboard/WeekFoodPlan/WeekFoodPlan";
 import Profile from "@/components/Dashboard/Profile/Profile";
+import CaloriesCalculator from "@/components/Dashboard/CaloriesCalculator/CaloriesCalculator";
 
 interface DashboardProps {
   params: {
@@ -54,6 +55,7 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
             {route === RoutesEnum.overview && <WorkoutHistory />}
             {route === RoutesEnum.overview && <p>jopa</p>}
             {route === RoutesEnum.dietPlan && <WeekFoodPlan />}
+            {route === RoutesEnum.dietPlan && <CaloriesCalculator />}
           </div>
         </div>
       </Container>

@@ -12,6 +12,7 @@ class UserService extends ApiService {
     email: string
   ): Promise<boolean> => {
     const { status } = await this.post(this.routeUrl, { email });
+
     return status === 200 && true;
   };
 }

@@ -37,14 +37,14 @@ export async function GET(request: Request) {
     "/auth/isRegistrationComplited",
     token
   );
-  const isUserCompliteRegistration: boolean =
-    await userService.isUserCompliteRegistration(email!);
 
   try {
+    const isUserCompliteRegistration: boolean =
+      await userService.isUserCompliteRegistration(email!);
+
     const { data, status } = await apiShapeService.get<ResponceType>(
       `/bodyShape/getCurrentBodyShapeValuesByEmail/${email}`
     );
-    console.log(status);
 
     if (status === 200) {
       return NextResponse.json(
@@ -52,6 +52,15 @@ export async function GET(request: Request) {
         { status }
       );
     }
-  } catch (error) {}
-  //return NextResponse.json({ success: true });
+
+    if (status === 202) {
+      return NextResponse.json({ isUserCompliteRegistration }, { status });
+    }
+    return NextResponse.json({ isUserCompliteRegistration }, { status });
+  } catch (error) {
+    return NextResponse.json(
+      { isUserCompliteRegistration: false },
+      { status: 500 }
+    );
+  }
 }

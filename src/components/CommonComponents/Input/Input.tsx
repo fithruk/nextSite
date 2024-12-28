@@ -19,7 +19,8 @@ export interface InputProps
     | "range"
     | "radio"
     | "checkbox"
-    | "date";
+    | "date"
+    | "number";
   labalValue?: string;
 }
 
