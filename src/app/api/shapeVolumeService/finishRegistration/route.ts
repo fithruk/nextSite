@@ -20,7 +20,6 @@ export async function POST(request: Request) {
       email,
       token,
     });
-    console.log(status + " status in finishRegistration");
 
     if (status === 200) {
       return NextResponse.json({ status });

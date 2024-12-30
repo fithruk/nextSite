@@ -21,6 +21,7 @@ enum RoutesEnum {
   overview = "overview",
   dietPlan = "dietPlan",
   profile = "profile",
+  goals = "goals",
 }
 
 const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
@@ -55,7 +56,7 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
             {route === RoutesEnum.overview && <WorkoutHistory />}
             {route === RoutesEnum.overview && <p>jopa</p>}
             {route === RoutesEnum.dietPlan && <WeekFoodPlan />}
-            {route === RoutesEnum.dietPlan && <CaloriesCalculator />}
+            {route === RoutesEnum.goals && <CaloriesCalculator />}
           </div>
         </div>
       </Container>
