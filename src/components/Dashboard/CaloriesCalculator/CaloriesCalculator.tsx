@@ -28,27 +28,60 @@ const activityOptions = [
   "Every day and physical work",
 ];
 
+type FoodPriorityOptionsTypes =
+  | "Grow weight"
+  | "Loss weight"
+  | "Maintane weight";
+
+const foodPriorityOptions = ["Grow weight", "Loss weight", "Maintane weight"];
+
 type InputValuesStateProps = {
   age: number;
-  gender: "male" | "female";
+  gender: "Male" | "Female";
   height: number;
   weight: number;
 };
 
 type CompliteRegistrationResponceType = {
   isUserCompliteRegistration: boolean;
+  gender?: "Male" | "Female";
+  dateOfBirdth?: Date;
 };
 
 const temporaryInitialState: InputValuesStateProps = {
   age: 0,
-  gender: "male",
+  gender: "Male",
   height: 0,
   weight: 0,
+};
+
+const calculateAge = (dateOfBirth: string): number => {
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  // Проверяем, был ли день рождения в текущем году
+  const isBirthdayPassed =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() >= birthDate.getDate());
+
+  // Если день рождения не прошел, уменьшаем возраст на 1
+  if (!isBirthdayPassed) {
+    age--;
+  }
+
+  return age;
 };
 
 const CaloriesCalculator = () => {
   const [selectValue, setSelectValue] = useState<ActivityOptionsTypes>(
     activityOptions[0] as ActivityOptionsTypes
+  );
+
+  const [foodPriority, setFoodPriority] = useState<FoodPriorityOptionsTypes>(
+    foodPriorityOptions[1] as FoodPriorityOptionsTypes
   );
 
   const [inputValues, setInputValues] = useState<InputValuesStateProps>(
@@ -71,15 +104,26 @@ const CaloriesCalculator = () => {
   };
 
   const clickHandler = (e: MouseEvent<HTMLLIElement>) => {
-    if (e.currentTarget) {
-      setSelectValue(e.currentTarget.textContent as ActivityOptionsTypes);
+    const textContent = e.currentTarget.textContent?.trim();
+    if (
+      textContent &&
+      activityOptions.includes(textContent as ActivityOptionsTypes)
+    ) {
+      setSelectValue(textContent as ActivityOptionsTypes);
+    } else {
+      setFoodPriority(textContent as FoodPriorityOptionsTypes);
     }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //const formData = Array.from(new FormData(formRef.current!));
-    console.log(inputValues);
+
+    const calculatorValues = {
+      ...inputValues,
+      activity: selectValue,
+      foodPriority,
+    };
+    console.log(calculatorValues);
   };
 
   useEffect(() => {
@@ -98,6 +142,15 @@ const CaloriesCalculator = () => {
 
         if (status === 200) {
           setIsCompliteRegistration(data.isUserCompliteRegistration);
+          console.log(isCompliteRegistration);
+
+          if (data.dateOfBirdth && data.gender) {
+            setInputValues((state) => ({
+              ...state,
+              gender: data.gender!,
+              age: calculateAge(data.dateOfBirdth!.toString()),
+            }));
+          }
         }
       } catch (error) {
         console.log(error);
@@ -106,14 +159,20 @@ const CaloriesCalculator = () => {
   }, []);
 
   return isCompliteRegistration ? (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={calculatorStyles.container}>
       <Typography type="h2">CaloriesCalculator</Typography>
-      <Input type="number" value={33} disabled name="age" labalValue="Age" />
+      <Input
+        type="number"
+        value={inputValues.age}
+        disabled
+        name="age"
+        labalValue="Age"
+      />
       <Input
         type="text"
-        value={"Male"}
+        value={inputValues.gender}
         disabled
-        name="male"
+        name="gender"
         labalValue="Gender"
       />
       <Input
@@ -137,6 +196,10 @@ const CaloriesCalculator = () => {
       <Typography type="p">Choose activity</Typography>
       <Select currentValue={selectValue} clickHandler={clickHandler}>
         {activityOptions}
+      </Select>
+      <Typography type="p">You want </Typography>
+      <Select currentValue={foodPriority} clickHandler={clickHandler}>
+        {foodPriorityOptions}
       </Select>
       <AppButton variant="secondary" type="submit">
         Calculate

@@ -52,6 +52,7 @@ export const Select = ({ currentValue, children, clickHandler }: Props) => {
     <div className={selectStyles.select}>
       <div className={selectStyles.header}>
         <button
+          type="button"
           className={butttonClasses}
           onMouseEnter={handleButtonMouseEnter}
           onMouseLeave={handleButtonMouseLeave}

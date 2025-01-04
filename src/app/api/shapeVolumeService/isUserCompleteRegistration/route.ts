@@ -17,7 +17,27 @@ export async function GET(request: Request) {
     const isUserCompliteRegistration =
       await userService.isUserCompliteRegistration(email);
 
-    return NextResponse.json({ isUserCompliteRegistration }, { status: 200 });
+    if (isUserCompliteRegistration) {
+      const userService_2 = new UserService(
+        url,
+        `/users/getUserByEmail/${email}`,
+        token
+      );
+      const responce = await userService_2.getUserAgeAndGenderByEmail(email);
+
+      if (responce) {
+        return NextResponse.json(
+          {
+            isUserCompliteRegistration,
+            gender: responce.gender,
+            dateOfBirdth: responce.dateOfBirdth,
+          },
+          { status: 200 }
+        );
+      }
+    }
+
+    return NextResponse.json({ status: 204 });
   } catch (error) {
     return NextResponse.json({ status: 500 });
   }

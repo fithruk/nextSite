@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: max-content;
+}
+
+.container label,
+.container p {
+  margin-top: 0.5rem;
+  text-align: start;
+}
+
+.container button {
+  margin-top: 0.5rem;
+}

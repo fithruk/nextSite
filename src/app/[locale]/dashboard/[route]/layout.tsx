@@ -56,7 +56,7 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
             {route === RoutesEnum.overview && <WorkoutHistory />}
             {route === RoutesEnum.overview && <p>jopa</p>}
             {route === RoutesEnum.dietPlan && <WeekFoodPlan />}
-            {route === RoutesEnum.goals && <CaloriesCalculator />}
+            {route === RoutesEnum.dietPlan && <CaloriesCalculator />}
           </div>
         </div>
       </Container>
