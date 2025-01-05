@@ -1,6 +1,7 @@
 "use client";
 import calculatorStyles from "./caloriesCalculator.module.css";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { FormEvent, MouseEvent, useState, ChangeEvent, useEffect } from "react";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import { Input } from "@/components/CommonComponents/Input/Input";
@@ -55,6 +56,15 @@ const temporaryInitialState: InputValuesStateProps = {
   weight: 0,
 };
 
+export type CaloriesCalculatorUserAsnswerType = {
+  activity: ActivityOptionsTypes;
+  foodPriority: FoodPriorityOptionsTypes;
+  age: number;
+  gender: "Male" | "Female";
+  height: number;
+  weight: number;
+};
+
 const calculateAge = (dateOfBirth: string): number => {
   const birthDate = new Date(dateOfBirth);
   const today = new Date();
@@ -91,6 +101,9 @@ const CaloriesCalculator = () => {
   const [isCompliteRegistration, setIsCompliteRegistration] =
     useState<boolean>(false);
 
+  const { setItem, getItem } =
+    useLocalStorage<CaloriesCalculatorUserAsnswerType>();
+
   const session = useSession();
   const token = session.data?.user.token;
   const email = session.data?.user.email;
@@ -124,6 +137,7 @@ const CaloriesCalculator = () => {
       foodPriority,
     };
     console.log(calculatorValues);
+    setItem("userCaloriesCalculatorAnswers", calculatorValues);
   };
 
   useEffect(() => {
@@ -142,7 +156,6 @@ const CaloriesCalculator = () => {
 
         if (status === 200) {
           setIsCompliteRegistration(data.isUserCompliteRegistration);
-          console.log(isCompliteRegistration);
 
           if (data.dateOfBirdth && data.gender) {
             setInputValues((state) => ({
@@ -150,6 +163,15 @@ const CaloriesCalculator = () => {
               gender: data.gender!,
               age: calculateAge(data.dateOfBirdth!.toString()),
             }));
+            const answers = getItem("userCaloriesCalculatorAnswers");
+            if (answers) {
+              setInputValues((state) => ({
+                ...state,
+                ...answers,
+              }));
+              setSelectValue(answers.activity);
+              setFoodPriority(answers.foodPriority);
+            }
           }
         }
       } catch (error) {
@@ -207,7 +229,7 @@ const CaloriesCalculator = () => {
     </form>
   ) : (
     <Typography type="h2">
-      Finish a registration on a Profile page{" "}
+      Finish a registration {<br />} on a Profile page
       <Typography type="p">
         <AppLink href={"/dashboard/profile"}>to Profile page</AppLink>
       </Typography>

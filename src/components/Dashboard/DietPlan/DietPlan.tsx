@@ -24,7 +24,7 @@ const DietPlan = () => {
   const [visibleComponent, setVisibleComponent] =
     useState<VisibleComponentType>(ComponentsEnum.foodTable);
 
-  const buttonsRef = useRef<HTMLDivElement | null>();
+  const buttonsRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickButton = (e: MouseEvent<HTMLButtonElement>) => {
     const dataset = (e.target as HTMLButtonElement).dataset;
