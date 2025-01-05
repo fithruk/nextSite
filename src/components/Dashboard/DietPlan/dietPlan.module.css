@@ -14,6 +14,22 @@
   grid-area: mainBanner;
 }
 
+.componentSwitcher {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.componentSwitcher button {
+  flex-grow: 1;
+  border: none;
+  color: var(--foreground);
+}
+
+.active {
+  color: var(--banner-hover_color) !important;
+}
+
 .foodTable {
   grid-area: foodTable;
 }
