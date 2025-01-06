@@ -1,0 +1,3 @@
+const useUserSurvey = () => {};
+
+export { useUserSurvey };
