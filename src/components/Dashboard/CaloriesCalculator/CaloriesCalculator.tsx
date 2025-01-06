@@ -1,4 +1,5 @@
 "use client";
+import { CaloriesCalculatorClass } from "@/classes/CaloriesCaculatorClass";
 import calculatorStyles from "./caloriesCalculator.module.css";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
@@ -10,7 +11,7 @@ import { AppLink } from "@/components/CommonComponents/Link/Link";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-type ActivityOptionsTypes =
+export type ActivityOptionsTypes =
   | "Basic"
   | "Minimum/not load"
   | "3 times per week"
@@ -29,7 +30,7 @@ const activityOptions = [
   "Every day and physical work",
 ];
 
-type FoodPriorityOptionsTypes =
+export type FoodPriorityOptionsTypes =
   | "Grow weight"
   | "Loss weight"
   | "Maintane weight";
@@ -104,6 +105,8 @@ const CaloriesCalculator = () => {
   const { setItem, getItem } =
     useLocalStorage<CaloriesCalculatorUserAsnswerType>();
 
+  const [totalCalories, setTotalCalories] = useState<number | null>(null);
+
   const session = useSession();
   const token = session.data?.user.token;
   const email = session.data?.user.email;
@@ -136,8 +139,12 @@ const CaloriesCalculator = () => {
       activity: selectValue,
       foodPriority,
     };
-    console.log(calculatorValues);
+
     setItem("userCaloriesCalculatorAnswers", calculatorValues);
+    const totalMinimalCalories =
+      CaloriesCalculatorClass.CountMinimalCalories(calculatorValues);
+    console.log(totalMinimalCalories + " totalMinimalCalories");
+    setTotalCalories(totalMinimalCalories);
   };
 
   useEffect(() => {
@@ -182,7 +189,9 @@ const CaloriesCalculator = () => {
 
   return isCompliteRegistration ? (
     <form onSubmit={handleSubmit} className={calculatorStyles.container}>
-      <Typography type="h2">CaloriesCalculator</Typography>
+      <Typography type="h2">
+        {totalCalories ? `Result is ${totalCalories}` : "Calories calculator"}
+      </Typography>
       <Input
         type="number"
         value={inputValues.age}
