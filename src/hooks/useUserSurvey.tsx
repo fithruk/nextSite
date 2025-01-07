@@ -3,6 +3,7 @@ import { useState } from "react";
 interface IUseUserSurvey<T> {
   getAllQuestions: () => Array<T>;
   getCurrentQuestion: () => T | undefined;
+  getCurrentQuestionInd: () => number;
   saveUserAnswer: (key: string, value: AnswersType) => void;
   getUsersAnswers: () => UserAnswerType;
   nextQuestion: () => void;
@@ -29,6 +30,13 @@ const useUserSurvey = <T,>(questions: Array<T>): IUseUserSurvey<T> => {
     return allQuestions[currentQuestionInd];
   };
 
+  const getCurrentQuestionInd = () => {
+    if (currentQuestionInd >= allQuestions.length - 1) {
+      return allQuestions.length - 1;
+    }
+    return currentQuestionInd;
+  };
+
   const nextQuestion = () => {
     if (currentQuestionInd < allQuestions.length) {
       setCurrentQuestionInd(currentQuestionInd + 1);
@@ -53,6 +61,7 @@ const useUserSurvey = <T,>(questions: Array<T>): IUseUserSurvey<T> => {
   return {
     getAllQuestions,
     getCurrentQuestion,
+    getCurrentQuestionInd,
     saveUserAnswer,
     getUsersAnswers,
     nextQuestion,

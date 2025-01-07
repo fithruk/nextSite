@@ -4,17 +4,21 @@ import { useUserSurvey } from "@/hooks/useUserSurvey";
 import UserSurveyElement from "@/components/CommonComponents/UserSurveyElement/UserSurveyElement";
 import { CaloriesCalculatorUserAsnswerType } from "../CaloriesCalculator/CaloriesCalculator";
 import { FormEvent, useState } from "react";
+import foodData from "./foodData.json";
 
-const questions = ["Question_1", "Question_ 2"];
-
-const options = ["Option_1", "Option_2"];
+const questions = Object.keys(foodData).map(
+  (foodType) => `Choose products: ${foodType}`
+);
 
 const FoodGenerator = () => {
   const { getItem } = useLocalStorage<CaloriesCalculatorUserAsnswerType>();
-  const answers = getItem("userCaloriesCalculatorAnswers");
+  const answersFromCaloriesCalculator = getItem(
+    "userCaloriesCalculatorAnswers"
+  );
   const {
     getAllQuestions,
     getCurrentQuestion,
+    getCurrentQuestionInd,
     saveUserAnswer,
     getUsersAnswers,
     nextQuestion,
@@ -23,8 +27,14 @@ const FoodGenerator = () => {
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
+  const currentOptions = Object.values(foodData);
+  const currentOptionsLabels = currentOptions[getCurrentQuestionInd()].map(
+    (food) => food.name
+  );
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Сохранять ответы пользователя в хуке
     console.log("Выбранные опции:", selectedOptions);
     nextQuestion();
   };
@@ -37,13 +47,11 @@ const FoodGenerator = () => {
     );
   };
 
-  console.log("render");
-
   return (
     <form onSubmit={handleSubmit}>
       <UserSurveyElement
         questionTitle={getCurrentQuestion()!}
-        questionOptions={options}
+        questionOptions={currentOptionsLabels}
         selectedOptions={selectedOptions}
         onOptionChange={handleOptionChange}
       />
