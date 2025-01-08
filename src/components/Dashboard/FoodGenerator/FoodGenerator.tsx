@@ -3,12 +3,14 @@ import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useUserSurvey } from "@/hooks/useUserSurvey";
 import UserSurveyElement from "@/components/CommonComponents/UserSurveyElement/UserSurveyElement";
 import { CaloriesCalculatorUserAsnswerType } from "../CaloriesCalculator/CaloriesCalculator";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import foodData from "./foodData.json";
 
 const questions = Object.keys(foodData).map(
   (foodType) => `Choose products: ${foodType}`
 );
+
+const userAnswersKeysArray = ["carbohydrates", "proteins"];
 
 const FoodGenerator = () => {
   const { getItem } = useLocalStorage<CaloriesCalculatorUserAsnswerType>();
@@ -25,6 +27,7 @@ const FoodGenerator = () => {
     resetQuestion,
   } = useUserSurvey<string>(questions);
 
+  const [userAnswersKeysInd, setUserAnswersKeysInd] = useState<number>(0);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   const currentOptions = Object.values(foodData);
@@ -32,11 +35,24 @@ const FoodGenerator = () => {
     (food) => food.name
   );
 
+  const isSurveyInProgress: boolean = Boolean(
+    userAnswersKeysArray[userAnswersKeysInd]
+  );
+  console.log(isSurveyInProgress + " isSurveyInProgress");
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Сохранять ответы пользователя в хуке
+    if (!isSurveyInProgress) {
+      return console.log("Submit");
+    }
+
     console.log("Выбранные опции:", selectedOptions);
+    if (isSurveyInProgress) {
+      saveUserAnswer(userAnswersKeysArray[userAnswersKeysInd], selectedOptions);
+    }
+    setSelectedOptions([]);
     nextQuestion();
+    setUserAnswersKeysInd((prev) => (prev = prev + 1));
   };
 
   const handleOptionChange = (option: string) => {
@@ -47,11 +63,15 @@ const FoodGenerator = () => {
     );
   };
 
+  useEffect(() => {
+    console.log(getUsersAnswers());
+  }, [userAnswersKeysInd]);
+
   return (
     <form onSubmit={handleSubmit}>
       <UserSurveyElement
         questionTitle={getCurrentQuestion()!}
-        questionOptions={currentOptionsLabels}
+        questionOptions={isSurveyInProgress ? currentOptionsLabels : []}
         selectedOptions={selectedOptions}
         onOptionChange={handleOptionChange}
       />

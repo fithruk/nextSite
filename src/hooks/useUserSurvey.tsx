@@ -4,24 +4,20 @@ interface IUseUserSurvey<T> {
   getAllQuestions: () => Array<T>;
   getCurrentQuestion: () => T | undefined;
   getCurrentQuestionInd: () => number;
-  saveUserAnswer: (key: string, value: AnswersType) => void;
+  saveUserAnswer: (key: string, value: string[]) => void;
   getUsersAnswers: () => UserAnswerType;
   nextQuestion: () => void;
   resetQuestion: () => void;
 }
 
-type AnswersType = { [key: string]: string };
-type UserAnswerType = {
-  [key: string]: AnswersType[];
+export type UserAnswerType = {
+  [key: string]: string[];
 };
 
 const useUserSurvey = <T,>(questions: Array<T>): IUseUserSurvey<T> => {
   const [currentQuestionInd, setCurrentQuestionInd] = useState<number>(0);
   const [allQuestions, SetAllQuestions] = useState<Array<T>>(questions);
-  const [userAnswers, setUserAnswers] = useState<UserAnswerType>({
-    carbohidrates: [],
-    proteins: [],
-  });
+  const [userAnswers, setUserAnswers] = useState<UserAnswerType>({});
   const getAllQuestions = () => {
     return allQuestions;
   };
@@ -47,10 +43,10 @@ const useUserSurvey = <T,>(questions: Array<T>): IUseUserSurvey<T> => {
     setCurrentQuestionInd(0);
   };
 
-  const saveUserAnswer = (key: string, value: AnswersType) => {
+  const saveUserAnswer = (key: string, value: string[]) => {
     setUserAnswers((state) => ({
       ...state,
-      [key]: state[key] ? [...state[key], value] : [value],
+      [key]: [...value],
     }));
   };
 
