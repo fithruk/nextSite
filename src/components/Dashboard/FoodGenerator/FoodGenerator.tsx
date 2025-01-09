@@ -6,11 +6,11 @@ import { CaloriesCalculatorUserAsnswerType } from "../CaloriesCalculator/Calorie
 import { FormEvent, useState, useEffect } from "react";
 import foodData from "./foodData.json";
 
-const questions = Object.keys(foodData).map(
+const userAnswersKeysArray = Object.keys(foodData);
+
+const questions = userAnswersKeysArray.map(
   (foodType) => `Choose products: ${foodType}`
 );
-
-const userAnswersKeysArray = ["carbohydrates", "proteins"];
 
 const FoodGenerator = () => {
   const { getItem } = useLocalStorage<CaloriesCalculatorUserAsnswerType>();

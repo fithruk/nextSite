@@ -1,4 +1,4 @@
-import userSurveyStyles from "./userSurveyStyles.module.css";
+import userSurveyElStyles from "./userSurveyStyles.module.css";
 import { Input } from "../Input/Input";
 import { Typography } from "../Typography/Typography";
 
@@ -16,7 +16,7 @@ const UserSurveyElement = ({
   onOptionChange,
 }: UserSurveyElementProps) => {
   return (
-    <>
+    <div className={userSurveyElStyles.container}>
       <Typography type="h2">{questionTitle}</Typography>
       {questionOptions.map((option) => (
         <Input
@@ -29,7 +29,7 @@ const UserSurveyElement = ({
           required={false}
         />
       ))}
-    </>
+    </div>
   );
 };
 

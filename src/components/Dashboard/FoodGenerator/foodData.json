@@ -219,5 +219,140 @@
       "carbs": 0.5,
       "calories": 124
     }
+  ],
+  "vegetables": [
+    {
+      "name": "Carrot",
+      "calories": 41,
+      "proteins": 0.9,
+      "fats": 0.2,
+      "carbs": 9.6
+    },
+    {
+      "name": "Tomato",
+      "calories": 18,
+      "proteins": 0.9,
+      "fats": 0.2,
+      "carbs": 3.9
+    },
+    {
+      "name": "Cucumber",
+      "calories": 16,
+      "proteins": 0.7,
+      "fats": 0.1,
+      "carbs": 3.6
+    },
+    {
+      "name": "Broccoli",
+      "calories": 34,
+      "proteins": 2.8,
+      "fats": 0.4,
+      "carbs": 6.6
+    },
+    {
+      "name": "Cauliflower",
+      "calories": 25,
+      "proteins": 1.9,
+      "fats": 0.3,
+      "carbs": 5
+    },
+    {
+      "name": "Spinach",
+      "calories": 23,
+      "proteins": 2.9,
+      "fats": 0.4,
+      "carbs": 3.6
+    },
+    {
+      "name": "Potato",
+      "calories": 77,
+      "proteins": 2,
+      "fats": 0.1,
+      "carbs": 17
+    },
+    {
+      "name": "Onion",
+      "calories": 40,
+      "proteins": 1.1,
+      "fats": 0.1,
+      "carbs": 9.3
+    },
+    {
+      "name": "Garlic",
+      "calories": 149,
+      "proteins": 6.4,
+      "fats": 0.5,
+      "carbs": 33.1
+    },
+    {
+      "name": "Zucchini",
+      "calories": 17,
+      "proteins": 1.2,
+      "fats": 0.3,
+      "carbs": 3.1
+    },
+    {
+      "name": "BellPepper",
+      "calories": 20,
+      "proteins": 0.9,
+      "fats": 0.2,
+      "carbs": 4.6
+    },
+    {
+      "name": "Eggplant",
+      "calories": 25,
+      "proteins": 1,
+      "fats": 0.2,
+      "carbs": 5.9
+    },
+    {
+      "name": "Cabbage",
+      "calories": 25,
+      "proteins": 1.3,
+      "fats": 0.1,
+      "carbs": 5.8
+    },
+    {
+      "name": "Beetroot",
+      "calories": 43,
+      "proteins": 1.6,
+      "fats": 0.2,
+      "carbs": 9.6
+    },
+    {
+      "name": "Pumpkin",
+      "calories": 26,
+      "proteins": 1,
+      "fats": 0.1,
+      "carbs": 6.5
+    },
+    {
+      "name": "Celery",
+      "calories": 16,
+      "proteins": 0.7,
+      "fats": 0.2,
+      "carbs": 3
+    },
+    {
+      "name": "Radish",
+      "calories": 16,
+      "proteins": 0.7,
+      "fats": 0.1,
+      "carbs": 3.4
+    },
+    {
+      "name": "Lettuce",
+      "calories": 15,
+      "proteins": 1.4,
+      "fats": 0.2,
+      "carbs": 2.9
+    },
+    {
+      "name": "SweetCorn",
+      "calories": 96,
+      "proteins": 3.4,
+      "fats": 1.5,
+      "carbs": 21
+    }
   ]
 }
