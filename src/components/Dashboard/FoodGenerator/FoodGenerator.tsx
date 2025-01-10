@@ -4,6 +4,7 @@ import { useUserSurvey } from "@/hooks/useUserSurvey";
 import UserSurveyElement from "@/components/CommonComponents/UserSurveyElement/UserSurveyElement";
 import { CaloriesCalculatorUserAsnswerType } from "../CaloriesCalculator/CaloriesCalculator";
 import { FormEvent, useState, useEffect } from "react";
+import { CaloriesCalculatorClass } from "@/classes/CaloriesCaculatorClass";
 import foodData from "./foodData.json";
 
 const userAnswersKeysArray = Object.keys(foodData);
@@ -38,15 +39,17 @@ const FoodGenerator = () => {
   const isSurveyInProgress: boolean = Boolean(
     userAnswersKeysArray[userAnswersKeysInd]
   );
-  console.log(isSurveyInProgress + " isSurveyInProgress");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!isSurveyInProgress) {
+      CaloriesCalculatorClass.PrepareFoodPlan(
+        answersFromCaloriesCalculator!,
+        getUsersAnswers()
+      );
       return console.log("Submit");
     }
 
-    console.log("Выбранные опции:", selectedOptions);
     if (isSurveyInProgress) {
       saveUserAnswer(userAnswersKeysArray[userAnswersKeysInd], selectedOptions);
     }
@@ -63,9 +66,7 @@ const FoodGenerator = () => {
     );
   };
 
-  useEffect(() => {
-    console.log(getUsersAnswers());
-  }, [userAnswersKeysInd]);
+  useEffect(() => {}, [userAnswersKeysInd]);
 
   return (
     <form onSubmit={handleSubmit}>

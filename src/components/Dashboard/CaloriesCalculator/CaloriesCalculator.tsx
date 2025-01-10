@@ -33,9 +33,9 @@ const activityOptions = [
 export type FoodPriorityOptionsTypes =
   | "Grow weight"
   | "Loss weight"
-  | "Maintane weight";
+  | "Maintain weight";
 
-const foodPriorityOptions = ["Grow weight", "Loss weight", "Maintane weight"];
+const foodPriorityOptions = ["Grow weight", "Loss weight", "Maintain weight"];
 
 type InputValuesStateProps = {
   age: number;
