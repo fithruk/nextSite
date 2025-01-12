@@ -2,222 +2,222 @@
   "carbohydrates": [
     {
       "name": "Oatmeal",
-      "calories": 105,
+      "calories": 73,
       "proteins": 2.4,
       "fats": 4,
-      "carbs": 14.8
+      "carbohydrates": 14.8
     },
     {
       "name": "PeaPorridge",
       "calories": 130,
       "proteins": 10.5,
       "fats": 0.8,
-      "carbs": 20.4
+      "carbohydrates": 20.4
     },
     {
       "name": "BuckwheatPorridge",
       "calories": 101,
       "proteins": 3,
       "fats": 3.4,
-      "carbs": 14.6
+      "carbohydrates": 14.6
     },
     {
       "name": "PumpkinPorridge",
       "calories": 87,
       "proteins": 2.1,
       "fats": 1.7,
-      "carbs": 15.7
+      "carbohydrates": 15.7
     },
     {
       "name": "SemolinaPorridge",
       "calories": 100,
       "proteins": 2.2,
       "fats": 2.9,
-      "carbs": 16.4
+      "carbohydrates": 16.4
     },
     {
       "name": "OatmealPorridge",
       "calories": 109,
       "proteins": 2.6,
       "fats": 4.1,
-      "carbs": 15.5
+      "carbohydrates": 15.5
     },
     {
       "name": "PearlBarleyPorridge",
       "calories": 135,
       "proteins": 2.9,
       "fats": 3.5,
-      "carbs": 22.9
+      "carbohydrates": 22.9
     },
     {
       "name": "WheatPorridge",
       "calories": 153,
       "proteins": 4.4,
       "fats": 3.6,
-      "carbs": 25.7
+      "carbohydrates": 25.7
     },
     {
       "name": "MilletPorridge",
       "calories": 109,
       "proteins": 2.8,
       "fats": 3.4,
-      "carbs": 16.8
+      "carbohydrates": 16.8
     },
     {
       "name": "RicePorridge",
       "calories": 144,
       "proteins": 2.4,
       "fats": 3.5,
-      "carbs": 25.8
+      "carbohydrates": 25.8
     },
     {
       "name": "BarleyPorridge",
       "calories": 96,
       "proteins": 2.1,
       "fats": 2.9,
-      "carbs": 15.3
+      "carbohydrates": 15.3
     }
   ],
   "proteins": [
     {
       "name": "LambHam",
-      "proteins": 18,
-      "fats": 18,
-      "carbs": 0,
-      "calories": 232
+      "proteins": 24,
+      "fats": 24,
+      "carbohydrates": 0,
+      "calories": 290
     },
     {
       "name": "Lamb",
-      "proteins": 16.3,
-      "fats": 15.3,
-      "carbs": 0,
-      "calories": 203
+      "proteins": 22,
+      "fats": 21,
+      "carbohydrates": 0,
+      "calories": 260
     },
     {
       "name": "LambHeart",
-      "proteins": 13.5,
-      "fats": 2.5,
-      "carbs": 0,
-      "calories": 82
+      "proteins": 17,
+      "fats": 3,
+      "carbohydrates": 0,
+      "calories": 100
     },
     {
       "name": "LambKidneys",
-      "proteins": 13.6,
-      "fats": 2.5,
-      "carbs": 0,
-      "calories": 77
+      "proteins": 17,
+      "fats": 3,
+      "carbohydrates": 0,
+      "calories": 90
     },
     {
       "name": "LambShoulder",
-      "proteins": 15.6,
-      "fats": 25,
-      "carbs": 0,
-      "calories": 284
+      "proteins": 20,
+      "fats": 32,
+      "carbohydrates": 0,
+      "calories": 350
     },
     {
       "name": "LambLiver",
-      "proteins": 18.7,
-      "fats": 2.9,
-      "carbs": 0,
-      "calories": 101
+      "proteins": 23,
+      "fats": 4,
+      "carbohydrates": 0,
+      "calories": 120
     },
     {
       "name": "Beefsteak",
-      "proteins": 27.8,
-      "fats": 29.6,
-      "carbs": 1.7,
-      "calories": 384
+      "proteins": 35,
+      "fats": 37,
+      "carbohydrates": 2,
+      "calories": 480
     },
     {
       "name": "BeefTenderloin",
-      "proteins": 20.1,
-      "fats": 3.5,
-      "carbs": 0,
-      "calories": 113
+      "proteins": 25,
+      "fats": 5,
+      "carbohydrates": 0,
+      "calories": 140
     },
     {
       "name": "BeefKidneys",
-      "proteins": 12.5,
-      "fats": 1.8,
-      "carbs": 0,
-      "calories": 66
+      "proteins": 16,
+      "fats": 2,
+      "carbohydrates": 0,
+      "calories": 85
     },
     {
       "name": "BeefLiver",
-      "proteins": 17.4,
-      "fats": 3.1,
-      "carbs": 0,
-      "calories": 98
+      "proteins": 22,
+      "fats": 4,
+      "carbohydrates": 0,
+      "calories": 120
     },
     {
       "name": "Turkey",
-      "proteins": 21.6,
-      "fats": 12,
-      "carbs": 0.8,
-      "calories": 197
+      "proteins": 27,
+      "fats": 15,
+      "carbohydrates": 1,
+      "calories": 250
     },
     {
       "name": "TurkeyBreast",
-      "proteins": 19.2,
-      "fats": 0.7,
-      "carbs": 0,
-      "calories": 84
+      "proteins": 24,
+      "fats": 1,
+      "carbohydrates": 0,
+      "calories": 110
     },
     {
       "name": "HorseMeat",
-      "proteins": 20.2,
-      "fats": 7,
-      "carbs": 0,
-      "calories": 143
+      "proteins": 26,
+      "fats": 9,
+      "carbohydrates": 0,
+      "calories": 180
     },
     {
       "name": "Rabbit",
-      "proteins": 20.7,
-      "fats": 12.9,
-      "carbs": 0,
-      "calories": 199
+      "proteins": 27,
+      "fats": 17,
+      "carbohydrates": 0,
+      "calories": 260
     },
     {
       "name": "ChickenBreast",
-      "proteins": 21.5,
-      "fats": 1.3,
-      "carbs": 0,
-      "calories": 99
+      "proteins": 28,
+      "fats": 2,
+      "carbohydrates": 0,
+      "calories": 130
     },
     {
       "name": "VealMeat",
-      "proteins": 20.5,
-      "fats": 2.4,
-      "carbs": 0,
-      "calories": 105
+      "proteins": 26,
+      "fats": 3,
+      "carbohydrates": 0,
+      "calories": 140
     },
     {
       "name": "VealLiver",
-      "proteins": 19.2,
-      "fats": 3.3,
-      "carbs": 4.1,
-      "calories": 124
+      "proteins": 25,
+      "fats": 4,
+      "carbohydrates": 5,
+      "calories": 160
     },
     {
       "name": "CottageCheeseLowFat",
-      "proteins": 16.2,
-      "fats": 0.5,
-      "carbs": 2.7,
-      "calories": 124
+      "proteins": 20,
+      "fats": 1,
+      "carbohydrates": 3,
+      "calories": 140
     },
     {
       "name": "EggsWhole1pc",
-      "proteins": 5.2,
-      "fats": 5,
-      "carbs": 0.5,
-      "calories": 124
+      "proteins": 6,
+      "fats": 5.5,
+      "carbohydrates": 0.5,
+      "calories": 70
     },
     {
       "name": "EggsNoYolk1pc",
-      "proteins": 3.5,
+      "proteins": 4,
       "fats": 0,
-      "carbs": 0.5,
-      "calories": 124
+      "carbohydrates": 0.5,
+      "calories": 20
     }
   ],
   "vegetables": [
@@ -226,133 +226,133 @@
       "calories": 41,
       "proteins": 0.9,
       "fats": 0.2,
-      "carbs": 9.6
+      "carbohydrates": 9.6
     },
     {
       "name": "Tomato",
       "calories": 18,
       "proteins": 0.9,
       "fats": 0.2,
-      "carbs": 3.9
+      "carbohydrates": 3.9
     },
     {
       "name": "Cucumber",
       "calories": 16,
       "proteins": 0.7,
       "fats": 0.1,
-      "carbs": 3.6
+      "carbohydrates": 3.6
     },
     {
       "name": "Broccoli",
       "calories": 34,
       "proteins": 2.8,
       "fats": 0.4,
-      "carbs": 6.6
+      "carbohydrates": 6.6
     },
     {
       "name": "Cauliflower",
       "calories": 25,
       "proteins": 1.9,
       "fats": 0.3,
-      "carbs": 5
+      "carbohydrates": 5
     },
     {
       "name": "Spinach",
       "calories": 23,
       "proteins": 2.9,
       "fats": 0.4,
-      "carbs": 3.6
+      "carbohydrates": 3.6
     },
     {
       "name": "Potato",
       "calories": 77,
       "proteins": 2,
       "fats": 0.1,
-      "carbs": 17
+      "carbohydrates": 17
     },
     {
       "name": "Onion",
       "calories": 40,
       "proteins": 1.1,
       "fats": 0.1,
-      "carbs": 9.3
+      "carbohydrates": 9.3
     },
     {
       "name": "Garlic",
       "calories": 149,
       "proteins": 6.4,
       "fats": 0.5,
-      "carbs": 33.1
+      "carbohydrates": 33.1
     },
     {
       "name": "Zucchini",
       "calories": 17,
       "proteins": 1.2,
       "fats": 0.3,
-      "carbs": 3.1
+      "carbohydrates": 3.1
     },
     {
       "name": "BellPepper",
       "calories": 20,
       "proteins": 0.9,
       "fats": 0.2,
-      "carbs": 4.6
+      "carbohydrates": 4.6
     },
     {
       "name": "Eggplant",
       "calories": 25,
       "proteins": 1,
       "fats": 0.2,
-      "carbs": 5.9
+      "carbohydrates": 5.9
     },
     {
       "name": "Cabbage",
       "calories": 25,
       "proteins": 1.3,
       "fats": 0.1,
-      "carbs": 5.8
+      "carbohydrates": 5.8
     },
     {
       "name": "Beetroot",
       "calories": 43,
       "proteins": 1.6,
       "fats": 0.2,
-      "carbs": 9.6
+      "carbohydrates": 9.6
     },
     {
       "name": "Pumpkin",
       "calories": 26,
       "proteins": 1,
       "fats": 0.1,
-      "carbs": 6.5
+      "carbohydrates": 6.5
     },
     {
       "name": "Celery",
       "calories": 16,
       "proteins": 0.7,
       "fats": 0.2,
-      "carbs": 3
+      "carbohydrates": 3
     },
     {
       "name": "Radish",
       "calories": 16,
       "proteins": 0.7,
       "fats": 0.1,
-      "carbs": 3.4
+      "carbohydrates": 3.4
     },
     {
       "name": "Lettuce",
       "calories": 15,
       "proteins": 1.4,
       "fats": 0.2,
-      "carbs": 2.9
+      "carbohydrates": 2.9
     },
     {
       "name": "SweetCorn",
       "calories": 96,
       "proteins": 3.4,
       "fats": 1.5,
-      "carbs": 21
+      "carbohydrates": 21
     }
   ],
   "fats": [
@@ -361,140 +361,140 @@
       "calories": 884,
       "proteins": 0,
       "fats": 100,
-      "carbs": 0
+      "carbohydrates": 0
     },
     {
       "name": "Butter",
       "calories": 717,
       "proteins": 0.9,
       "fats": 81,
-      "carbs": 0.1
+      "carbohydrates": 0.1
     },
     {
       "name": "Avocado",
       "calories": 160,
       "proteins": 2,
       "fats": 14.7,
-      "carbs": 8.5
+      "carbohydrates": 8.5
     },
     {
       "name": "CoconutOil",
       "calories": 862,
       "proteins": 0,
       "fats": 100,
-      "carbs": 0
+      "carbohydrates": 0
     },
     {
       "name": "Almonds",
       "calories": 579,
       "proteins": 21,
       "fats": 49,
-      "carbs": 22
+      "carbohydrates": 22
     },
     {
       "name": "Peanuts",
       "calories": 567,
       "proteins": 25.8,
       "fats": 49.2,
-      "carbs": 16.1
+      "carbohydrates": 16.1
     },
     {
       "name": "Walnuts",
       "calories": 654,
       "proteins": 15,
       "fats": 65.2,
-      "carbs": 13.7
+      "carbohydrates": 13.7
     },
     {
       "name": "FlaxSeeds",
       "calories": 534,
       "proteins": 18,
       "fats": 42,
-      "carbs": 29
+      "carbohydrates": 29
     },
     {
       "name": "SunflowerSeeds",
       "calories": 584,
       "proteins": 20.8,
       "fats": 51,
-      "carbs": 20
+      "carbohydrates": 20
     },
     {
       "name": "Cheese",
       "calories": 402,
       "proteins": 25,
       "fats": 33,
-      "carbs": 1.3
+      "carbohydrates": 1.3
     },
     {
       "name": "DarkChocolate(70-85%)",
       "calories": 598,
       "proteins": 7.8,
       "fats": 42.6,
-      "carbs": 45.9
+      "carbohydrates": 45.9
     },
     {
       "name": "EggYolk",
       "calories": 322,
       "proteins": 15.9,
       "fats": 26.5,
-      "carbs": 1.1
+      "carbohydrates": 1.1
     },
     {
       "name": "ChiaSeeds",
       "calories": 486,
       "proteins": 16.5,
       "fats": 30.7,
-      "carbs": 42.1
+      "carbohydrates": 42.1
     },
     {
       "name": "SesameSeeds",
       "calories": 573,
       "proteins": 17,
       "fats": 49.7,
-      "carbs": 23.4
+      "carbohydrates": 23.4
     },
     {
       "name": "Cashews",
       "calories": 553,
       "proteins": 18,
       "fats": 44,
-      "carbs": 30
+      "carbohydrates": 30
     },
     {
       "name": "Hazelnuts",
       "calories": 628,
       "proteins": 15,
       "fats": 61,
-      "carbs": 17
+      "carbohydrates": 17
     },
     {
       "name": "MacadamiaNuts",
       "calories": 718,
       "proteins": 7.9,
       "fats": 75.8,
-      "carbs": 13.8
+      "carbohydrates": 13.8
     },
     {
       "name": "PumpkinSeeds",
       "calories": 574,
       "proteins": 29,
       "fats": 49,
-      "carbs": 15
+      "carbohydrates": 15
     },
     {
       "name": "Pecans",
       "calories": 691,
       "proteins": 9.2,
       "fats": 72,
-      "carbs": 13.9
+      "carbohydrates": 13.9
     },
     {
       "name": "BrazilNuts",
       "calories": 659,
       "proteins": 14,
       "fats": 66,
-      "carbs": 12
+      "carbohydrates": 12
     }
   ]
 }
