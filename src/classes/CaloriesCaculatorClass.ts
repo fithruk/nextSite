@@ -101,14 +101,16 @@ class CaloriesCalculatorClass {
     foodPriority: FoodPriorityOptionsTypes
   ) => {
     const growProportions: NutrientsProportionsType = {
-      proteins: 25,
-      fats: 25,
+      proteins: 35,
+      fats: 15,
       carbohydrates: 50,
+      vegetables: 15,
     };
     const lossProportions: NutrientsProportionsType = {
       proteins: 45,
       fats: 20,
       carbohydrates: 35,
+      vegetables: 20,
     };
 
     switch (foodPriority) {

@@ -16,7 +16,7 @@ export type UserAnswerType = {
 
 const useUserSurvey = <T,>(questions: Array<T>): IUseUserSurvey<T> => {
   const [currentQuestionInd, setCurrentQuestionInd] = useState<number>(0);
-  const [allQuestions, SetAllQuestions] = useState<Array<T>>(questions);
+  const [allQuestions] = useState<Array<T>>(questions);
   const [userAnswers, setUserAnswers] = useState<UserAnswerType>({});
   const getAllQuestions = () => {
     return allQuestions;

@@ -8,6 +8,13 @@
       "carbohydrates": 14.8
     },
     {
+      "name": "Potato",
+      "calories": 77,
+      "proteins": 2,
+      "fats": 0.1,
+      "carbohydrates": 17
+    },
+    {
       "name": "PeaPorridge",
       "calories": 130,
       "proteins": 10.5,
@@ -263,13 +270,7 @@
       "fats": 0.4,
       "carbohydrates": 3.6
     },
-    {
-      "name": "Potato",
-      "calories": 77,
-      "proteins": 2,
-      "fats": 0.1,
-      "carbohydrates": 17
-    },
+
     {
       "name": "Onion",
       "calories": 40,
