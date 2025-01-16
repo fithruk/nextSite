@@ -1,0 +1,11 @@
+.buttonsWrapper {
+  display: flex;
+}
+
+.foodMenuItemsList {
+  margin: 1rem 0;
+  text-align: start;
+}
+.foodMenuItemsList > li li {
+  padding-left: 2rem;
+}

@@ -91,10 +91,16 @@ class CaloriesCalculatorClass {
       nutritionProportions!,
       userFoodAnswers
     );
-    console.log(carbsProducts);
-    console.log(proteinProducts);
-    console.log(vegetableProducts);
-    console.log(fatProducts);
+    // console.log(carbsProducts);
+    // console.log(proteinProducts);
+    // console.log(vegetableProducts);
+    // console.log(fatProducts)
+    return {
+      ...carbsProducts,
+      ...proteinProducts,
+      ...vegetableProducts,
+      ...fatProducts,
+    };
   };
 
   private static GetNutritionProportions = (
@@ -104,13 +110,13 @@ class CaloriesCalculatorClass {
       proteins: 35,
       fats: 15,
       carbohydrates: 50,
-      vegetables: 15,
+      vegetables: 5,
     };
     const lossProportions: NutrientsProportionsType = {
       proteins: 45,
       fats: 20,
       carbohydrates: 35,
-      vegetables: 20,
+      vegetables: 7,
     };
 
     switch (foodPriority) {
@@ -157,7 +163,7 @@ class CaloriesCalculatorClass {
       };
     });
 
-    return productQuantities;
+    return productQuantities.length > 0 && { carbohydrates: productQuantities };
   };
 
   private static getProteinProducts = (
@@ -191,7 +197,7 @@ class CaloriesCalculatorClass {
       };
     });
 
-    return productQuantities;
+    return productQuantities.length > 0 && { proteins: productQuantities };
   };
 
   private static getVegetableProducts = (
@@ -225,7 +231,7 @@ class CaloriesCalculatorClass {
       };
     });
 
-    return productQuantities;
+    return productQuantities.length > 0 && { vegetables: productQuantities };
   };
 
   private static getFatProducts = (
@@ -259,7 +265,7 @@ class CaloriesCalculatorClass {
       };
     });
 
-    return productQuantities;
+    return productQuantities.length > 0 && { fats: productQuantities };
   };
 }
 
