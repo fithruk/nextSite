@@ -5,8 +5,9 @@ import { Slider } from "@/components/Slider/Slider";
 import sliderStyles from "@/components/Slider/slider.module.css";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { FoodType } from "@/app/api/foodService/route";
+
 import { Typography } from "../Typography/Typography";
+import { FoodType } from "@/types/types";
 
 const tag = "#theFitnessTranerOnline";
 

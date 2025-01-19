@@ -1,6 +1,6 @@
 import ApiService from "@/apiService/apiService";
+import { FoodType } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
-import { FoodType } from "../route";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

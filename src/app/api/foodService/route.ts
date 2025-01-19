@@ -1,23 +1,6 @@
 import ApiService from "@/apiService/apiService";
+import { FoodTypeResponce } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
-
-export type FoodType = {
-  title: string;
-  paragraphs: string[];
-  tableData: {
-    calories: string;
-    proteins: string;
-    carbs: string;
-    fats: string;
-    fiber: string | null;
-  };
-  imgUrls: string[];
-  category: string;
-  ingredients: { [key: string]: string[] };
-  _id: string;
-};
-
-export type FoodTypeResponce = [FoodType];
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);

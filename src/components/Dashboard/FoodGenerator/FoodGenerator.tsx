@@ -1,3 +1,4 @@
+import axios from "axios";
 import foodGeneratorStyles from "./foodGenerator.module.css";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
@@ -8,16 +9,13 @@ import { FormEvent, useState, useEffect } from "react";
 import { CaloriesCalculatorClass } from "@/classes/CaloriesCaculatorClass";
 import foodData from "./foodData.json";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
-
-type NutrientsType = {
-  name: string;
-  grams: number;
-  calories: number;
-};
-
-type FoodTableStateType = Partial<
-  Record<"fats" | "vegetables" | "proteins" | "carbohydrates", NutrientsType[]>
->;
+import { LocalStorageKeys } from "@/localSrorageKeys/localStorageKeys";
+import {
+  FoodPlanType,
+  FoodTableStateType,
+  SaveFoodRespType,
+} from "@/types/types";
+import { useSession } from "next-auth/react";
 
 type FoodMenuItemsListTypes = FoodTableStateType;
 
@@ -70,7 +68,11 @@ const FoodMenuItemsList = ({
 };
 
 const FoodGenerator = () => {
+  const session = useSession();
+  const email = session.data?.user.email;
+  const token = session.data?.user.token;
   const { getItem } = useLocalStorage<CaloriesCalculatorUserAsnswerType>();
+  const foodPlanStorage = useLocalStorage<FoodTableStateType>();
   const answersFromCaloriesCalculator = getItem(
     "userCaloriesCalculatorAnswers"
   );
@@ -95,7 +97,7 @@ const FoodGenerator = () => {
     ]?.map((food: { name: string }) => food.name) ?? [];
   const isSurveyInProgress = userAnswersKeysInd < userAnswersKeysArray.length;
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isSurveyInProgress) {
@@ -104,6 +106,15 @@ const FoodGenerator = () => {
         getUsersAnswers()
       );
       setFoodState(foodPlan);
+      const { data, status } = await axios.post<SaveFoodRespType>(
+        "/api/foodService/saveFood",
+        {
+          email,
+          token,
+          foodPlan,
+        }
+      );
+      foodPlanStorage.setItem(LocalStorageKeys.generatedFoodPlan, foodPlan);
       console.log("Submit");
 
       return;
