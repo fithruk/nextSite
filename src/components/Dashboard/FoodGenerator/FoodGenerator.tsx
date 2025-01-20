@@ -101,20 +101,22 @@ const FoodGenerator = () => {
     e.preventDefault();
 
     if (!isSurveyInProgress) {
-      const foodPlan = CaloriesCalculatorClass.PrepareFoodPlan(
+      const userFoodPlan = CaloriesCalculatorClass.PrepareFoodPlan(
         answersFromCaloriesCalculator!,
         getUsersAnswers()
       );
-      setFoodState(foodPlan);
-      const { data, status } = await axios.post<SaveFoodRespType>(
+      setFoodState(userFoodPlan);
+      const { status } = await axios.post<SaveFoodRespType>(
         "/api/foodService/saveFood",
         {
           email,
           token,
-          foodPlan,
+          userFoodPlan,
         }
       );
-      foodPlanStorage.setItem(LocalStorageKeys.generatedFoodPlan, foodPlan);
+      foodPlanStorage.setItem(LocalStorageKeys.generatedFoodPlan, userFoodPlan);
+      console.log(status);
+
       console.log("Submit");
 
       return;

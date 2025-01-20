@@ -41,5 +41,5 @@ export type FoodPlanType = Partial<
 export type SaveFoodRespType = {
   email?: string;
   token?: string;
-  foodPlan: FoodPlanType;
+  userFoodPlan: FoodPlanType;
 };
