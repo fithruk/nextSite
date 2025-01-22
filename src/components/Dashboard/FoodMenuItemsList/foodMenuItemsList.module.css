@@ -1,0 +1,7 @@
+.foodMenuItemsList {
+  text-align: start;
+  margin: 1rem 0;
+}
+.foodMenuItemsList > li li {
+  padding-left: 2rem;
+}

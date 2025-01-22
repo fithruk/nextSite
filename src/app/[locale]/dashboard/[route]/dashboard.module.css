@@ -28,6 +28,7 @@
   background-color: var(--section-back_color);
 }
 .sideBar {
+  max-width: 15rem;
   position: relative;
   padding-top: 1rem;
   grid-area: sideBar;

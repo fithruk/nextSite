@@ -8,7 +8,6 @@ import { CaloriesCalculatorUserAsnswerType } from "../CaloriesCalculator/Calorie
 import { FormEvent, useState, useEffect } from "react";
 import { CaloriesCalculatorClass } from "@/classes/CaloriesCaculatorClass";
 import foodData from "./foodData.json";
-import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import { LocalStorageKeys } from "@/localSrorageKeys/localStorageKeys";
 import {
   FoodPlanType,
@@ -16,56 +15,13 @@ import {
   SaveFoodRespType,
 } from "@/types/types";
 import { useSession } from "next-auth/react";
-
-type FoodMenuItemsListTypes = FoodTableStateType;
+import FoodMenuItemsList from "../FoodMenuItemsList/FoodMenuItemsList";
 
 const userAnswersKeysArray = Object.keys(foodData);
 
 const questions = userAnswersKeysArray.map(
   (foodType) => `Choose products: ${foodType}`
 );
-
-const FoodMenuItemsList = ({
-  fats,
-  vegetables,
-  proteins,
-  carbohydrates,
-}: FoodMenuItemsListTypes) => {
-  const foodMenuItemsArray = Object.entries({
-    fats,
-    vegetables,
-    proteins,
-    carbohydrates,
-  }).filter(([, value]) => value);
-
-  const totalCalories = foodMenuItemsArray.reduce(
-    (prev, [, items]) =>
-      prev + (items?.reduce((sum, item) => sum + item.calories, 0) ?? 0),
-    0
-  );
-
-  return (
-    <ul className={foodGeneratorStyles.foodMenuItemsList}>
-      {foodMenuItemsArray.map(([key, items]) => (
-        <li key={key}>
-          <strong>{key}</strong>:
-          <ul>
-            {items!.map((item, index) => (
-              <li key={index}>
-                {item.name} — {item.grams}g, {item.calories}kcal
-              </li>
-            ))}
-          </ul>
-        </li>
-      ))}
-      <li>
-        <Typography type="p">
-          <strong>Total Calories:</strong> {totalCalories}
-        </Typography>
-      </li>
-    </ul>
-  );
-};
 
 const FoodGenerator = () => {
   const session = useSession();
@@ -114,12 +70,18 @@ const FoodGenerator = () => {
           userFoodPlan,
         }
       );
-      foodPlanStorage.setItem(LocalStorageKeys.generatedFoodPlan, userFoodPlan);
-      console.log(status);
+      if (status === 200) {
+        foodPlanStorage.setItem(
+          LocalStorageKeys.generatedFoodPlan,
+          userFoodPlan
+        );
+        console.log(status);
 
-      console.log("Submit");
+        alert("Succesed!");
 
-      return;
+        return;
+      }
+      alert("Eroor!");
     }
 
     saveUserAnswer(userAnswersKeysArray[userAnswersKeysInd], selectedOptions);

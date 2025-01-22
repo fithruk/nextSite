@@ -9,12 +9,6 @@ type HookProps = {
   token: string;
 };
 
-// interface IUseLoadFromStorageOrServer<T> {
-//   loadFromServer: (email: string, token: string) => Promise<T>;
-//   loadFromStore: (key: string) => T | null;
-//   data: T | null ;
-// }
-
 const useLoadFromStorageOrServer = <T,>({
   storageKey,
   apiRoute,
