@@ -10,6 +10,7 @@ import DietPlan from "@/components/Dashboard/DietPlan/DietPlan";
 import WeekFoodPlan from "@/components/Dashboard/WeekFoodPlan/WeekFoodPlan";
 import Profile from "@/components/Dashboard/Profile/Profile";
 import CaloriesCalculator from "@/components/Dashboard/CaloriesCalculator/CaloriesCalculator";
+import Workout from "@/components/Dashboard/Workout/Workout";
 
 interface DashboardProps {
   params: {
@@ -22,6 +23,7 @@ enum RoutesEnum {
   dietPlan = "dietPlan",
   profile = "profile",
   goals = "goals",
+  workout = "workout",
 }
 
 const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
@@ -51,12 +53,14 @@ const DashboardLayout: React.FC<DashboardProps> = ({ params }) => {
             {route === RoutesEnum.overview && <Overview />}
             {route === RoutesEnum.dietPlan && <DietPlan />}
             {route === RoutesEnum.profile && <Profile />}
+            {route === RoutesEnum.workout && <Workout />}
           </div>
           <div className={dashboardStyles.sideBar}>
             {route === RoutesEnum.overview && <WorkoutHistory />}
             {route === RoutesEnum.overview && <p>jopa</p>}
             {route === RoutesEnum.dietPlan && <WeekFoodPlan />}
             {route === RoutesEnum.dietPlan && <CaloriesCalculator />}
+            {route === RoutesEnum.workout && "Calendar"}
           </div>
         </div>
       </Container>

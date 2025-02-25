@@ -151,11 +151,11 @@ class CaloriesCalculatorClass {
     );
 
     const productQuantities = preferredProductsData.map((product) => {
-      const carbsPerGram = product.carbohydrates / 100; // Углеводы в граммах на 1 грамм продукта
+      const carbsPerGram = product.carbohydrates / 100;
       if (carbsPerGram === 0) {
-        return { name: product.name, grams: 0, calories: 0 }; // Пропускаем продукты без углеводов
+        return { name: product.name, grams: 0, calories: 0 };
       }
-      const grams = Math.floor(everyProductCalShare / (carbsPerGram * 4)); // Расчет граммов
+      const grams = Math.floor(everyProductCalShare / (carbsPerGram * 4));
       return {
         name: product.name,
         grams,
@@ -185,11 +185,11 @@ class CaloriesCalculatorClass {
     );
 
     const productQuantities = preferredProductsData.map((product) => {
-      const proteinsPerGram = product.proteins / 100; // Белки в граммах на 1 грамм продукта
+      const proteinsPerGram = product.proteins / 100;
       if (proteinsPerGram === 0) {
-        return { name: product.name, grams: 0, calories: 0 }; // Пропускаем продукты без белков
+        return { name: product.name, grams: 0, calories: 0 };
       }
-      const grams = Math.floor(everyProductCalShare / (proteinsPerGram * 4)); // Расчет граммов
+      const grams = Math.floor(everyProductCalShare / (proteinsPerGram * 4));
       return {
         name: product.name,
         grams,
@@ -206,7 +206,7 @@ class CaloriesCalculatorClass {
     userFoodAnswers: UserAnswerType
   ) => {
     const vegetables = foodData.vegetables;
-    const vegetableShare = proportions.vegetables || 0; // Учитываем, что пропорция для овощей может быть необязательной
+    const vegetableShare = proportions.vegetables || 0;
 
     const caloriesShare = Math.floor((totalCalories * vegetableShare) / 100);
 
@@ -219,11 +219,11 @@ class CaloriesCalculatorClass {
     );
 
     const productQuantities = preferredProductsData.map((product) => {
-      const carbsPerGram = product.carbohydrates / 100; // Углеводы в овощах на 1 грамм продукта
+      const carbsPerGram = product.carbohydrates / 100;
       if (carbsPerGram === 0) {
-        return { name: product.name, grams: 0, calories: 0 }; // Пропускаем продукты без углеводов
+        return { name: product.name, grams: 0, calories: 0 };
       }
-      const grams = Math.floor(everyProductCalShare / (carbsPerGram * 4)); // Расчет граммов
+      const grams = Math.floor(everyProductCalShare / (carbsPerGram * 4));
       return {
         name: product.name,
         grams,
@@ -253,11 +253,11 @@ class CaloriesCalculatorClass {
     );
 
     const productQuantities = preferredProductsData.map((product) => {
-      const fatsPerGram = product.fats / 100; // Жиры в граммах на 1 грамм продукта
+      const fatsPerGram = product.fats / 100;
       if (fatsPerGram === 0) {
-        return { name: product.name, grams: 0, calories: 0 }; // Пропускаем продукты без жиров
+        return { name: product.name, grams: 0, calories: 0 };
       }
-      const grams = Math.floor(everyProductCalShare / (fatsPerGram * 9)); // Расчет граммов (жиры = 9 ккал/г)
+      const grams = Math.floor(everyProductCalShare / (fatsPerGram * 9));
       return {
         name: product.name,
         grams,

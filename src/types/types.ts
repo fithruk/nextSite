@@ -43,3 +43,13 @@ export type SaveFoodRespType = {
   token?: string;
   userFoodPlan: FoodPlanType;
 };
+
+export type ExerciceShortType = {
+  id: string;
+  exerciseName: string;
+  exerciseMuscleGroup: string;
+  equipment: string;
+  difficulty: string;
+  imageUrl: string;
+  titleUa: string;
+};

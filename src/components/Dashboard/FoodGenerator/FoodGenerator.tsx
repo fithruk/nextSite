@@ -81,7 +81,7 @@ const FoodGenerator = () => {
 
         return;
       }
-      alert("Eroor!");
+      alert("Error!");
     }
 
     saveUserAnswer(userAnswersKeysArray[userAnswersKeysInd], selectedOptions);
