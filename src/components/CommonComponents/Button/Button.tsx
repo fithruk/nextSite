@@ -7,7 +7,7 @@ interface Props
     HTMLButtonElement
   > {
   children: React.ReactNode;
-  variant: "primary" | "secondary" | "pagination";
+  variant: "primary" | "secondary" | "pagination" | "exercise";
   type: "button" | "submit";
   classNames?: string;
 }
@@ -41,12 +41,23 @@ export const AppButton = ({
           {children}
         </button>
       );
+
     case "pagination":
       const classnames = classNames
         ? `${styles.paginationButton} ${classNames}`
         : `${styles.paginationButton}`;
       return (
         <button className={classnames} type={type} {...props}>
+          {children}
+        </button>
+      );
+
+    case "exercise":
+      const class_names = classNames
+        ? `${styles.exerciseButton} ${classNames}`
+        : `${styles.exerciseButton}`;
+      return (
+        <button className={class_names} type={type} {...props}>
           {children}
         </button>
       );

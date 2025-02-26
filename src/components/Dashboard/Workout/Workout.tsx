@@ -7,17 +7,19 @@ import { ExerciceShortType } from "@/types/types";
 
 import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useWorkout } from "@/hooks/useWorkout";
+import ExerciseSelect from "./ExerrciseSelect/ExerciseSelect";
 
 const Workout = () => {
   const session = useSession();
 
   const workout = useWorkout();
   const [exercises, setExercises] = useState<ExerciceShortType[]>([]);
+  const [isExSelectOpen, setIsExSelectOpen] = useState<boolean>(false);
   const token = session.data?.user.token;
 
   const onClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.dataset.workoutIsStarted === "true") {
-      console.log("JOpa");
+      setIsExSelectOpen((state) => (state = !state));
       return;
     }
     workout.startNewWorkout();
@@ -54,9 +56,11 @@ const Workout = () => {
           Add a new exercises into your plan
         </AppButton>
       )}
-      {exercises.map((ex) => (
-        <p key={ex.id}>{ex.exerciseMuscleGroup}</p>
-      ))}
+      {isExSelectOpen ? (
+        <ExerciseSelect exercises={exercises} />
+      ) : (
+        exercises.map((ex) => <p key={ex.id}>{ex.imageUrl}</p>)
+      )}
     </div>
   );
 };

@@ -25,6 +25,10 @@
   cursor: pointer;
 }
 
+.exerciseButton {
+  margin: 0 0.25rem;
+}
+
 .paginationButton:disabled {
   background-color: grey;
   cursor: auto;
