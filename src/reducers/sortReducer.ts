@@ -1,4 +1,3 @@
-//import { FoodType } from "@/app/api/foodService/route";
 import { FoodType } from "@/types/types";
 
 export enum mealOptions {

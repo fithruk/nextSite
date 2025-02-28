@@ -1,19 +1,26 @@
 "use client";
 import workoutStyles from "./workoutStyles.module.css";
-import { useEffect, useState, MouseEvent } from "react";
+import { useEffect, useState, MouseEvent, useReducer } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { ExerciceShortType } from "@/types/types";
-
+import { ExerciseActions } from "@/reducers/exercisesReducer";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useWorkout } from "@/hooks/useWorkout";
 import ExerciseSelect from "./ExerrciseSelect/ExerciseSelect";
+import { exercisesReducer } from "@/reducers/exercisesReducer";
 
 const Workout = () => {
   const session = useSession();
 
   const workout = useWorkout();
-  const [exercises, setExercises] = useState<ExerciceShortType[]>([]);
+  //const [exercises, setExercises] = useState<ExerciceShortType[]>([]);
+
+  const [state, dispatch] = useReducer(exercisesReducer, {
+    allExercises: [],
+    filteredExercises: [],
+  });
+
   const [isExSelectOpen, setIsExSelectOpen] = useState<boolean>(false);
   const token = session.data?.user.token;
 
@@ -35,7 +42,8 @@ const Workout = () => {
         }
       );
       if (status === 200) {
-        setExercises(data);
+        //setExercises(data);
+        dispatch({ type: ExerciseActions.setAllExercises, payload: data });
       }
     })();
   }, []);
@@ -57,9 +65,9 @@ const Workout = () => {
         </AppButton>
       )}
       {isExSelectOpen ? (
-        <ExerciseSelect exercises={exercises} />
+        <ExerciseSelect exercises={state.allExercises} />
       ) : (
-        exercises.map((ex) => <p key={ex.id}>{ex.imageUrl}</p>)
+        state.allExercises.map((ex) => <p key={ex.id}>{ex.imageUrl}</p>)
       )}
     </div>
   );

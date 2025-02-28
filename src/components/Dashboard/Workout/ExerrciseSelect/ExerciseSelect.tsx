@@ -2,7 +2,9 @@ import { MouseEvent } from "react";
 import { ExerciceShortType } from "@/types/types";
 import { muscleGroupImages } from "./images";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
+import btnStyles from "../../../CommonComponents/Button/button.module.css";
 import exSelectStyles from "./exerciseSelect.module.css";
+import { Typography } from "@/components/CommonComponents/Typography/Typography";
 
 type ExerciseSelectTypes = {
   exercises: ExerciceShortType[];
@@ -14,7 +16,7 @@ const ExerciseSelect = ({ exercises }: ExerciseSelectTypes) => {
   );
 
   const onClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log(e.currentTarget.dataset.muscleGroup);
+    console.log(e.currentTarget.dataset.filterBy);
   };
 
   return (
@@ -25,15 +27,16 @@ const ExerciseSelect = ({ exercises }: ExerciseSelectTypes) => {
           key={gr}
           variant="exercise"
           onClick={onClickHandle}
-          data-muscle-group={gr}
+          data-filter-by={gr}
+          classNames={btnStyles.exerciseButtonAtcive}
         >
           {
             <>
               <img
-                className={`${exSelectStyles.exerciseImg} ${exSelectStyles.imageActive}`}
+                className={`${exSelectStyles.exerciseImg}`}
                 src={muscleGroupImages[gr].src}
               />
-              <p>{gr}</p>
+              <Typography type="p">{gr}</Typography>
             </>
           }
         </AppButton>

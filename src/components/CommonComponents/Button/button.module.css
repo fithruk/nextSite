@@ -26,7 +26,20 @@
 }
 
 .exerciseButton {
+  all: unset;
+  position: relative;
   margin: 0 0.25rem;
+  cursor: pointer;
+  height: fit-content;
+  width: fit-content;
+}
+
+.exerciseButton > p::first-letter {
+  text-transform: capitalize;
+}
+
+.exerciseButtonAtcive {
+  color: green;
 }
 
 .paginationButton:disabled {
