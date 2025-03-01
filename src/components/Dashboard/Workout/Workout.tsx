@@ -12,9 +12,7 @@ import { exercisesReducer } from "@/reducers/exercisesReducer";
 
 const Workout = () => {
   const session = useSession();
-
   const workout = useWorkout();
-  //const [exercises, setExercises] = useState<ExerciceShortType[]>([]);
 
   const [state, dispatch] = useReducer(exercisesReducer, {
     allExercises: [],
@@ -65,7 +63,11 @@ const Workout = () => {
         </AppButton>
       )}
       {isExSelectOpen ? (
-        <ExerciseSelect exercises={state.allExercises} />
+        <ExerciseSelect
+          allExercises={state.allExercises}
+          filteredExercises={state.filteredExercises}
+          dispatch={dispatch}
+        />
       ) : (
         state.allExercises.map((ex) => <p key={ex.id}>{ex.imageUrl}</p>)
       )}

@@ -2,6 +2,7 @@ import { ExerciceShortType } from "@/types/types";
 
 export enum ExerciseActions {
   setAllExercises = "SET_ALL_EXERCISES",
+  addFilter = "ADD_FILTER",
 }
 
 interface IState {
@@ -9,10 +10,15 @@ interface IState {
   filteredExercises: ExerciceShortType[];
 }
 
-type ActionType = {
-  type: ExerciseActions.setAllExercises;
-  payload: ExerciceShortType[];
-};
+export type ActionType =
+  | {
+      type: ExerciseActions.setAllExercises;
+      payload: ExerciceShortType[];
+    }
+  | {
+      type: ExerciseActions.addFilter;
+      payload: string;
+    };
 
 const exercisesReducer = (state: IState, action: ActionType) => {
   switch (action.type) {
@@ -20,7 +26,15 @@ const exercisesReducer = (state: IState, action: ActionType) => {
       return {
         ...state,
         allExercises: [...action.payload],
-        filteredExercises: [...action.payload],
+        filteredExercises: [],
+      };
+
+    case ExerciseActions.addFilter:
+      return {
+        ...state,
+        filteredExercises: state.allExercises.filter(
+          (ex) => ex.exerciseMuscleGroup === action.payload
+        ),
       };
 
     default:

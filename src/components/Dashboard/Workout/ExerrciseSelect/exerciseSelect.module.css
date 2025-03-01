@@ -6,3 +6,10 @@
   background-color: aqua;
   filter: invert(100%);
 }
+
+.cardsWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
