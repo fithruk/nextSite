@@ -53,3 +53,24 @@ export type ExerciceShortType = {
   imageUrl: string;
   titleUa: string;
 };
+
+export type UserExercisesSet = {
+  exerciseName: string;
+  weightOfload: number;
+  numberOfReps: number;
+  timeOfStart: Date;
+};
+
+export type WorkoutStateType = {
+  userExercises: ExerciceShortType[];
+  userExercisesSets: UserExercisesSet[];
+  isStarted: boolean;
+};
+
+export interface IUseWorkout {
+  addNewExercise: (exercise: ExerciceShortType) => void;
+  removeExercise: (exercise: ExerciceShortType) => void;
+  addNewSet: (userExercisesSet: UserExercisesSet) => void;
+  startNewWorkout: () => void;
+  getWorkoutData: () => WorkoutStateType;
+}

@@ -4,11 +4,20 @@ import { Typography } from "@/components/CommonComponents/Typography/Typography"
 
 type ExerciseShortType = {
   exercise: ExerciceShortType;
+  isPicked: boolean;
+  handleClick: (exercise: ExerciceShortType) => void;
 };
 
-const ExerciseShort = ({ exercise }: ExerciseShortType) => {
+const ExerciseShort = ({
+  exercise,
+  isPicked,
+  handleClick,
+}: ExerciseShortType) => {
+  const classNames = isPicked
+    ? `${exerciseShortStyles.cart} ${exerciseShortStyles.picked}`
+    : `${exerciseShortStyles.cart}`;
   return (
-    <div className={exerciseShortStyles.card}>
+    <div className={classNames} onClick={() => handleClick(exercise)}>
       <div className={exerciseShortStyles.imgContainer}>
         <img
           className={exerciseShortStyles.titleImg}

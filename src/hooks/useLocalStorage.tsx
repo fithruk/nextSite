@@ -7,13 +7,27 @@ interface IUseLocalStorage<T> {
 
 const useLocalStorage = <T,>(): IUseLocalStorage<T> => {
   const setItem = (key: string, values: T) => {
-    localStorage.setItem(key, JSON.stringify(values));
+    try {
+      localStorage.setItem(key, JSON.stringify(values));
+    } catch (error) {
+      console.error(
+        `Ошибка при сохранении в localStorage (ключ: ${key}):`,
+        error
+      );
+    }
   };
 
   const getItem = (key: string): T | null => {
-    const data = localStorage.getItem(key);
-    if (!data) return null;
-    return JSON.parse(data) as T;
+    try {
+      const data = localStorage.getItem(key);
+      return data ? (JSON.parse(data) as T) : null;
+    } catch (error) {
+      console.error(
+        `Ошибка при загрузке из localStorage (ключ: ${key}):`,
+        error
+      );
+      return null;
+    }
   };
 
   const removeItem = (key: string) => {

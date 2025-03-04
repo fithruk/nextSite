@@ -7,17 +7,20 @@ import exSelectStyles from "./exerciseSelect.module.css";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import { ActionType, ExerciseActions } from "@/reducers/exercisesReducer";
 import ExerciseShort from "../../ExerciseShort/ExerciseShort";
+import { IUseWorkout } from "@/types/types";
 
 type ExerciseSelectTypes = {
   allExercises: ExerciceShortType[];
   filteredExercises: ExerciceShortType[];
   dispatch: Dispatch<ActionType>;
+  workout: IUseWorkout;
 };
 
 const ExerciseSelect = ({
   allExercises,
   filteredExercises,
   dispatch,
+  workout,
 }: ExerciseSelectTypes) => {
   const muscleGroupes = new Set(
     allExercises.map((ex) => ex.exerciseMuscleGroup).filter((g) => g !== null)
@@ -29,6 +32,18 @@ const ExerciseSelect = ({
         type: ExerciseActions.addFilter,
         payload: e.currentTarget.dataset.filterBy,
       });
+    }
+  };
+
+  const addOrRemoveExercise = (exercise: ExerciceShortType) => {
+    const ind: number = workout
+      .getWorkoutData()
+      .userExercises.findIndex((e) => e.id === exercise.id);
+
+    if (ind === -1) {
+      workout.addNewExercise(exercise);
+    } else {
+      workout.removeExercise(exercise);
     }
   };
 
@@ -57,9 +72,27 @@ const ExerciseSelect = ({
         ))}
       </div>
       <div className={exSelectStyles.cardsWrapper}>
-        {filteredExercises.map((ex) => (
-          <ExerciseShort key={ex.id} exercise={ex} />
-        ))}
+        {filteredExercises
+          .sort((a, b) => {
+            const isASelected = workout
+              .getWorkoutData()
+              .userExercises.some((x) => x.id === a.id);
+            const isBSelected = workout
+              .getWorkoutData()
+              .userExercises.some((x) => x.id === b.id);
+
+            return Number(isBSelected) - Number(isASelected);
+          })
+          .map((ex) => (
+            <ExerciseShort
+              key={ex.id}
+              exercise={ex}
+              isPicked={workout
+                .getWorkoutData()
+                .userExercises.some((x) => x.id === ex.id)}
+              handleClick={addOrRemoveExercise}
+            />
+          ))}
       </div>
     </div>
   );

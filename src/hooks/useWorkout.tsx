@@ -1,59 +1,64 @@
-import { ExerciceShortType } from "@/types/types";
+import {
+  ExerciceShortType,
+  IUseWorkout,
+  UserExercisesSet,
+  WorkoutStateType,
+} from "@/types/types";
 import { useLocalStorage } from "./useLocalStorage";
 import { useEffect, useState } from "react";
 import { LocalStorageKeys } from "@/localSrorageKeys/localStorageKeys";
 
-interface IUseWorkout {
-  addNewExercise: (exercise: ExerciceShortType) => void;
-  addNewSet: (userExercisesSet: UserExercisesSet) => void;
-  startNewWorkout: () => void;
-  getWorkoutData: () => {
-    isStarded: boolean;
-    userExercises: ExerciceShortType[];
-    userExercisesSets: UserExercisesSet[];
-  };
-}
-
-type UserExercisesSet = {
-  exerciseName: string;
-  weightOfload: number;
-  numberOfReps: number;
-  timeOfStart: Date;
-};
-
 const useWorkout = (): IUseWorkout => {
-  const [isStarded, setIsStarted] = useState<boolean>(false);
-  const [userExercises, setUserExercises] = useState<ExerciceShortType[]>([]);
+  const localStorage = useLocalStorage<WorkoutStateType>();
+
+  const savedData = localStorage.getItem(LocalStorageKeys.workout);
+
+  const [isStarted, setIsStarted] = useState<boolean>(
+    savedData?.isStarted ?? false
+  );
+  const [userExercises, setUserExercises] = useState<ExerciceShortType[]>(
+    savedData?.userExercises ?? []
+  );
   const [userExercisesSets, setUserExercisesSets] = useState<
     UserExercisesSet[]
-  >([]);
-  const localStorage = useLocalStorage();
+  >(savedData?.userExercisesSets ?? []);
 
   const addNewExercise = (exercise: ExerciceShortType) => {
-    setUserExercises((state) => [...state, exercise]);
+    setUserExercises((prev) => [...prev, exercise]);
+  };
+
+  const removeExercise = (exercise: ExerciceShortType) => {
+    setUserExercises((prev) => prev.filter((ex) => ex.id !== exercise.id));
   };
 
   const addNewSet = (userExercisesSet: UserExercisesSet) => {
-    setUserExercisesSets((state) => [...state, userExercisesSet]);
+    setUserExercisesSets((prev) => [...prev, userExercisesSet]);
   };
 
   const startNewWorkout = () => {
     setIsStarted(true);
-    localStorage.setItem(LocalStorageKeys.workout, {});
+    localStorage.setItem(LocalStorageKeys.workout, getWorkoutData());
   };
 
-  const getWorkoutData = () => {
-    return { userExercises, userExercisesSets, isStarded };
-  };
+  const getWorkoutData = (): WorkoutStateType => ({
+    userExercises,
+    userExercisesSets,
+    isStarted,
+  });
 
   useEffect(() => {
-    const value = localStorage.getItem(LocalStorageKeys.workout);
-    if (value !== null) {
-      setIsStarted(true);
+    if (isStarted || userExercises.length || userExercisesSets.length) {
+      localStorage.setItem(LocalStorageKeys.workout, getWorkoutData());
     }
-  }, []);
+  }, [isStarted, userExercises, userExercisesSets]);
 
-  return { addNewExercise, addNewSet, startNewWorkout, getWorkoutData };
+  return {
+    addNewExercise,
+    removeExercise,
+    addNewSet,
+    startNewWorkout,
+    getWorkoutData,
+  };
 };
 
 export { useWorkout };

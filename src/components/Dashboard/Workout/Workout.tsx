@@ -24,7 +24,7 @@ const Workout = () => {
 
   const onClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.dataset.workoutIsStarted === "true") {
-      setIsExSelectOpen((state) => (state = !state));
+      setIsExSelectOpen((isOpen) => (isOpen = !isOpen));
       return;
     }
     workout.startNewWorkout();
@@ -40,7 +40,6 @@ const Workout = () => {
         }
       );
       if (status === 200) {
-        //setExercises(data);
         dispatch({ type: ExerciseActions.setAllExercises, payload: data });
       }
     })();
@@ -48,7 +47,7 @@ const Workout = () => {
 
   return (
     <div className={workoutStyles.wrapper}>
-      {!workout.getWorkoutData().isStarded ? (
+      {!workout.getWorkoutData().isStarted ? (
         <AppButton variant="secondary" type="button" onClick={onClickHandle}>
           Start a new workout
         </AppButton>
@@ -67,9 +66,10 @@ const Workout = () => {
           allExercises={state.allExercises}
           filteredExercises={state.filteredExercises}
           dispatch={dispatch}
+          workout={workout}
         />
       ) : (
-        state.allExercises.map((ex) => <p key={ex.id}>{ex.imageUrl}</p>)
+        state.allExercises.map((ex) => <p key={ex.id}>{ex.exerciseName}</p>)
       )}
     </div>
   );

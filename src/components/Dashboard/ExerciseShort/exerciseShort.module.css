@@ -1,15 +1,45 @@
-.card {
+.cart {
+  position: relative;
   width: clamp(6rem, 300px, 12rem);
   height: clamp(12rem, 500px, 20rem);
+  border-radius: 8px;
   border: 1px solid red;
   margin: 0.5rem;
+  cursor: pointer;
 }
 
-.card > p {
+.cart::after {
+  content: " ";
+  width: 1rem;
+  height: 1rem;
+  border-radius: 8px;
+  background-color: var(--secondary-text_color);
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+}
+
+.picked {
+}
+
+.cart.picked::before {
+  content: "✔";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 8px;
+  position: absolute;
+  right: 0.9rem;
+  top: 0.25rem;
+  z-index: 1;
+}
+
+.cart > p {
   padding: 0.5rem;
 }
 
 .imgContainer {
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 }
 
 .titleImg {
@@ -17,4 +47,6 @@
   width: 100%;
   height: 100%;
   filter: invert();
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
 }
