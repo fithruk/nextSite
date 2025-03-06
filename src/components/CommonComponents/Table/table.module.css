@@ -1,0 +1,11 @@
+.table {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+}
+
+.item {
+  flex-grow: 1;
+}

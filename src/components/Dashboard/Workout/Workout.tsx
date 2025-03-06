@@ -9,6 +9,7 @@ import { AppButton } from "@/components/CommonComponents/Button/Button";
 import { useWorkout } from "@/hooks/useWorkout";
 import ExerciseSelect from "./ExerrciseSelect/ExerciseSelect";
 import { exercisesReducer } from "@/reducers/exercisesReducer";
+import ExercisesAndSets from "./ExercisesAndSets/ExercisesAndSets";
 
 const Workout = () => {
   const session = useSession();
@@ -69,10 +70,13 @@ const Workout = () => {
           workout={workout}
         />
       ) : (
-        state.allExercises.map((ex) => <p key={ex.id}>{ex.exerciseName}</p>)
+        <ExercisesAndSets workout={workout} />
       )}
     </div>
   );
 };
 
 export default Workout;
+// workout
+// .getWorkoutData()
+// .userExercises.map((ex) => <p key={ex.id}>{ex.exerciseName}</p>)

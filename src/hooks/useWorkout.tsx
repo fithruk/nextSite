@@ -28,7 +28,9 @@ const useWorkout = (): IUseWorkout => {
   };
 
   const removeExercise = (exercise: ExerciceShortType) => {
-    setUserExercises((prev) => prev.filter((ex) => ex.id !== exercise.id));
+    setUserExercises((prev) =>
+      prev.filter((ex) => ex.exerciseName !== exercise.exerciseName)
+    );
   };
 
   const addNewSet = (userExercisesSet: UserExercisesSet) => {

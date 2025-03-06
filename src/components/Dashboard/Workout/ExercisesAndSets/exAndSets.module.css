@@ -1,0 +1,46 @@
+.cart {
+  cursor: pointer;
+  margin: 1rem 0;
+  border: 1px solid var(--foreground);
+  padding: 0.5rem;
+}
+
+.main {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleImage {
+  height: clamp(2rem, 250px, 10rem);
+  width: clamp(2rem, 250px, 10rem);
+  object-fit: cover;
+  background-color: aqua;
+  filter: invert(100%);
+}
+
+.textContent {
+  flex-grow: 1;
+  text-align: center;
+  padding: auto;
+}
+
+.textContent p {
+  margin: 0.5rem 0;
+}
+
+.sets {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: start;
+}
+
+.sets button {
+  width: clamp(2rem, 50px, 5rem);
+  height: clamp(2rem, 50px, 5rem);
+  border-radius: 50%;
+  color: green;
+  border: 1px solid green;
+}

@@ -38,7 +38,7 @@ const ExerciseSelect = ({
   const addOrRemoveExercise = (exercise: ExerciceShortType) => {
     const ind: number = workout
       .getWorkoutData()
-      .userExercises.findIndex((e) => e.id === exercise.id);
+      .userExercises.findIndex((e) => e.exerciseName === exercise.exerciseName);
 
     if (ind === -1) {
       workout.addNewExercise(exercise);
@@ -76,10 +76,10 @@ const ExerciseSelect = ({
           .sort((a, b) => {
             const isASelected = workout
               .getWorkoutData()
-              .userExercises.some((x) => x.id === a.id);
+              .userExercises.some((x) => x.exerciseName === a.exerciseName);
             const isBSelected = workout
               .getWorkoutData()
-              .userExercises.some((x) => x.id === b.id);
+              .userExercises.some((x) => x.exerciseName === b.exerciseName);
 
             return Number(isBSelected) - Number(isASelected);
           })
@@ -89,7 +89,7 @@ const ExerciseSelect = ({
               exercise={ex}
               isPicked={workout
                 .getWorkoutData()
-                .userExercises.some((x) => x.id === ex.id)}
+                .userExercises.some((x) => x.exerciseName === ex.exerciseName)}
               handleClick={addOrRemoveExercise}
             />
           ))}

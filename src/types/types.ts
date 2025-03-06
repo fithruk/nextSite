@@ -52,6 +52,7 @@ export type ExerciceShortType = {
   difficulty: string;
   imageUrl: string;
   titleUa: string;
+  titleRu: string;
 };
 
 export type UserExercisesSet = {
