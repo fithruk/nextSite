@@ -72,6 +72,7 @@ export interface IUseWorkout {
   addNewExercise: (exercise: ExerciceShortType) => void;
   removeExercise: (exercise: ExerciceShortType) => void;
   addNewSet: (userExercisesSet: UserExercisesSet) => void;
+  removeSet: (ind: number, exerciseName: string) => void;
   startNewWorkout: () => void;
   getWorkoutData: () => WorkoutStateType;
 }

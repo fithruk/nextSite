@@ -37,6 +37,22 @@ const useWorkout = (): IUseWorkout => {
     setUserExercisesSets((prev) => [...prev, userExercisesSet]);
   };
 
+  const removeSet = (ind: number, exerciseName: string) => {
+    const setsByExercise = userExercisesSets.filter(
+      (e) => e.exerciseName === exerciseName
+    );
+
+    if (setsByExercise[ind]) {
+      setUserExercisesSets((state) =>
+        state.filter(
+          (ex) =>
+            ex.timeOfStart.toString() !==
+            setsByExercise[ind].timeOfStart.toString()
+        )
+      );
+    }
+  };
+
   const startNewWorkout = () => {
     setIsStarted(true);
     localStorage.setItem(LocalStorageKeys.workout, getWorkoutData());
@@ -58,6 +74,7 @@ const useWorkout = (): IUseWorkout => {
     addNewExercise,
     removeExercise,
     addNewSet,
+    removeSet,
     startNewWorkout,
     getWorkoutData,
   };

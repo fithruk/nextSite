@@ -1,11 +1,21 @@
 .table {
   width: 100%;
+  table-layout: fixed;
+  border: 1px solid var(--foreground);
+  border-spacing: 0.5rem;
 }
 
 .row {
-  display: flex;
+  display: table-row;
 }
 
 .item {
-  flex-grow: 1;
+  width: 100%;
+  text-align: start;
+  border-bottom: 1px solid var(--foreground);
+  padding: 0.5rem;
+}
+
+.item button {
+  width: -webkit-fill-available;
 }

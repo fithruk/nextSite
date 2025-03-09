@@ -1,5 +1,10 @@
-import { ExerciceShortType, IUseWorkout } from "@/types/types";
+import {
+  ExerciceShortType,
+  IUseWorkout,
+  UserExercisesSet,
+} from "@/types/types";
 import exercisesAndSetsStyles from "./exAndSets.module.css";
+import tableStyles from "../../../CommonComponents/Table/table.module.css";
 import { useState, MouseEvent, ChangeEvent } from "react";
 import { Typography } from "@/components/CommonComponents/Typography/Typography";
 import { Input } from "@/components/CommonComponents/Input/Input";
@@ -8,6 +13,7 @@ import Table from "@/components/CommonComponents/Table/Table";
 
 type ExerciseAccordeonType = {
   exerciseShort: ExerciceShortType;
+  workout: IUseWorkout;
 };
 
 type StateTypes = {
@@ -15,7 +21,10 @@ type StateTypes = {
   reps: number;
 };
 
-const ExerciseAccordeon = ({ exerciseShort }: ExerciseAccordeonType) => {
+const ExerciseAccordeon = ({
+  exerciseShort,
+  workout,
+}: ExerciseAccordeonType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [weightsAndReps, setWeightsAndReps] = useState<StateTypes>({
@@ -32,7 +41,31 @@ const ExerciseAccordeon = ({ exerciseShort }: ExerciseAccordeonType) => {
     exercise: ExerciceShortType
   ) => {
     e.stopPropagation();
-    console.log(exercise.exerciseName + " " + weightsAndReps);
+
+    const userExercisesSet: UserExercisesSet = {
+      exerciseName: exercise.exerciseName,
+      weightOfload: weightsAndReps.weight,
+      numberOfReps: weightsAndReps.reps,
+      timeOfStart: new Date(),
+    };
+
+    workout.addNewSet(userExercisesSet);
+  };
+
+  const removeSetHandler = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    const eventElement = e.currentTarget.closest("tr");
+
+    if (!eventElement) return;
+
+    const tableRows = Array.from(
+      eventElement?.parentElement?.querySelectorAll("tr") || []
+    );
+
+    const index = tableRows.indexOf(eventElement);
+
+    workout.removeSet(index, exerciseShort.exerciseName);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,41 +104,66 @@ const ExerciseAccordeon = ({ exerciseShort }: ExerciseAccordeonType) => {
       </div>
       {isOpen && (
         <div className={exercisesAndSetsStyles.table}>
-          <Table columsTitles={["jopa", "Slyapa"]} tableData={["as", "as"]}>
-            {
-              <div className={exercisesAndSetsStyles.sets}>
-                <Input
-                  name="weight"
-                  type="number"
-                  min={0}
-                  placeholder="weight"
-                  value={weightsAndReps.weight}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onChange={handleChange}
-                />
-                <Input
-                  name="reps"
-                  type="number"
-                  min={0}
-                  placeholder="reps"
-                  value={weightsAndReps.reps}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onChange={handleChange}
-                />
+          <Table
+            columsTitles={["weight", "reps", " "]}
+            tableData={workout
+              .getWorkoutData()
+              .userExercisesSets.filter(
+                (ex) => ex.exerciseName === exerciseShort.exerciseName
+              )}
+            renderAddNewSetControll={() => (
+              <>
+                <tr className={tableStyles.row}>
+                  <th className={tableStyles.item}>
+                    <Input
+                      name="weight"
+                      type="number"
+                      placeholder="weight"
+                      min={0}
+                      value={weightsAndReps.weight}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onChange={handleChange}
+                    />
+                  </th>
+                  <th className={tableStyles.item}>
+                    <Input
+                      name="reps"
+                      type="number"
+                      placeholder="reps"
+                      min={0}
+                      value={weightsAndReps.reps}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      onChange={handleChange}
+                    />
+                  </th>
+                  <th className={tableStyles.item} colSpan={2}>
+                    <AppButton
+                      type="button"
+                      variant="secondary"
+                      onClick={(e) => addNewSetHandler(e, exerciseShort)}
+                    >
+                      Add
+                    </AppButton>
+                  </th>
+                </tr>
+              </>
+            )}
+            renderRemoveControllButton={() => (
+              <th className={tableStyles.item}>
                 <AppButton
                   type="button"
-                  variant="secondary"
-                  onClick={(e) => addNewSetHandler(e, exerciseShort)}
+                  variant="primary"
+                  onClick={removeSetHandler}
                 >
-                  Add
+                  Remove
                 </AppButton>
-              </div>
-            }
-          </Table>
+              </th>
+            )}
+          />
         </div>
       )}
     </div>
@@ -118,11 +176,11 @@ type ExercisesAndSetsTypes = {
 
 const ExercisesAndSets = ({ workout }: ExercisesAndSetsTypes) => {
   const userExercises = workout.getWorkoutData().userExercises;
-  console.log(workout.getWorkoutData().userExercisesSets);
+
   return (
     <div>
       {userExercises.map((ex) => (
-        <ExerciseAccordeon key={ex.id} exerciseShort={ex} />
+        <ExerciseAccordeon key={ex.id} exerciseShort={ex} workout={workout} />
       ))}
     </div>
   );

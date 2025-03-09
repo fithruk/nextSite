@@ -1,14 +1,21 @@
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 import { Typography } from "../Typography/Typography";
 import tableStyles from "./table.module.css";
+import { UserExercisesSet } from "@/types/types";
 
 type TableTypes = {
   columsTitles: string[];
-  tableData: any[];
-  children?: ReactElement;
+  tableData: UserExercisesSet[];
+  renderRemoveControllButton?: () => ReactNode;
+  renderAddNewSetControll?: () => ReactNode;
 };
 
-const Table = ({ columsTitles, tableData, children }: TableTypes) => {
+const Table = ({
+  columsTitles,
+  tableData,
+  renderAddNewSetControll,
+  renderRemoveControllButton,
+}: TableTypes) => {
   return (
     <table className={tableStyles.table}>
       <thead className={tableStyles.header}>
@@ -21,12 +28,19 @@ const Table = ({ columsTitles, tableData, children }: TableTypes) => {
         </tr>
       </thead>
       <tbody className={tableStyles.tableBody}>
-        {tableData.map((data) => (
-          <th key={data} className={tableStyles.item}>
-            <Typography type="span">{data}</Typography>
-          </th>
+        {tableData.map((data, ind) => (
+          <tr key={ind} className={tableStyles.row}>
+            <th className={tableStyles.item}>
+              <Typography type="span">{data.weightOfload}</Typography>
+            </th>
+            <th className={tableStyles.item}>
+              <Typography type="span">{data.numberOfReps}</Typography>
+            </th>
+            {renderRemoveControllButton && renderRemoveControllButton()}
+          </tr>
         ))}
-        <th className={tableStyles.item}>{children}</th>
+
+        {renderAddNewSetControll && renderAddNewSetControll()}
       </tbody>
     </table>
   );
