@@ -52,6 +52,10 @@ const ExerciseAccordeon = ({
     workout.addNewSet(userExercisesSet);
   };
 
+  const removeExerciseHandler = () => {
+    workout.removeExercise(exerciseShort);
+  };
+
   const removeSetHandler = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
@@ -115,17 +119,26 @@ const ExerciseAccordeon = ({
               <>
                 <tr className={tableStyles.row}>
                   <th className={tableStyles.item}>
-                    <Input
-                      name="weight"
-                      type="number"
-                      placeholder="weight"
-                      min={0}
-                      value={weightsAndReps.weight}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
-                      onChange={handleChange}
-                    />
+                    {exerciseShort.equipment !== "bodyweight" ? (
+                      <Input
+                        name="weight"
+                        type="number"
+                        placeholder="weight"
+                        min={0}
+                        value={weightsAndReps.weight}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      <Input
+                        name="weight"
+                        type="text"
+                        placeholder="bodyweight"
+                        disabled
+                      />
+                    )}
                   </th>
                   <th className={tableStyles.item}>
                     <Input
@@ -159,13 +172,20 @@ const ExerciseAccordeon = ({
                   variant="primary"
                   onClick={removeSetHandler}
                 >
-                  Remove
+                  Remove Set
                 </AppButton>
               </th>
             )}
           />
         </div>
       )}
+      <AppButton
+        variant="primary"
+        type="button"
+        onClick={removeExerciseHandler}
+      >
+        Remove Exercise
+      </AppButton>
     </div>
   );
 };
