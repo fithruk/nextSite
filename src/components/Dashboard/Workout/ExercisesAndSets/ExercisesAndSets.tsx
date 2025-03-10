@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useSession } from "next-auth/react";
 import {
   ExerciceShortType,
   IUseWorkout,
@@ -14,6 +16,7 @@ import Table from "@/components/CommonComponents/Table/Table";
 type ExerciseAccordeonType = {
   exerciseShort: ExerciceShortType;
   workout: IUseWorkout;
+  token: string;
 };
 
 type StateTypes = {
@@ -24,6 +27,7 @@ type StateTypes = {
 const ExerciseAccordeon = ({
   exerciseShort,
   workout,
+  token,
 }: ExerciseAccordeonType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -33,7 +37,7 @@ const ExerciseAccordeon = ({
   });
   //e: MouseEvent<HTMLDivElement>
   const handleClick = () => {
-    setIsOpen((open) => (open = !open));
+    setIsOpen((open) => !open);
   };
 
   const addNewSetHandler = (
@@ -70,6 +74,25 @@ const ExerciseAccordeon = ({
     const index = tableRows.indexOf(eventElement);
 
     workout.removeSet(index, exerciseShort.exerciseName);
+  };
+
+  const loadFullExerciseHandler = async (
+    e: MouseEvent<HTMLButtonElement>,
+    exerciseName: string
+  ) => {
+    e.stopPropagation();
+    try {
+      const { data, status } = await axios.post(
+        "/api/exercisesService/getFullExerciseByName",
+        {
+          exerciseName,
+          token,
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -183,7 +206,13 @@ const ExerciseAccordeon = ({
         >
           Remove Exercise
         </AppButton>
-        <AppButton variant="secondary" type="button" onClick={() => {}}>
+        <AppButton
+          variant="secondary"
+          type="button"
+          onClick={(e) => {
+            loadFullExerciseHandler(e, exerciseShort.exerciseName);
+          }}
+        >
           Info
         </AppButton>
       </div>
@@ -197,11 +226,17 @@ type ExercisesAndSetsTypes = {
 
 const ExercisesAndSets = ({ workout }: ExercisesAndSetsTypes) => {
   const userExercises = workout.getWorkoutData().userExercises;
-
+  const session = useSession();
+  const token = session.data?.user.token;
   return (
     <div>
       {userExercises.map((ex) => (
-        <ExerciseAccordeon key={ex.id} exerciseShort={ex} workout={workout} />
+        <ExerciseAccordeon
+          key={ex.id}
+          exerciseShort={ex}
+          workout={workout}
+          token={token!}
+        />
       ))}
     </div>
   );

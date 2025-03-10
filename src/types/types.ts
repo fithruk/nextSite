@@ -55,6 +55,24 @@ export type ExerciceShortType = {
   titleRu: string;
 };
 
+export type ExerciceFullType = ExerciceShortType & {
+  exerciseSteps: ExerciseStepType[];
+};
+
+export type ExerciseStepType = {
+  id: string;
+  exersiceId: string;
+  phaseKey: number;
+  phaseName: string;
+  instructions: ExerciseStepInstructions[];
+};
+
+export type ExerciseStepInstructions = {
+  id: string;
+  exerciseStepId: string;
+  instructions: string[];
+};
+
 export type UserExercisesSet = {
   exerciseName: string;
   weightOfload: number;
