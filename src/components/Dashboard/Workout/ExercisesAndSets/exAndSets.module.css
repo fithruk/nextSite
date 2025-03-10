@@ -44,3 +44,13 @@
   color: green;
   border: 1px solid green;
 }
+
+.buttons {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons button:last-child {
+  border-radius: 50%;
+}

@@ -85,11 +85,7 @@ const ExerciseAccordeon = ({
   };
 
   return (
-    <div
-      draggable={true}
-      className={exercisesAndSetsStyles.cart}
-      onClick={handleClick}
-    >
+    <div className={exercisesAndSetsStyles.cart} onClick={handleClick}>
       <div className={exercisesAndSetsStyles.main}>
         <img
           className={exercisesAndSetsStyles.titleImage}
@@ -179,13 +175,18 @@ const ExerciseAccordeon = ({
           />
         </div>
       )}
-      <AppButton
-        variant="primary"
-        type="button"
-        onClick={removeExerciseHandler}
-      >
-        Remove Exercise
-      </AppButton>
+      <div className={exercisesAndSetsStyles.buttons}>
+        <AppButton
+          variant="primary"
+          type="button"
+          onClick={removeExerciseHandler}
+        >
+          Remove Exercise
+        </AppButton>
+        <AppButton variant="secondary" type="button" onClick={() => {}}>
+          Info
+        </AppButton>
+      </div>
     </div>
   );
 };
