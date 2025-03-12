@@ -9,13 +9,10 @@ import { LotOfExpirience } from "@/components/LotOfExpirience/LotOfExpirience";
 import { Slider } from "@/components/Slider/Slider";
 import { FormSection } from "@/components/FormSection/FormSection";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
 
 export default function Home() {
   const t = useTranslations("WhyChooseUs");
   const s = useTranslations("Slider");
-  const session = useSession();
-  console.log(session);
 
   const homeRef = useRef<HTMLDivElement | null>(null);
   const aboutRef = useRef<HTMLDivElement | null>(null);

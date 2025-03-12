@@ -9,7 +9,7 @@ import googleIcon from "../../../assets/images/googleIcon.png";
 import loginSlyles from "./login.module.css";
 import { AppLink } from "@/components/CommonComponents/Link/Link";
 import { FormEvent, useState } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
@@ -26,8 +26,6 @@ const Login = () => {
   const router = useRouter();
   const t = useTranslations("Login");
   const b = useTranslations("ButtonText");
-  const session = useSession();
-  console.log(session);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

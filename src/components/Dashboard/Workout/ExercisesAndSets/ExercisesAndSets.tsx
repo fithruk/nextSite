@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import {
+  ExerciceFullType,
   ExerciceShortType,
   IUseWorkout,
   UserExercisesSet,
@@ -12,11 +13,13 @@ import { Typography } from "@/components/CommonComponents/Typography/Typography"
 import { Input } from "@/components/CommonComponents/Input/Input";
 import { AppButton } from "@/components/CommonComponents/Button/Button";
 import Table from "@/components/CommonComponents/Table/Table";
+import FullExercise from "../../ExerciseFull/ExerciseFull";
 
 type ExerciseAccordeonType = {
   exerciseShort: ExerciceShortType;
   workout: IUseWorkout;
   token: string;
+  setFullExercise: (exerciceFull: ExerciceFullType) => void;
 };
 
 type StateTypes = {
@@ -28,6 +31,7 @@ const ExerciseAccordeon = ({
   exerciseShort,
   workout,
   token,
+  setFullExercise,
 }: ExerciseAccordeonType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -82,14 +86,15 @@ const ExerciseAccordeon = ({
   ) => {
     e.stopPropagation();
     try {
-      const { data, status } = await axios.post(
+      const { data, status } = await axios.post<ExerciceFullType>(
         "/api/exercisesService/getFullExerciseByName",
         {
           exerciseName,
           token,
         }
       );
-      console.log(data);
+      // Here....
+      if (status === 200) setFullExercise(data);
     } catch (error) {
       console.log(error);
     }
@@ -228,16 +233,29 @@ const ExercisesAndSets = ({ workout }: ExercisesAndSetsTypes) => {
   const userExercises = workout.getWorkoutData().userExercises;
   const session = useSession();
   const token = session.data?.user.token;
+  const [isInfoOpen, setIsInfoOpen] = useState<boolean>(false);
+  const [exercise, setExercise] = useState<ExerciceFullType | null>(null);
+
+  const setFullExercise = (exerciceFull: ExerciceFullType) => {
+    setIsInfoOpen((open) => !open);
+    setExercise(exerciceFull);
+  };
+
   return (
     <div>
-      {userExercises.map((ex) => (
-        <ExerciseAccordeon
-          key={ex.id}
-          exerciseShort={ex}
-          workout={workout}
-          token={token!}
-        />
-      ))}
+      {isInfoOpen ? (
+        <FullExercise {...exercise!} />
+      ) : (
+        userExercises.map((ex) => (
+          <ExerciseAccordeon
+            key={ex.id}
+            exerciseShort={ex}
+            workout={workout}
+            token={token!}
+            setFullExercise={setFullExercise}
+          />
+        ))
+      )}
     </div>
   );
 };
