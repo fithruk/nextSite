@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-size: max(16px, 0.65vw);
+}
+
+:root {
+  --main-font: "Nunito Sans";
+  --background-primary: #ffffff;
+  --background-secondary: #f4f9fd;
+  --main-font-color: #0a1629;
+  --mobile-font-size: 2.5vh;
+  --yellow: #ffbd21;
+  --pink: #de92eb;
+  --blue: #3f8cff;
+  --purple: #6d5dd3;
+  --border-input-color: #d8e0f0;
+  --border-radius-primary: 1.5rem;
+  --border-radius-secondary: 0.6rem;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--main-font-color);
+  background: var(--background-primary);
+  font-family: var(--main-font), Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+@media (max-width: 600px) {
+  .MuiPickersSlideTransition-root button {
+    font-size: 4vw;
+  }
+  .MuiDayCalendar-header span {
+    font-size: 4vw;
+  }
+
+  .MuiPickersToolbar-root .MuiTypography-root {
+    font-size: 4vw;
+  }
+
+  .MuiPickersFadeTransitionGroup-root .MuiPickersCalendarHeader-label {
+    font-size: 4vw;
+  }
+
+  .MuiPickersToolbar-content .MuiTypography-root {
+    font-size: 4vw;
+  }
+
+  .MuiPickersCalendarHeader-root button svg {
+    font-size: 4vw;
+  }
+  .MuiYearCalendar-root button {
+    font-size: 4vw;
+  }
+}

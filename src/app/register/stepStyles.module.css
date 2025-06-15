@@ -1,0 +1,17 @@
+.stepSupTitle {
+  color: var(--blue);
+  font-weight: 700 !important;
+  text-transform: uppercase;
+}
+
+.errorMsg {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border-radius: var(--border-radius-primary);
+}
+
+@media (max-width: 900px) {
+  .errorMsg {
+    font-size: 1.5vh;
+  }
+}

@@ -1,0 +1,10 @@
+.image {
+  transform: translateX(-6rem);
+  height: 100%;
+}
+
+@media (max-width: 600px) {
+  .image {
+    transform: translateX(-10vh);
+  }
+}
