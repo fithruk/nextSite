@@ -4,7 +4,7 @@
   font-family: var(--main-font), "Inter", sans-serif;
 }
 
-:global(.rbc-calendar .rbc-toolbar) {
+.rbc-calendar :global(.rbc-calendar .rbc-toolbar) {
   /* background-color: #0978e7; */
   padding: 1rem;
   border-radius: 1rem 1rem 0 0;
