@@ -68,4 +68,6 @@
   .rbc-calendar :global(.rbc-button-link) {
     font-size: 3vw;
   }
+  .rbc-btn-group button {
+  }
 }
