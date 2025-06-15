@@ -1,0 +1,5 @@
+@media (max-width: 600px) {
+  .link span {
+    font-size: var(--mobile-font-size);
+  }
+}

@@ -1,0 +1,11 @@
+.container {
+  background-color: var(--blue) !important;
+  border-radius: var(--border-radius-primary);
+  padding: 5rem !important;
+}
+
+@media (max-width: 900px) {
+  .container {
+    height: 100%;
+  }
+}

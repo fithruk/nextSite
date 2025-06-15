@@ -1,0 +1,71 @@
+.rbc-calendar {
+  background-color: white;
+  border-radius: 1rem;
+  font-family: var(--main-font), "Inter", sans-serif;
+}
+
+:global(.rbc-calendar .rbc-toolbar) {
+  /* background-color: #0978e7; */
+  padding: 1rem;
+  border-radius: 1rem 1rem 0 0;
+}
+.rbc-calendar .rbc-btn-group button {
+  margin-top: 2rem;
+  background-color: var(--blue);
+  color: var(--background-primary);
+  padding: 0.5rem 1.5rem;
+  border-radius: 1.5rem;
+  text-transform: none;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.rbc-calendar .rbc-btn-group button:hover {
+  background-color: #2c6fd9;
+}
+
+.rbcEvent {
+  background-color: #4caf50;
+  color: white;
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-size: 0.85rem;
+}
+
+.rbc-btn-group button {
+}
+
+.rbcToday {
+  background-color: #fff3e0 !important;
+}
+
+@media (max-width: 600px) {
+  .rbc-calendar :global(.rbc-btn-group) {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .rbc-calendar :global(.rbc-toolbar-label) {
+    margin-top: 2vw;
+  }
+
+  .rbc-calendar :global(.rbc-btn-group button) {
+    font-size: 4vw;
+  }
+
+  .rbc-calendar :global(.rbc-event .rbc-event-content) {
+    font-size: 3vw;
+  }
+
+  .rbc-calendar :global(.rbc-toolbar-label) {
+    font-size: 4vw;
+  }
+
+  .rbc-calendar :global(.rbc-header span) {
+    font-size: 3vw;
+  }
+
+  .rbc-calendar :global(.rbc-button-link) {
+    font-size: 3vw;
+  }
+}
