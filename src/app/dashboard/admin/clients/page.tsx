@@ -26,6 +26,7 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/uk";
 import { AppButton } from "@/components/UI/AppButton/AppButton";
 import { AbonDataTypes } from "../../workouts/page";
+import WorkoutCreator from "@/components/WorkoutCreator/WorkoutCreator";
 dayjs.locale("uk");
 
 type ClientTypes = {
@@ -33,6 +34,29 @@ type ClientTypes = {
   email: string;
   id: string;
 };
+
+interface ExerciseStepDescription {
+  PhaseKey: number;
+  PhaseName: "prepearing" | "processing" | "technicalTips";
+  Instructions: string[];
+}
+
+interface ExerciseStep {
+  StepNameEng: string;
+  StepNameRu: string;
+  StepNameUa: string;
+  DescriptionsRu: ExerciseStepDescription[];
+  DescriptionsUa: ExerciseStepDescription[];
+}
+
+export interface Exercise {
+  ExerciseName: string;
+  ExerciseMuscleGroup: string;
+  Equipment: string;
+  Difficulty: "easy" | "medium" | "hard";
+  ImageUrl: string;
+  Steps: ExerciseStep[];
+}
 
 const Clients = () => {
   const session = useSession();
@@ -46,6 +70,7 @@ const Clients = () => {
   const [message, setMessage] = useState("");
   const [clientWorkouts, setClientWorkous] = useState<WorkoutEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<WorkoutEvent | null>(null);
+  const [allExrecises, setAllExercises] = useState<Exercise[]>([]);
   const [currentAbonement, setCurrentAbonement] =
     useState<AbonDataTypes | null>(null);
   const [abonDurationDates, setAbonDurationDates] = useState<{
@@ -86,13 +111,16 @@ const Clients = () => {
     if (typeof value === "string") {
       setSelectValue(value);
 
-      const [clientsWorkouts, abonement] = await Promise.all([
+      const [clientsWorkouts, abonement, exercises] = await Promise.all([
         await apiService.post<{
           clientsWorkouts: Date[];
         }>("/admin/getClientWorkouts", { name: value }),
         apiService.get<{
           abonement: AbonDataTypes;
         }>(`/dataBase/getAbonByName/${encodeURIComponent(value)}`),
+        apiService.get<{
+          exercises: Exercise[];
+        }>(`/exercises/allExercises`),
       ]);
 
       if (clientsWorkouts.status === 200) {
@@ -111,6 +139,9 @@ const Clients = () => {
           abonementDuration: abonement.data.abonement.abonementDuration,
           dateOfCreation: abonement.data.abonement.dateOfCreation,
         });
+      }
+      if (exercises.status === 200) {
+        setAllExercises(exercises.data.exercises);
       }
     }
   };
@@ -234,9 +265,16 @@ const Clients = () => {
             selectedEvent={selectedEvent}
             onSelectEvent={onSelectEventHandler}
           />
+          {selectValue && (
+            <WorkoutCreator
+              date={selectedEvent?.start}
+              exercises={allExrecises}
+              name={selectValue}
+            />
+          )}
         </AppBox>
       </Grid>
-      <Grid size={{ xs: 12, md:4 }}>
+      <Grid size={{ xs: 12, md: 4 }}>
         <AppBox>
           {selectValue !== "" ? (
             <Stack spacing={2}>
