@@ -15,6 +15,10 @@ import ApiService from "@/app/apiService/apiService";
 import CalendarComponent from "@/components/Calendar/Calendar";
 import { AppBox } from "@/components/UI/AppBox/AppBox";
 import moment from "moment";
+import { WorkoutTypes } from "@/components/WorkoutCreator/WorkoutCreator";
+import WorkoutSession from "@/components/WorkoutSession/WorkoutSession";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import PassedWorkout from "@/components/PassedWorkout/PassedWorkout";
 
 type WorkoutEvent = {
   title: string;
@@ -31,19 +35,91 @@ type WKStatTypes = {
   wkAmount: number;
 };
 
+export type OneSet = Partial<{
+  numberOfSet: number;
+  numberOfreps: number;
+  weightValue: number;
+}>;
+
+export type SetsAndValuesResults = {
+  [exerciseName: string]: OneSet[];
+};
+
+export type WplanRespTypes = {
+  clientName: string;
+  dateOfWorkout: Date;
+  workoutPlan: WorkoutTypes[];
+};
+
 const Workouts = () => {
   const session = useSession();
   const name = session.data?.user.name;
+  const token = session.data?.user.accessToken;
+  const storage = useLocalStorage<SetsAndValuesResults>();
 
-  const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!);
+  const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
   const [events, setEvents] = useState<WorkoutEvent[]>([]);
   const [wkStat, setWkStat] = useState<WKStatTypes | null>();
   const [abonData, setAbonData] = useState<AbonDataTypes | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<WorkoutEvent | null>(null);
 
-  const onSelectEventHandler = (event: WorkoutEvent) => {
+  const [wPlan, setWplan] = useState<WorkoutTypes[]>([]);
+
+  const [setsAndValuesResults, setSetsAndValuesResults] =
+    useState<SetsAndValuesResults>({});
+
+  const addNewSetHandler = (exerciseName: string, newSet: OneSet) => {
+    setSetsAndValuesResults((prev) => {
+      const prevSets = prev[exerciseName] || [];
+
+      const filtered = prevSets.filter(
+        (set) => set.numberOfSet !== newSet.numberOfSet
+      );
+
+      return {
+        ...prev,
+        [exerciseName]: [...filtered, newSet],
+      };
+    });
+  };
+
+  const onSelectEventHandler = async (event: WorkoutEvent) => {
     console.log("Клик по событию:", event);
     setSelectedEvent(event);
+    try {
+      const { data, status } = await apiService.post<{
+        workoutPlan: WplanRespTypes;
+      }>("/workouts/getWorkoutPlan", {
+        dateOfWorkout: event.start,
+        clientName: name,
+      });
+
+      if (status === 200) {
+        setWplan(data.workoutPlan.workoutPlan);
+        const exercisesKeys = Object.entries(data.workoutPlan.workoutPlan).map(
+          (el) => [(el[0] = el[1].exercise), el[1].sets]
+        );
+
+        const preState = Object.fromEntries(exercisesKeys);
+
+        for (const key in preState) {
+          preState[key] = Array.from({ length: preState[key] }).map((_, i) => ({
+            numberOfSet: i + 1,
+            numberOfreps: 0,
+            weightValue: 0,
+          }));
+        }
+        const workoutData = storage.getItem("workout") || {};
+        if (workoutData) {
+          setSetsAndValuesResults(workoutData);
+          return;
+        }
+        setSetsAndValuesResults(preState);
+      }
+    } catch (error) {
+      alert((error as Error).message + " Плану тренування немає");
+      setWplan([]);
+    }
   };
 
   useEffect(() => {
@@ -84,10 +160,22 @@ const Workouts = () => {
         }
       } catch (err) {
         console.error("Fetch error:", err);
-        if (err instanceof Error) alert(err.message);
+        if (err instanceof Error)
+          alert(err.message + " Плану тренування немає");
       }
     })();
   }, [name]);
+
+  useEffect(() => {
+    if (Object.values(setsAndValuesResults).length) {
+      storage.setItem("workout", setsAndValuesResults);
+    }
+  }, [setsAndValuesResults]);
+
+  const isPastWorkout =
+    selectedEvent?.start && new Date() > new Date(selectedEvent.start);
+
+  const isRenderTable = wPlan.length > 0;
 
   return (
     <Grid
@@ -109,6 +197,22 @@ const Workouts = () => {
             onSelectEvent={onSelectEventHandler}
           />
           <Divider sx={{ margin: "2rem 0" }} />
+          {isPastWorkout && isRenderTable ? (
+            <PassedWorkout
+              apiService={apiService}
+              eventDate={selectedEvent?.start}
+              name={name ?? ""}
+            />
+          ) : (
+            <WorkoutSession
+              exercises={wPlan}
+              setsAndValuesResults={setsAndValuesResults}
+              apiService={apiService}
+              eventDate={selectedEvent?.start}
+              name={name ?? ""}
+              addNewSetHandler={addNewSetHandler}
+            />
+          )}
         </AppBox>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>

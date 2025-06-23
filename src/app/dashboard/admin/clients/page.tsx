@@ -270,6 +270,7 @@ const Clients = () => {
               date={selectedEvent?.start}
               exercises={allExrecises}
               name={selectValue}
+              apiService={apiService}
             />
           )}
         </AppBox>
