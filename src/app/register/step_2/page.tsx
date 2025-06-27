@@ -147,7 +147,7 @@ const RegisterStep_2 = () => {
             <AppInput
               inputType="chronicDiseases"
               name="chronicDiseases"
-              value={chronicDiseases}
+              value={chronicDiseases ?? ""}
               isTextArea
               onChange={(e) => onInputHandler(e, currentStep)}
             />
@@ -156,7 +156,7 @@ const RegisterStep_2 = () => {
             <AppInput
               inputType="injuries"
               name="injuries"
-              value={injuries}
+              value={injuries ?? ""}
               isTextArea
               onChange={(e) => onInputHandler(e, currentStep)}
             />
@@ -165,7 +165,7 @@ const RegisterStep_2 = () => {
             <AppInput
               inputType="workoutExperience"
               name="workoutExperience"
-              value={workoutExperience}
+              value={workoutExperience ?? ""}
               isTextArea
               onChange={(e) => onInputHandler(e, currentStep)}
             />
