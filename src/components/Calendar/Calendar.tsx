@@ -3,7 +3,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { useMemo, useState } from "react";
 import calendarStyles from "./calendarStyles.module.css";
-import { Calendar, momentLocalizer, View } from "react-big-calendar";
+import { Calendar, momentLocalizer, SlotInfo, View } from "react-big-calendar";
 import "moment/locale/uk";
 moment.locale("uk");
 
@@ -19,13 +19,18 @@ const allowedViews: Exclude<View, "day" | "agenda">[] = ["month", "week"];
 type CalendarProps = {
   events: WorkoutEvent[];
   selectedEvent: WorkoutEvent | null;
-  onSelectEvent?: (evemt: WorkoutEvent) => void;
+  onSelectEvent?: (event: WorkoutEvent) => void;
+  selectable?: boolean;
+
+  onSelectSlot?: (slotInfo: SlotInfo) => void;
 };
 
 const CalendarComponent = ({
   events,
   selectedEvent,
   onSelectEvent,
+  selectable,
+  onSelectSlot,
 }: CalendarProps) => {
   const localizer = useMemo(() => momentLocalizer(moment), []);
 
@@ -43,6 +48,8 @@ const CalendarComponent = ({
       localizer={localizer}
       events={events}
       selected={selectedEvent}
+      selectable={selectable}
+      onSelectSlot={onSelectSlot}
       onSelectEvent={onSelectEvent}
       view={view}
       date={date}

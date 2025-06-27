@@ -1,5 +1,4 @@
 import { Divider, Grid, TextField } from "@mui/material";
-import { WorkoutTypes } from "../WorkoutCreator/WorkoutCreator";
 import { MouseEvent } from "react";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -16,18 +15,26 @@ import { CSS } from "@dnd-kit/utilities";
 import { useEffect, useState } from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import { AppButton } from "../UI/AppButton/AppButton";
-import { OneSet, SetsAndValuesResults } from "@/app/dashboard/workouts/page";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import ApiService from "@/app/apiService/apiService";
+import {
+  Exercise,
+  OneSet,
+  SetsAndValuesResults,
+  WorkoutTypes,
+} from "@/Types/types";
+import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
 
 type ExerciseItemTypes = {
   item: WorkoutTypes;
+  exLibrary: Exercise[];
   setsAndValuesResults: SetsAndValuesResults;
   addNewSetHandler: (exerciseName: string, newSet: OneSet) => void;
 };
 
 const ExerciseItem = ({
   item,
+  exLibrary,
   setsAndValuesResults,
   addNewSetHandler,
 }: ExerciseItemTypes) => {
@@ -35,6 +42,10 @@ const ExerciseItem = ({
     useSortable({ id: item.exercise });
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const targetExercise = exLibrary.find(
+    (ex) => ex.ExerciseName == item.exercise
+  );
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -72,6 +83,11 @@ const ExerciseItem = ({
       if (innerText?.includes("reset")) {
         if (input.name === "reps") input.value = "";
         if (input.name === "weight") input.value = "";
+        addNewSetHandler(item.exercise, {
+          numberOfSet,
+          numberOfreps: 0,
+          weightValue: 0,
+        });
         return;
       }
 
@@ -129,61 +145,94 @@ const ExerciseItem = ({
         </Box>
         {isOpen && (
           <Box mt={2}>
-            {Array.from({ length: item.sets }).map((_, i) => (
-              <Grid container key={i} display="flex" gap={2} mb={1}>
-                <Grid size={{ xs: 12, md: 6 }} component={"form"}>
-                  {" "}
-                  <Typography>Підход {i + 1}</Typography>
-                  <Box display={"flex"} justifyContent={"space-between"}>
-                    <TextField
-                      inputProps={{ "data-reps": `reps_${i + 1}`, min: 0 }}
-                      name="reps"
-                      type="number"
-                      placeholder="Повторы"
-                      fullWidth
-                      defaultValue={
-                        setsAndValuesResults[item.exercise]?.[i]
-                          ?.numberOfreps ?? 0
-                      }
-                    />
-                    <TextField
-                      inputProps={{
-                        "data-weights": `weights_${i + 1}`,
-                        min: 0,
-                      }}
-                      name="weight"
-                      type="number"
-                      placeholder="Вага (кг)"
-                      fullWidth
-                      defaultValue={
-                        setsAndValuesResults[item.exercise]?.[i]?.weightValue ??
-                        0
-                      }
-                    />
-                    <AppButton
-                      onClick={handleClick}
-                      sx={{
-                        margin: "0 1rem",
-                        backgroundColor: "var(--yellow)",
-                        borderRadius: "50%",
-                      }}
-                    >
-                      Add ✔
-                    </AppButton>
-                    <AppButton
-                      onClick={handleClick}
-                      sx={{
-                        margin: "0 1rem",
-                        backgroundColor: "var(--yellow)",
-                        borderRadius: "50%",
-                      }}
-                    >
-                      Reset
-                    </AppButton>
-                  </Box>
-                </Grid>
+            <Grid container>
+              <Grid size={{ xs: 12, md: 6 }}>
+                {Array.from({ length: item.sets }).map((_, i) => (
+                  <Grid container key={i} display="flex" gap={2} mb={1}>
+                    <Grid size={{ xs: 12, md: 12 }} component={"form"}>
+                      {" "}
+                      <Typography>Підход {i + 1}</Typography>
+                      <Box
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        sx={{
+                          "@media(max-width: 600px)": {
+                            flexWrap: "wrap",
+                          },
+                        }}
+                      >
+                        <TextField
+                          inputProps={{ "data-reps": `reps_${i + 1}`, min: 0 }}
+                          name="reps"
+                          type="number"
+                          placeholder="Повторы"
+                          fullWidth
+                          defaultValue={
+                            setsAndValuesResults[item.exercise]?.[i]
+                              ?.numberOfreps ?? 0
+                          }
+                          sx={{
+                            "@media(max-width: 600px)": {
+                              margin: "1vh 0",
+                            },
+                          }}
+                        />
+                        <TextField
+                          inputProps={{
+                            "data-weights": `weights_${i + 1}`,
+                            min: 0,
+                          }}
+                          name="weight"
+                          type="number"
+                          placeholder="Вага (кг)"
+                          fullWidth
+                          defaultValue={
+                            setsAndValuesResults[item.exercise]?.[i]
+                              ?.weightValue ?? 0
+                          }
+                          sx={{
+                            "@media(max-width: 600px)": {
+                              margin: "1vh 0",
+                            },
+                          }}
+                        />
+                        <AppButton
+                          onClick={handleClick}
+                          sx={{
+                            margin: "0 1rem",
+                            backgroundColor: "var(--yellow)",
+                            borderRadius: "50%",
+                            "@media(max-width: 600px)": {
+                              margin: "1vh 0",
+                              width: "-webkit-fill-available",
+                            },
+                          }}
+                        >
+                          Add
+                        </AppButton>
+                        <AppButton
+                          onClick={handleClick}
+                          sx={{
+                            margin: "0 1rem",
+                            backgroundColor: "var(--yellow)",
+                            borderRadius: "50%",
+                            "@media(max-width: 600px)": {
+                              margin: 0,
+                              width: "-webkit-fill-available",
+                            },
+                          }}
+                        >
+                          Reset
+                        </AppButton>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
+              <Grid size={{ xs: 12, md: 6 }}>
+                <ExerciseDetails exercise={targetExercise!} locale="ua" />
+              </Grid>
+            </Grid>
           </Box>
         )}
       </Box>
@@ -193,6 +242,7 @@ const ExerciseItem = ({
 
 const ExerciseSession = ({
   exercises,
+  exLibrary,
   setsAndValuesResults,
   apiService,
   eventDate,
@@ -200,6 +250,7 @@ const ExerciseSession = ({
   addNewSetHandler,
 }: {
   exercises: WorkoutTypes[];
+  exLibrary: Exercise[];
   setsAndValuesResults: SetsAndValuesResults;
   apiService: ApiService;
   eventDate?: Date;
@@ -237,6 +288,13 @@ const ExerciseSession = ({
   return (
     <>
       {" "}
+      {items.length > 0 ? (
+        <Typography color="info" variant="h4">
+          План тренування на сьогодні
+        </Typography>
+      ) : (
+        ""
+      )}
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={items.map((item) => item.exercise)}
@@ -247,6 +305,7 @@ const ExerciseSession = ({
               <Grid size={{ xs: 12, md: 12 }} key={item.exercise}>
                 <ExerciseItem
                   item={item}
+                  exLibrary={exLibrary}
                   setsAndValuesResults={setsAndValuesResults}
                   addNewSetHandler={addNewSetHandler}
                 />
@@ -256,10 +315,15 @@ const ExerciseSession = ({
         </SortableContext>
       </DndContext>
       <Divider sx={{ margin: "2rem 0" }} />
-      {items.length && (
+      {items.length > 0 ? (
         <AppButton onClick={onSaveWorkout} sx={{ marginTop: "0" }}>
           Завершити тренування
         </AppButton>
+      ) : (
+        <Typography color="info" variant="h4" textAlign={"center"}>
+          {" "}
+          Вибери тренування у календарі
+        </Typography>
       )}
     </>
   );

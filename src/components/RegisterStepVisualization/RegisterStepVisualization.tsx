@@ -6,7 +6,7 @@ import Image from "next/image";
 import logo from "../../../public/images/logo/logo.png";
 import AppCheckBox from "../UI/AppCheckBox/AppCheckBox";
 import {
-  FormStep,
+  // FormStep,
   FormDataTypes,
   useRegistration,
 } from "@/app/Contexts/RegisterContext/RegisterContext";
@@ -38,7 +38,7 @@ const RegisterStepVisualization = () => {
 
   return (
     <AppBox className={styles.container}>
-      <Grid container flexDirection={"column"} spacing={4}>
+      <Grid container flexDirection={"column"} spacing={4} padding={0}>
         <Grid
           sx={{
             position: "relative",

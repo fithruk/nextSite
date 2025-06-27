@@ -12,34 +12,37 @@ import AppLink from "@/components/UI/AppLink/AppLink";
 const cards = [
   {
     id: 1,
-    title: "Loosing Weight",
-    description: "Join to blyat planms and pay your fucking money",
+    title: "Знищення жиру",
+    description:
+      "Забудь про зайве. Вогонь, піт, дефіцит. Готовий стати легшим — спочатку буде важко.",
     subDesc:
-      "Start your fitness journey with our Beginner Plan. Build a strong foundation with basic workouts and essential nutrition guidance.",
+      "Тренування на спалення жиру, контроль калорій, трекінг прогресу. Ти не просто худнеш — ти змінюєш себе.",
     imgUrl: hero.src,
   },
   {
     id: 2,
-    title: "Building Miscles",
-    description: "Join to blyat planms and pay your fucking money",
+    title: "М'язова дисципліна",
+    description:
+      "Це не “качалка для себе”. Це ріст через біль, залізо й повторення.",
     subDesc:
-      "Start your fitness journey with our Beginner Plan. Build a strong foundation with basic workouts and essential nutrition guidance.",
+      "Програма для набору маси. Сила, базові вправи, прогресивне навантаження. Твоє тіло змінюється — якщо ти не сачкуєш.",
     imgUrl: hero.src,
   },
   {
     id: 3,
-    title: "Training in Home",
-    description: "Join to blyat planms and pay your fucking money",
+    title: "Домашня зона бойових дій",
+    description:
+      "Немає залу? Не відмазуйся. Простір — будь-де, зброя — твоє тіло.",
     subDesc:
-      "Start your fitness journey with our Beginner Plan. Build a strong foundation with basic workouts and essential nutrition guidance.",
+      "Система домашніх тренувань без залу. Мінімум обладнання — максимум контролю. Жодних виправдань.",
     imgUrl: hero.src,
   },
   {
     id: 4,
-    title: "GYM Plan",
-    description: "Join to blyat planms and pay your fucking money",
+    title: "Жорстокість у спортзалі",
+    description: "Тільки зал. Тільки гантелі. Тільки брутальність.",
     subDesc:
-      "Start your fitness journey with our Beginner Plan. Build a strong foundation with basic workouts and essential nutrition guidance.",
+      "Тренування в залі з акцентом на техніку, силу, контроль і прогрес. Без селфі, без піз*дєжа — тільки результат.",
     imgUrl: hero.src,
   },
 ];
@@ -59,7 +62,7 @@ const Services = () => {
           color="var(--blue)"
           fontSize={{ xs: "3.5vh", md: "2rem" }}
         >
-          Our
+          Обери
         </Typography>{" "}
         <Typography
           component={"span"}
@@ -67,12 +70,13 @@ const Services = () => {
           color="var(--yellow)"
           fontSize={{ xs: "3.5vh", md: "2rem" }}
         >
-          Services
+          свій шлях
         </Typography>
       </Typography>
       <Typography variant="body1" fontSize={{ xs: "2vh", md: "1.5rem" }}>
-        At This Part You Can Easily access all of our servises. take a look at
-        them and chose wich ever you want.
+        Тут немає “послуг”. Тут є рішення. Ти або змінюєш себе, або далі живеш у
+        комфорті, що зжирає. Один клік — і ти вже в режимі. Обирай — і готуйся
+        до роботи.
       </Typography>
       <Grid
         marginTop={{ xs: "5vh", md: "1rem" }}

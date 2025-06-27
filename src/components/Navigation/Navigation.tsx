@@ -35,7 +35,7 @@ const Navigation = () => {
     router.push(href as string);
   };
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/login" });
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -116,31 +116,6 @@ const Navigation = () => {
               </AppLink>
             </ListItemButton>
           )}
-          {/* 
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
-        >
-          <ListItemIcon>
-            {
-              <ReactSVG
-                src={"/images/navigation/profile.svg"}
-                beforeInjection={(svg) => {
-                  svg.setAttribute(
-                    "style",
-                    "width: 24px; height: 24px; fill: currentColor"
-                  );
-                }}
-              />
-            }
-          </ListItemIcon>
-
-          <AppLink
-            href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/profile`}
-          >
-            Мої профіль
-          </AppLink>
-        </ListItemButton> */}
           <ListItemButton
             selected={selectedIndex === 1}
             onClick={handleSignOut}
@@ -164,15 +139,28 @@ const Navigation = () => {
         <BottomNavigation
           showLabels
           value={navValue}
-          onChange={(event, newValue) => setNavValue(newValue)}
-          sx={{ position: "fixed", bottom: 0, width: "100%", zIndex: 1000 }}
+          onChange={(_, newValue) => setNavValue(newValue)}
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            height: 64,
+            zIndex: 1000,
+            backgroundColor: "#fff",
+            borderTop: "1px solid #ccc",
+            boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.05)",
+          }}
         >
           <BottomNavigationAction
             label="Огляд"
             sx={{
-              ".MuiTypography-root": {
-                display: "flex",
-                alignItems: "center",
+              flexDirection: "column",
+              color: "inherit",
+              "& .MuiBottomNavigationAction-label": {
+                fontSize: "0.75rem",
+                marginTop: "4px",
+                fontWeight: 500,
               },
             }}
             icon={
@@ -191,9 +179,12 @@ const Navigation = () => {
             <BottomNavigationAction
               label="Kлієнти"
               sx={{
-                ".MuiTypography-root": {
-                  display: "flex",
-                  alignItems: "center",
+                flexDirection: "column",
+                color: "inherit",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  marginTop: "4px",
+                  fontWeight: 500,
                 },
               }}
               icon={
@@ -211,9 +202,12 @@ const Navigation = () => {
             <BottomNavigationAction
               label="Тренування"
               sx={{
-                ".MuiTypography-root": {
-                  display: "flex",
-                  alignItems: "center",
+                flexDirection: "column",
+                color: "inherit",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  marginTop: "4px",
+                  fontWeight: 500,
                 },
               }}
               icon={
@@ -232,9 +226,12 @@ const Navigation = () => {
           <BottomNavigationAction
             label="Logout"
             sx={{
-              ".MuiTypography-root": {
-                display: "flex",
-                alignItems: "center",
+              flexDirection: "column",
+              color: "inherit",
+              "& .MuiBottomNavigationAction-label": {
+                fontSize: "0.75rem",
+                marginTop: "4px",
+                fontWeight: 500,
               },
             }}
             onClick={handleSignOut}

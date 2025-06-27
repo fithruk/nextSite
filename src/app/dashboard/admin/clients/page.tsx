@@ -25,8 +25,10 @@ import CalendarComponent, {
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/uk";
 import { AppButton } from "@/components/UI/AppButton/AppButton";
-import { AbonDataTypes } from "../../workouts/page";
 import WorkoutCreator from "@/components/WorkoutCreator/WorkoutCreator";
+import { SlotInfo } from "react-big-calendar";
+import { AbonDataTypes, CombinedWorkoutData, Exercise } from "@/Types/types";
+import DisplayingPassedWorkouts from "@/components/DisplayingPassedWorkouts/DisplayingPassedWorkouts";
 dayjs.locale("uk");
 
 type ClientTypes = {
@@ -34,29 +36,6 @@ type ClientTypes = {
   email: string;
   id: string;
 };
-
-interface ExerciseStepDescription {
-  PhaseKey: number;
-  PhaseName: "prepearing" | "processing" | "technicalTips";
-  Instructions: string[];
-}
-
-interface ExerciseStep {
-  StepNameEng: string;
-  StepNameRu: string;
-  StepNameUa: string;
-  DescriptionsRu: ExerciseStepDescription[];
-  DescriptionsUa: ExerciseStepDescription[];
-}
-
-export interface Exercise {
-  ExerciseName: string;
-  ExerciseMuscleGroup: string;
-  Equipment: string;
-  Difficulty: "easy" | "medium" | "hard";
-  ImageUrl: string;
-  Steps: ExerciseStep[];
-}
 
 const Clients = () => {
   const session = useSession();
@@ -71,6 +50,9 @@ const Clients = () => {
   const [clientWorkouts, setClientWorkous] = useState<WorkoutEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<WorkoutEvent | null>(null);
   const [allExrecises, setAllExercises] = useState<Exercise[]>([]);
+  const [combinedWorkouts, setCombinedWorkouts] = useState<
+    CombinedWorkoutData[]
+  >([]);
   const [currentAbonement, setCurrentAbonement] =
     useState<AbonDataTypes | null>(null);
   const [abonDurationDates, setAbonDurationDates] = useState<{
@@ -180,6 +162,30 @@ const Clients = () => {
     }
   };
 
+  const handleSlotSelect = async (slotInfo: SlotInfo) => {
+    // console.log("Выбран диапазон:");
+    // console.log("Start:", slotInfo.start);
+    // console.log("End:", slotInfo.end);
+    // console.log("Все слоты:", slotInfo.slots);
+    // console.log("Действие:", slotInfo.action);
+
+    try {
+      const { data, status } = await apiService.post<CombinedWorkoutData[]>(
+        "/admin/getTimeRangeWorkoutData",
+        {
+          dateOfRangeStart: slotInfo.start,
+          dateOfRangeeEnd: slotInfo.end,
+          clientName: selectValue,
+        }
+      );
+      if (status === 200) {
+        setCombinedWorkouts(data);
+      }
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
   return (
     <Grid
       container
@@ -193,11 +199,11 @@ const Clients = () => {
     >
       <Grid
         size={{ xs: 12, md: 2 }}
-        sx={{
-          "@media(max-width: 600px)": {
-            padding: "2rem",
-          },
-        }}
+        // sx={{
+        //   "@media(max-width: 600px)": {
+        //     padding: "2rem",
+        //   },
+        // }}
       >
         <AppBox>
           <FormControl fullWidth>
@@ -242,11 +248,11 @@ const Clients = () => {
       </Grid>
       <Grid
         size={{ xs: 12, md: 6 }}
-        sx={{
-          "@media(max-width: 600px)": {
-            padding: "2rem",
-          },
-        }}
+        // sx={{
+        //   "@media(max-width: 600px)": {
+        //     padding: "2rem",
+        //   },
+        // }}
       >
         <AppBox>
           <Typography
@@ -264,6 +270,8 @@ const Clients = () => {
             events={clientWorkouts}
             selectedEvent={selectedEvent}
             onSelectEvent={onSelectEventHandler}
+            selectable
+            onSelectSlot={handleSlotSelect}
           />
           {selectValue && (
             <WorkoutCreator
@@ -272,6 +280,9 @@ const Clients = () => {
               name={selectValue}
               apiService={apiService}
             />
+          )}
+          {selectValue && (
+            <DisplayingPassedWorkouts workoutData={combinedWorkouts} />
           )}
         </AppBox>
       </Grid>

@@ -15,7 +15,12 @@ const RegistrationLayout = ({ children }: { children: React.ReactNode }) => {
           },
         }}
       >
-        <Grid container spacing={{ xs: 2, md: 4 }} flexGrow={1} margin="5rem">
+        <Grid
+          container
+          spacing={{ xs: 2, md: 4 }}
+          flexGrow={1}
+          margin={{ xs: "0.25rem", md: "15rem 5rem" }}
+        >
           <Grid
             size={{ xs: 12, md: 4 }}
             sx={{

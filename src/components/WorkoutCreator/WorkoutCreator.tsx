@@ -14,11 +14,11 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useState, MouseEvent, ChangeEvent, FormEvent } from "react";
+import { useState, MouseEvent, ChangeEvent, FormEvent, useEffect } from "react";
 import dayjs from "dayjs";
-import { Exercise } from "@/app/dashboard/admin/clients/page";
 import { AppButton } from "../UI/AppButton/AppButton";
 import ApiService from "@/app/apiService/apiService";
+import { Exercise, WorkoutTypes } from "@/Types/types";
 
 const initialState = {
   musclesGroup: "",
@@ -33,14 +33,6 @@ type WorkoutCreatorProps = {
   exercises: Exercise[];
   name: string;
   apiService: ApiService;
-};
-
-export type WorkoutTypes = {
-  musclesGroup: string;
-  exercise: string;
-  sets: number;
-  reps: number;
-  weight: number;
 };
 
 const WorkoutCreator = ({
@@ -105,6 +97,23 @@ const WorkoutCreator = ({
       alert((error as Error).message);
     }
   };
+
+  useEffect(() => {
+    if (dayjs(date).date() === dayjs(new Date()).date()) {
+      (async () => {
+        try {
+          const { data, status } = await apiService.get<WorkoutTypes[]>(
+            `/admin/getCurrentWorkoutPlan/${encodeURIComponent(name)}/${date}`
+          );
+          if (status === 200) {
+            setWorkoutExercises(data);
+          }
+        } catch (error) {
+          console.log((error as Error).message);
+        }
+      })();
+    }
+  }, [date]);
 
   return (
     <Paper

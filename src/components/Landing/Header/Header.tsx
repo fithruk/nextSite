@@ -18,30 +18,30 @@ import Hero from "../../../../public/images/hero.png";
 const cards = [
   {
     id: 1,
-    title: "96",
-    description: "Client Satisfaction.",
-    subDesc: "Our members love their results and experience",
+    title: "94%",
+    description: "Пройшли 3+ місяці тренувань",
+    subDesc: "Це не фастфуд. Це шлях. Ті, хто залишились — стали іншими.",
   },
   {
     id: 2,
-    title: "96",
-    description: "Client Satisfaction.",
-    subDesc: "Our members love their results and experience",
+    title: "87%",
+    description: "Повертаються вдруге",
+    subDesc: "Бо результат був. А ти не повертаєшся туди, де було даремно.",
   },
   {
     id: 3,
-    title: "96",
-    description: "Client Satisfaction.",
-    subDesc: "Our members love their results and experience",
+    title: "0% булшиту",
+    description: "Жодних «легких рішень»",
+    subDesc:
+      "Все через дисципліну, тренування і контроль. Хочеш магію — шукай інфоциганів.",
   },
   {
     id: 4,
-    title: "96",
-    description: "Client Satisfaction.",
-    subDesc: "Our members love their results and experience",
+    title: "100%",
+    description: "Контроль і відповідальність",
+    subDesc: "Ти або в грі, або зливаєш. Все фіксується. Все видно.",
   },
 ];
-
 enum ButtonsEnum {
   login = "Login",
   SignUp = "Sign up",
@@ -71,8 +71,8 @@ const Header = () => {
               overflow: "hidden",
 
               "@media(max-width: 600px)": {
-                height: "15rem",
-                width: "15rem",
+                height: "4rem",
+                width: "4rem",
               },
             }}
           >
@@ -115,7 +115,7 @@ const Header = () => {
             marginTop={{ xs: "", md: "1rem" }}
             color="var(--main-font-color)"
           >
-            Achive Your
+            Досягніть реальних
           </Typography>
           <Typography
             component={"h1"}
@@ -125,7 +125,7 @@ const Header = () => {
             fontWeight={900}
             textTransform={"uppercase"}
           >
-            Fitness Goals{" "}
+            Результатів
           </Typography>
           <Typography
             component={"h2"}
@@ -133,17 +133,17 @@ const Header = () => {
             marginTop={{ xs: "", md: "1rem" }}
             color="var(--main-font-color)"
           >
-            With FitMaker
+            за допомогою IronCode
           </Typography>
           <Typography
             component={"p"}
             marginTop={{ xs: "", md: "1rem" }}
             fontSize={{ xs: "2vh", md: "1rem" }}
           >
-            Join the Fitmaker community and transform your fitness journey. Our
-            expert coaches and personalized programs are designed to help you
-            achieve your goals and exceed your expectations. Ready to make a
-            change?
+            Вистачить гратись у фітнес. IronCode — це не мотивація, це система.
+            Жодних відмазок, тільки чіткий план, жорсткий контроль і підтримка,
+            яка не дасть здатися. Приєднуйся — або продовжуй шукати «чарівну
+            таблетку».
           </Typography>
           <Grid
             display={"flex"}
@@ -226,6 +226,13 @@ const Header = () => {
                     borderRight: "4px solid var(--blue)",
                   },
 
+                  "& .MuiCardContent-root": {
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "column",
+                  },
+
                   "@media(max-width: 600px)": {
                     "&:not(:last-child)": {
                       borderRight: "none",
@@ -254,6 +261,7 @@ const Header = () => {
                       variant="h5"
                       component="div"
                       fontSize={{ xs: "2.5vh", md: "1rem" }}
+                      alignSelf={"flex-start"}
                     >
                       <Typography
                         fontSize={{ xs: "3vh", md: "1.5rem" }}
