@@ -1,4 +1,9 @@
-export type InputNameTypes = "email" | "phone" | "password" | "name";
+export type InputNameTypes =
+  | "email"
+  | "phone"
+  | "password"
+  | "name"
+  | "telegram";
 
 type ResultOfValidate = {
   errorMessage?: string;
@@ -10,6 +15,7 @@ class TextFieldsValidaror {
     { key: "email", errMsg: "Невалідна адреса електронної пошти" },
     { key: "phone", errMsg: "Невалідний номер телефона" },
     { key: "name", errMsg: "Введіть ім'я і фамілію через пробел" },
+    { key: "telegram", errMsg: "Невалідний нікнейм телеграма" },
     {
       key: "password",
       errMsg: "Мінімальна довжина пароля повинна бути не менше 4 символів",
@@ -50,6 +56,18 @@ class TextFieldsValidaror {
     return nameArr.length >= 2; // Под вопросом
   }
 
+  private static IsValidTelegram(telegram: string): boolean {
+    telegram = telegram.trim();
+
+    if (telegram.startsWith("@")) {
+      telegram = telegram.slice(1);
+    }
+
+    const telegramRegex = /^[a-zA-Z][a-zA-Z0-9_]{4,31}$/;
+
+    return telegramRegex.test(telegram);
+  }
+
   static Validate(
     inputName: InputNameTypes,
     inputValue: string
@@ -66,6 +84,9 @@ class TextFieldsValidaror {
       }
       case "password": {
         return this.ValidateField(this.IsValidPassword, inputName, inputValue);
+      }
+      case "telegram": {
+        return this.ValidateField(this.IsValidTelegram, inputName, inputValue);
       }
 
       default:

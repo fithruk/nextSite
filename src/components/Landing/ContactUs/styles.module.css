@@ -1,0 +1,12 @@
+.errorMsg {
+  font-size: 1rem;
+  padding: 0.5rem;
+  color: brown;
+  border-radius: var(--border-radius-primary);
+}
+
+@media (max-width: 900px) {
+  .errorMsg {
+    font-size: 1.5vh;
+  }
+}

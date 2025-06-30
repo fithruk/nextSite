@@ -55,8 +55,27 @@ const faqItems = [
   },
   {
     question: "Як записатись?",
-    answer:
-      "Пиши в Telegram / Viber / Instagram або лишай заявку на сайті. Далі я включаюсь і ми починаємо.",
+    answer: (
+      <>
+        Пиши в Telegram —{" "}
+        <a
+          href="https://t.me/Death_rowww"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @Death_rowww
+        </a>
+        , Instagram —{" "}
+        <a
+          href="https://instagram.com/i_am_dominus"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          @i_am_dominus
+        </a>{" "}
+        або лишай заявку на сайті. Далі я включаюсь — і ми починаємо.
+      </>
+    ),
   },
 ];
 

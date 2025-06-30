@@ -3,6 +3,7 @@ import { Paper } from "@mui/material";
 import { AppBox } from "@/components/UI/AppBox/AppBox";
 import Services from "@/components/Landing/Services/Services";
 import Accordions from "@/components/Landing/FAQ/Accordions";
+import ContactUs from "@/components/Landing/ContactUs/ContactUs";
 
 export default function Landing() {
   return (
@@ -18,6 +19,7 @@ export default function Landing() {
         <LandingHeader />
         <Services />
         <Accordions />
+        <ContactUs />
       </AppBox>
     </Paper>
   );
