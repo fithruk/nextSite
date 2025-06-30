@@ -65,11 +65,7 @@ const Navigation = () => {
               }
             </ListItemIcon>
 
-            <AppLink
-              href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/overview`}
-            >
-              Огляд
-            </AppLink>
+            <AppLink href={`/dashboard/overview`}>Огляд</AppLink>
           </ListItemButton>
           {role === "admin" ? (
             <ListItemButton
@@ -87,11 +83,7 @@ const Navigation = () => {
                 }
               </ListItemIcon>
 
-              <AppLink
-                href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/admin/clients`}
-              >
-                Мої клієнти
-              </AppLink>
+              <AppLink href={`/dashboard/admin/clients`}>Мої клієнти</AppLink>
             </ListItemButton>
           ) : (
             <ListItemButton
@@ -109,11 +101,7 @@ const Navigation = () => {
                 }
               </ListItemIcon>
 
-              <AppLink
-                href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/workouts`}
-              >
-                Мої тренування
-              </AppLink>
+              <AppLink href={`/dashboard/workouts`}>Мої тренування</AppLink>
             </ListItemButton>
           )}
           <ListItemButton
@@ -172,7 +160,7 @@ const Navigation = () => {
               />
             }
             component={AppLink}
-            href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/overview`}
+            href={`/dashboard/overview`}
           />
 
           {role === "admin" ? (
@@ -196,7 +184,7 @@ const Navigation = () => {
                 />
               }
               component={AppLink}
-              href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/admin/clients`}
+              href={`/dashboard/admin/clients`}
             />
           ) : (
             <BottomNavigationAction
@@ -219,7 +207,7 @@ const Navigation = () => {
                 />
               }
               component={AppLink}
-              href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/workouts`}
+              href={`/dashboard/workouts`}
             />
           )}
 
