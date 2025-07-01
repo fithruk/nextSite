@@ -38,6 +38,10 @@ export const authConfig: AuthOptions = {
         password: { label: "password", type: "password", required: true },
       },
       async authorize(credentials) {
+        console.log(
+          process.env.NEXT_PUBLIC_SERVER_URL +
+            " console.log(process.env.NEXT_PUBLIC_SERVER_URL) "
+        );
         try {
           if (!credentials?.email || !credentials.password) return null;
           const auth = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!);
