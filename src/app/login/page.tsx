@@ -131,10 +131,7 @@ const LoginPage = () => {
               </AppBox>
               <AppButton type="submit">Увійти →</AppButton>
               <AppBox marginTop={"1rem"} textAlign={"center"}>
-                <AppLink
-                  color="#3F8CFF"
-                  href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/register/step_1`}
-                >
+                <AppLink color="#3F8CFF" href={`/register/step_1`}>
                   Немаєте облікового запису?
                 </AppLink>
               </AppBox>
