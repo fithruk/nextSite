@@ -29,6 +29,7 @@ import WorkoutCreator from "@/components/WorkoutCreator/WorkoutCreator";
 import { SlotInfo } from "react-big-calendar";
 import { AbonDataTypes, CombinedWorkoutData, Exercise } from "@/Types/types";
 import DisplayingPassedWorkouts from "@/components/DisplayingPassedWorkouts/DisplayingPassedWorkouts";
+import TableOfClients from "@/components/TableOfClients/TableOfClients";
 dayjs.locale("uk");
 
 type ClientTypes = {
@@ -284,6 +285,7 @@ const Clients = () => {
           {selectValue && (
             <DisplayingPassedWorkouts workoutData={combinedWorkouts} />
           )}
+          <TableOfClients apiService={apiService} />
         </AppBox>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>

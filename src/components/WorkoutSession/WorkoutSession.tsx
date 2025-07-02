@@ -277,6 +277,7 @@ const ExerciseSession = ({
     });
     if (status === 200) {
       removeItem("workout");
+      alert("Тренування збережено");
     }
     console.log(status + " status /workouts/saveWorkoutResults");
   };

@@ -51,7 +51,7 @@ const RegisterStep_1 = () => {
     });
 
     if (errors.length === 0) {
-      router.push(`${process.env.NEXT_PUBLIC_CLIENT_URL}/register/step_2`);
+      router.push(`/register/step_2`);
     }
   };
 
@@ -65,11 +65,6 @@ const RegisterStep_1 = () => {
       e.currentTarget.value.toLowerCase() as keyof FormDataTypes[typeof currentStep]
     );
   };
-
-  // height: 100%;
-  //     display: flex
-  // ;
-  //     justify-content: space-between;
 
   return (
     <AppBox borderRadius={"1.6rem"} flexGrow={1}>
