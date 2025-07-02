@@ -24,6 +24,7 @@ import {
   WorkoutTypes,
 } from "@/Types/types";
 import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
+import dayjs from "dayjs";
 
 type ExerciseItemTypes = {
   item: WorkoutTypes;
@@ -145,7 +146,10 @@ const ExerciseItem = ({
         </Box>
         {isOpen && (
           <Box mt={2}>
-            <Grid container>
+            <Grid container display={"flex"} alignItems={"center"}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <ExerciseDetails exercise={targetExercise!} locale="ua" />
+              </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 {Array.from({ length: item.sets }).map((_, i) => (
                   <Grid container key={i} display="flex" gap={2} mb={1}>
@@ -229,9 +233,6 @@ const ExerciseItem = ({
                   </Grid>
                 ))}
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <ExerciseDetails exercise={targetExercise!} locale="ua" />
-              </Grid>
             </Grid>
           </Box>
         )}
@@ -291,7 +292,7 @@ const ExerciseSession = ({
       {" "}
       {items.length > 0 ? (
         <Typography color="info" variant="h4">
-          План тренування на сьогодні
+          План тренування на {dayjs(eventDate).format("DD.MM.YYYY")}
         </Typography>
       ) : (
         ""
