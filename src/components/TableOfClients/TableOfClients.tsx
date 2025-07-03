@@ -282,7 +282,7 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   useEffect(() => {
     (async () => {
       const { data, status } = await apiService.post<CompliteAbonementType[]>(
-        `/admin/GetTodayClientsAbonements`,
+        `/admin/getTodayClientsAbonements`,
         {
           todaysDate: new Date().toISOString(),
         }
