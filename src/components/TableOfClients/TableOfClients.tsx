@@ -284,7 +284,7 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
       const { data, status } = await apiService.post<CompliteAbonementType[]>(
         `/admin/GetTodayClientsAbonements`,
         {
-          todaysDate: new Date(),
+          todaysDate: new Date().toISOString(),
         }
       );
 
