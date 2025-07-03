@@ -282,7 +282,9 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   useEffect(() => {
     (async () => {
       const { data, status } = await apiService.get<CompliteAbonementType[]>(
-        `/admin/GetTodayClientsAbonements/${new Date().toISOString()}`
+        `/admin/GetTodayClientsAbonements/${dayjs(new Date()).format(
+          "DD.MM.YYYY"
+        )}`
       );
 
       if (status === 200) {

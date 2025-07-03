@@ -285,7 +285,7 @@ const Clients = () => {
           {selectValue && (
             <DisplayingPassedWorkouts workoutData={combinedWorkouts} />
           )}
-          {/* <TableOfClients apiService={apiService} /> */}
+          <TableOfClients apiService={apiService} />
         </AppBox>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
