@@ -27,10 +27,11 @@ dayjs.extend(utc);
 type Order = "asc" | "desc";
 
 type Data = {
-  clientName: string;
+  name: string;
   date: Date;
   abonementDuration: number;
   dateOfCreation: Date;
+  dateOfLastActivation: Date;
 };
 
 type CompliteAbonementType = Data;
@@ -41,9 +42,10 @@ type TableOfClientsProps = {
 
 const headCells = [
   { id: "date", label: "Час" },
-  { id: "clientName", label: "Клієнт" },
-  { id: "abonementDuration", label: "Тривалість", numeric: true },
+  { id: "name", label: "Клієнт" },
+  { id: "abonementDuration", label: "Залишилось занять", numeric: true },
   { id: "dateOfCreation", label: "Створено" },
+  { id: "editedToday", label: "Треніровка була списана" },
 ];
 
 function getComparator<K extends keyof Data>(
@@ -54,6 +56,14 @@ function getComparator<K extends keyof Data>(
     ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
     : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
 }
+
+const normalizeName = (name: string): string =>
+  name
+    .toLowerCase()
+    .trim()
+    .split(/\s+/) // разбиваем по пробелам (включая лишние)
+    .sort()
+    .join(" ");
 
 const EnhancedTableHead = ({
   onSelectAllClick,
@@ -82,7 +92,7 @@ const EnhancedTableHead = ({
 
   const isAllSelected =
     visibleRows.length > 0 &&
-    visibleRows.every((row) => selected.includes(row.clientName));
+    visibleRows.every((row) => selected.includes(row.name));
 
   return (
     <TableHead>
@@ -146,9 +156,12 @@ const EnhancedTableToolbar = ({
       );
       if (status === 200) {
         alert(`Status ${status}`);
-        console.log(data);
+        const normalizeNameArray = data.map((ab) => ({
+          ...ab,
+          name: normalizeName(ab.name),
+        }));
 
-        updateClientsAbonementsAfterActivate(data);
+        updateClientsAbonementsAfterActivate(normalizeNameArray);
       }
     } catch (error) {
       alert((error as Error).message);
@@ -201,7 +214,7 @@ const EnhancedTableToolbar = ({
 
 const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Data>("clientName");
+  const [orderBy, setOrderBy] = useState<keyof Data>("name");
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -217,7 +230,7 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = visibleRows.map((row) => row.clientName);
+      const newSelected = visibleRows.map((row) => row.name);
       setSelected(newSelected);
     } else {
       setSelected([]);
@@ -227,17 +240,26 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   const updateClientsAbonementsAfterActivate = (
     newAbonements: CompliteAbonementType[]
   ) => {
-    setClientsAbonements(newAbonements);
+    setClientsAbonements((data) => {
+      return data.map((ab) => {
+        const newData = newAbonements.find((abon) => abon.name === ab.name);
+        if (!newData) return ab; // если не нашли — вернём как есть
+        return {
+          ...newData,
+          date: ab.date,
+        };
+      });
+    });
   };
 
-  const handleClick = (_: MouseEvent<unknown>, clientName: string) => {
-    const selectedIndex = selected.indexOf(clientName);
+  const handleClick = (_: MouseEvent<unknown>, name: string) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = [...selected, clientName];
+      newSelected = [...selected, name];
     } else {
-      newSelected = selected.filter((name) => name !== clientName);
+      newSelected = selected.filter((name) => name !== name);
     }
     setSelected(newSelected);
   };
@@ -265,7 +287,11 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
       );
 
       if (status === 200) {
-        setClientsAbonements(data);
+        const normalizeNameArray = data.map((ab) => ({
+          ...ab,
+          name: normalizeName(ab.name),
+        }));
+        setClientsAbonements(normalizeNameArray);
       }
     })();
   }, []);
@@ -300,15 +326,16 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
             />
             <TableBody>
               {visibleRows.map((row) => {
-                const isItemSelected = selected.includes(row.clientName);
+                const isItemSelected = selected.includes(row.name);
+
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.clientName)}
+                    onClick={(event) => handleClick(event, row.name)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.clientName}
+                    key={row.name}
                     selected={isItemSelected}
                   >
                     <TableCell padding="checkbox">
@@ -323,10 +350,13 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
                       />
                     </TableCell>
                     <TableCell>{dayjs.utc(row.date).format("HH:mm")}</TableCell>
-                    <TableCell>{row.clientName}</TableCell>
+                    <TableCell>{row.name}</TableCell>
                     <TableCell align="right">{row.abonementDuration}</TableCell>
                     <TableCell>
-                      {new Date(row.dateOfCreation).toLocaleDateString()}
+                      {dayjs(row.dateOfCreation).format("DD.MM.YYYY")}
+                    </TableCell>
+                    <TableCell align="right">
+                      {dayjs(row.dateOfLastActivation).format("DD.MM.YYYY")}
                     </TableCell>
                   </TableRow>
                 );
