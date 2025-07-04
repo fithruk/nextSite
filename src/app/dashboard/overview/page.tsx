@@ -20,11 +20,9 @@ const Overview = () => {
             height={350}
             style={{ marginBottom: "1rem" }}
           />
-          <AppLink
-            href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/dashboard/workouts`}
-          >
+          {/* <AppLink href={`/dashboard/workouts`}>
             Перейти на сторінку календаря
-          </AppLink>
+          </AppLink> */}
         </AppBox>
       </Grid>
       {/* <Grid size={{ sm: 12, md: 2 }}>Aside</Grid> */}
