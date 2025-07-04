@@ -1,7 +1,5 @@
 import {
   Box,
-  Checkbox,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -11,107 +9,80 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Checkbox,
   Toolbar,
-  Tooltip,
   Typography,
+  Tooltip,
+  IconButton,
 } from "@mui/material";
-import { ChangeEvent, MouseEvent, useEffect, useMemo, useState } from "react";
-import { visuallyHidden } from "@mui/utils";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { ChangeEvent, MouseEvent, useEffect, useMemo, useState } from "react";
 import { alpha } from "@mui/material/styles";
-import ApiService from "@/app/apiService/apiService";
 import dayjs from "dayjs";
-
 import utc from "dayjs/plugin/utc";
-
-import timezone from "dayjs/plugin/timezone";
-
-dayjs.extend(timezone);
+import ApiService from "@/app/apiService/apiService";
 dayjs.extend(utc);
 
 type Order = "asc" | "desc";
 
-interface Data {
+type Data = {
+  clientName: string;
   date: Date;
   abonementDuration: number;
   dateOfCreation: Date;
-  name: string;
-  clientName: string;
-}
+};
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) return -1;
-  if (b[orderBy] > a[orderBy]) return 1;
-  return 0;
-}
+type CompliteAbonementType = Data;
 
-function getComparator<Key extends PropertyKey>(
-  order: Order,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string | Date },
-  b: { [key in Key]: number | string | Date }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
+type TableOfClientsProps = {
+  apiService: ApiService;
+};
 
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: readonly HeadCell[] = [
-  { id: "date", numeric: false, disablePadding: true, label: "Time" },
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: false,
-    label: "Клієнт",
-  },
-  {
-    id: "abonementDuration",
-    numeric: true,
-    disablePadding: false,
-    label: "Тривалість (днів)",
-  },
-  {
-    id: "dateOfCreation",
-    numeric: false,
-    disablePadding: false,
-    label: "Дата створення",
-  },
+const headCells = [
+  { id: "date", label: "Час" },
+  { id: "clientName", label: "Клієнт" },
+  { id: "abonementDuration", label: "Тривалість", numeric: true },
+  { id: "dateOfCreation", label: "Створено" },
 ];
 
-interface EnhancedTableProps {
+function getComparator<K extends keyof Data>(
+  order: Order,
+  orderBy: K
+): (a: Data, b: Data) => number {
+  return order === "desc"
+    ? (a, b) => (b[orderBy] < a[orderBy] ? -1 : 1)
+    : (a, b) => (a[orderBy] < b[orderBy] ? -1 : 1);
+}
+
+const EnhancedTableHead = ({
+  onSelectAllClick,
+  order,
+  orderBy,
+  onRequestSort,
+  visibleRows,
+  selected,
+}: {
   numSelected: number;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
     property: keyof Data
   ) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  onSelectAllClick: (event: ChangeEvent<HTMLInputElement>) => void;
+  visibleRows: CompliteAbonementType[];
+  selected: string[];
+}) => {
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Data) => (event: MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
+
+  const isAllSelected =
+    visibleRows.length > 0 &&
+    visibleRows.every((row) => selected.includes(row.clientName));
 
   return (
     <TableHead>
@@ -119,43 +90,71 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
+            indeterminate={
+              selected.length > 0 && selected.length < visibleRows.length
+            }
+            checked={isAllSelected}
             onChange={onSelectAllClick}
+            sx={{
+              "&.Mui-checked": {
+                color: "var(--blue)",
+              },
+            }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
+              onClick={createSortHandler(headCell.id as keyof Data)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
             </TableSortLabel>
           </TableCell>
         ))}
       </TableRow>
     </TableHead>
   );
-}
+};
 
-interface EnhancedTableToolbarProps {
+const EnhancedTableToolbar = ({
+  numSelected,
+  selected,
+  apiService,
+  updateClientsAbonementsAfterActivate,
+}: {
   numSelected: number;
-}
+  selected: string[];
+  apiService: ApiService;
+  updateClientsAbonementsAfterActivate: (
+    newAbonements: CompliteAbonementType[]
+  ) => void;
+}) => {
+  const onActivateWorkoutHandler = async () => {
+    console.log("Активировать для:", selected);
+    try {
+      const { data, status } = await apiService.put<CompliteAbonementType[]>(
+        "/admin/updateAbonements",
+        {
+          names: selected,
+        }
+      );
+      if (status === 200) {
+        alert(`Status ${status}`);
+        console.log(data);
 
-function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+        updateClientsAbonementsAfterActivate(data);
+      }
+    } catch (error) {
+      alert((error as Error).message);
+    }
+  };
+
   return (
     <Toolbar
       sx={[
@@ -170,65 +169,47 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       ]}
     >
       {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} обрано
-        </Typography>
+        <>
+          <Typography
+            sx={{ flex: "1 1 100%" }}
+            color="inherit"
+            variant="subtitle1"
+          >
+            {numSelected} обрано
+          </Typography>
+          <Tooltip title="Активувати тренування">
+            <IconButton onClick={onActivateWorkoutHandler}>
+              <AttachMoneyIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
-        <Typography sx={{ flex: "1 1 100%" }} variant="h6" component="div">
-          Клієнти на сьогодні
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Typography sx={{ flex: "1 1 100%" }} variant="h6">
+            Клієнти на сьогодні {dayjs(new Date()).format("DD.MM.YYYY")}
+          </Typography>
+          <Tooltip title="Фільтр">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       )}
     </Toolbar>
   );
-}
-
-type CompliteAbonementType = {
-  date: Date;
-  abonementDuration: number;
-  dateOfCreation: Date;
-  name: string;
-  clientName: string;
-};
-
-type TableOfClientsProps = {
-  apiService: ApiService;
 };
 
 const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Data>("clientName");
-  const [selected, setSelected] = useState<readonly number[]>([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [clientsAbonements, setClientsAbonements] = useState<
     CompliteAbonementType[]
   >([]);
 
-  console.log(clientsAbonements);
-
-  const handleRequestSort = (
-    event: MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
+  const handleRequestSort = (_: MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -236,21 +217,27 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
 
   const handleSelectAllClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = clientsAbonements.map((_, i) => i);
+      const newSelected = visibleRows.map((row) => row.clientName);
       setSelected(newSelected);
-      return;
+    } else {
+      setSelected([]);
     }
-    setSelected([]);
   };
 
-  const handleClick = (event: MouseEvent<unknown>, index: number) => {
-    const selectedIndex = selected.indexOf(index);
-    let newSelected: readonly number[] = [];
+  const updateClientsAbonementsAfterActivate = (
+    newAbonements: CompliteAbonementType[]
+  ) => {
+    setClientsAbonements(newAbonements);
+  };
+
+  const handleClick = (_: MouseEvent<unknown>, clientName: string) => {
+    const selectedIndex = selected.indexOf(clientName);
+    let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = [...selected, index];
+      newSelected = [...selected, clientName];
     } else {
-      newSelected = selected.filter((i) => i !== index);
+      newSelected = selected.filter((name) => name !== clientName);
     }
     setSelected(newSelected);
   };
@@ -264,47 +251,47 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
     setPage(0);
   };
 
-  const handleChangeDense = (event: ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
+  const visibleRows = useMemo(() => {
+    return [...clientsAbonements]
+      .sort(getComparator(order, orderBy))
+      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  }, [clientsAbonements, order, orderBy, page, rowsPerPage]);
+
+  useEffect(() => {
+    (async () => {
+      const { data, status } = await apiService.post<CompliteAbonementType[]>(
+        `/admin/getTodayClientsAbonements`,
+        { todaysDate: new Date().toISOString() }
+      );
+
+      if (status === 200) {
+        setClientsAbonements(data);
+      }
+    })();
+  }, []);
 
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - clientsAbonements.length)
       : 0;
 
-  const visibleRows = useMemo(() => {
-    return [...clientsAbonements]
-      .sort(getComparator(order, orderBy))
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-  }, [order, orderBy, page, rowsPerPage, clientsAbonements]);
-
-  useEffect(() => {
-    (async () => {
-      const { data, status } = await apiService.post<CompliteAbonementType[]>(
-        `/admin/getTodayClientsAbonements`,
-        {
-          todaysDate: new Date().toISOString(),
-        }
-      );
-
-      if (status === 200) {
-        // const withIds = data.map((item, index) => ({ ...item, id: index }));
-        console.log(data);
-
-        setClientsAbonements(data);
-      }
-    })();
-  }, []);
-
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          selected={selected}
+          apiService={apiService}
+          updateClientsAbonementsAfterActivate={
+            updateClientsAbonementsAfterActivate
+          }
+        />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>
+          <Table sx={{ minWidth: 750 }}>
             <EnhancedTableHead
               numSelected={selected.length}
+              selected={selected}
+              visibleRows={visibleRows}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
@@ -312,36 +299,30 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
               rowCount={clientsAbonements.length}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = selected.includes(index);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
+              {visibleRows.map((row) => {
+                const isItemSelected = selected.includes(row.clientName);
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, index)}
+                    onClick={(event) => handleClick(event, row.clientName)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={index}
+                    key={row.clientName}
                     selected={isItemSelected}
-                    sx={{ cursor: "pointer" }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
-                        inputProps={{ "aria-labelledby": labelId }}
+                        sx={{
+                          "&.Mui-checked": {
+                            color: "var(--blue)",
+                          },
+                        }}
                       />
                     </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {dayjs.utc(row.date).format("HH:mm")}
-                    </TableCell>
+                    <TableCell>{dayjs.utc(row.date).format("HH:mm")}</TableCell>
                     <TableCell>{row.clientName}</TableCell>
                     <TableCell align="right">{row.abonementDuration}</TableCell>
                     <TableCell>
@@ -351,7 +332,7 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
                 );
               })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

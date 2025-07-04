@@ -452,6 +452,14 @@ const Clients = () => {
                   backgroundColor: "var(--blue)",
                 }}
               />
+              {/* <SnackbarContent
+                message={<TableOfClients apiService={apiService} />}
+                sx={{
+                  marginTop: "1rem",
+                  borderRadius: "1rem",
+                  backgroundColor: "var(--blue)",
+                }}
+              /> */}
             </Stack>
           ) : (
             <Stack>

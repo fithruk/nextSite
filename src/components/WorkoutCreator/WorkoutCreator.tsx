@@ -126,7 +126,7 @@ const WorkoutCreator = ({
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 12 }} marginTop={{ xs: "5vh", md: "2rem" }}>
             {" "}
-            Нове тренування для {name} {dayjs(date).format("DD.MM.YYYY.HH:mm")}
+            Нове тренування для {name} {dayjs(date).format("DD.MM.YYYY")}
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
