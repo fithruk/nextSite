@@ -14,7 +14,16 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
       <Grid size={{ md: 2 }}>
         <Navigation />
       </Grid>
-      <Grid size={{ xs: 12, md: 10 }}>{children}</Grid>
+      <Grid
+        size={{ xs: 12, md: 10 }}
+        sx={{
+          "@media(max-width:600px)": {
+            marginBottom: "5vh",
+          },
+        }}
+      >
+        {children}
+      </Grid>
     </Grid>
   );
 };
