@@ -143,9 +143,9 @@ const Services = () => {
                       color="text.secondary"
                       fontSize={{ xs: "1.5vh", md: "1rem" }}
                     >
-                      <AppLink href={"#"} style={{ alignSelf: "flex-end" }}>
+                      {/* <AppLink href={"#"} style={{ alignSelf: "flex-end" }}>
                         Learn more{" "}
-                      </AppLink>
+                      </AppLink> */}
                     </Typography>
                   </CardContent>
                 </Grid>
