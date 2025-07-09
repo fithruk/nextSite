@@ -67,12 +67,10 @@ const PlanCard = ({
         padding: {
           xs: "1vh",
           md: "1rem",
-          flexDirection: "column",
-
-          display: "flex",
-
-          justifyContent: "space-between",
         },
+        flexDirection: "column",
+        display: "flex",
+        justifyContent: "space-between",
       }}
     >
       <CardContent>
