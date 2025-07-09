@@ -68,9 +68,10 @@ const PlanCard = ({
           xs: "1vh",
           md: "1rem",
         },
-        flexDirection: "column",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "space-between",
+        height: "100%",
       }}
     >
       <CardContent>
@@ -128,6 +129,7 @@ const OurPlans = ({ scrollToContact }: OurPlansProps) => {
     <Paper
       sx={{
         margin: { xs: "1vh", md: "1rem" },
+        padding: { xs: "1vh", md: "1rem" },
       }}
     >
       <Typography textAlign={"center"}>
@@ -140,7 +142,7 @@ const OurPlans = ({ scrollToContact }: OurPlansProps) => {
           Без мотивації. Тільки дія, система і контроль
         </Typography>
       </Typography>
-      <Grid container margin={{ xs: "1vh", md: "1rem" }}>
+      <Grid container padding={{ xs: "1vh", md: "1rem" }}>
         {cardsContent.map((card, i) => (
           <Grid key={i} size={{ xs: 12, md: 4 }}>
             <PlanCard onClick={scrollToContact} {...card} />
