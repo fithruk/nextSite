@@ -113,7 +113,7 @@ const WorkoutCreator = ({
         }
       })();
     }
-  }, [date]);
+  }, [date, name]);
 
   return (
     <Paper

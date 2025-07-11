@@ -77,7 +77,9 @@ const Clients = () => {
         );
         if (status === 200) {
           setClients(
-            data.users.filter((client) => client.name !== "белов сергей")
+            data.users
+              .filter((client) => client.name !== "белов сергей")
+              .sort((a, b) => a.name.localeCompare(b.name))
           );
         }
       } catch (error) {
@@ -198,14 +200,7 @@ const Clients = () => {
         },
       }}
     >
-      <Grid
-        size={{ xs: 12, md: 2 }}
-        // sx={{
-        //   "@media(max-width: 600px)": {
-        //     padding: "2rem",
-        //   },
-        // }}
-      >
+      <Grid size={{ xs: 12, md: 2 }}>
         <AppBox>
           <FormControl fullWidth>
             <InputLabel
@@ -247,14 +242,7 @@ const Clients = () => {
           </FormControl>
         </AppBox>
       </Grid>
-      <Grid
-        size={{ xs: 12, md: 6 }}
-        // sx={{
-        //   "@media(max-width: 600px)": {
-        //     padding: "2rem",
-        //   },
-        // }}
-      >
+      <Grid size={{ xs: 12, md: 6 }}>
         <AppBox>
           <Typography
             variant="h2"
