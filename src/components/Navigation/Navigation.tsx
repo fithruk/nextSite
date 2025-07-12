@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   useMediaQuery,
   BottomNavigationAction,
+  Grid,
 } from "@mui/material";
 import AppLink from "../UI/AppLink/AppLink";
 import { useState, MouseEvent } from "react";
@@ -138,6 +139,10 @@ const Navigation = () => {
             backgroundColor: "#fff",
             borderTop: "1px solid #ccc",
             boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.05)",
+
+            "& .Mui-selected": {
+              color: "var(--blue)",
+            },
           }}
         >
           <BottomNavigationAction
@@ -152,12 +157,24 @@ const Navigation = () => {
               },
             }}
             icon={
-              <ReactSVG
-                src={"/images/navigation/overview.svg"}
-                beforeInjection={(svg) => {
-                  svg.setAttribute("class", styles.icon);
-                }}
-              />
+              <Grid
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <ReactSVG
+                  src="/images/navigation/overview.svg"
+                  beforeInjection={(svg) => {
+                    svg.setAttribute("class", styles.icon);
+                    svg
+                      .querySelectorAll("[fill]")
+                      .forEach((el) => el.removeAttribute("fill"));
+                    svg
+                      .querySelectorAll("path")
+                      .forEach((el) => el.setAttribute("fill", "currentColor"));
+                  }}
+                />
+              </Grid>
             }
             component={AppLink}
             href={`/dashboard/overview`}
@@ -176,12 +193,18 @@ const Navigation = () => {
                 },
               }}
               icon={
-                <ReactSVG
-                  src={"/images/navigation/clients.svg"}
-                  beforeInjection={(svg) => {
-                    svg.setAttribute("class", styles.icon);
-                  }}
-                />
+                <Grid
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ReactSVG
+                    src={"/images/navigation/clients.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                </Grid>
               }
               component={AppLink}
               href={`/dashboard/admin/clients`}
@@ -199,12 +222,18 @@ const Navigation = () => {
                 },
               }}
               icon={
-                <ReactSVG
-                  src={"/images/navigation/workout.svg"}
-                  beforeInjection={(svg) => {
-                    svg.setAttribute("class", styles.icon);
-                  }}
-                />
+                <Grid
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ReactSVG
+                    src={"/images/navigation/workout.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                </Grid>
               }
               component={AppLink}
               href={`/dashboard/workouts`}
@@ -224,12 +253,19 @@ const Navigation = () => {
             }}
             onClick={handleSignOut}
             icon={
-              <ReactSVG
-                src={"/images/navigation/profile.svg"}
-                beforeInjection={(svg) => {
-                  svg.setAttribute("class", styles.icon);
-                }}
-              />
+              <Grid
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                {" "}
+                <ReactSVG
+                  src={"/images/navigation/profile.svg"}
+                  beforeInjection={(svg) => {
+                    svg.setAttribute("class", styles.icon);
+                  }}
+                />
+              </Grid>
             }
             component={AppLink}
             href="#"

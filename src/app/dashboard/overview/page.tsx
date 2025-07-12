@@ -35,14 +35,6 @@ const Overview = () => {
             аналітику. Тренуйся, заповнюй тренування — і статистика з’явиться
             автоматично.
           </Typography>
-
-          <AppButton
-            sx={{ marginTop: "2rem" }}
-            href="/dashboard/workouts"
-            variant="outlined"
-          >
-            Перейти до календаря тренувань
-          </AppButton>
         </AppBox>
       </Grid>
     </>
