@@ -156,6 +156,8 @@ const Workouts = () => {
           setAbonData({
             abonementDuration: abonementRes.data.abonement.abonementDuration,
             dateOfCreation: abonementRes.data.abonement.dateOfCreation,
+            dateOfLastActivation:
+              abonementRes.data.abonement.dateOfLastActivation,
           });
         }
       } catch (err) {
