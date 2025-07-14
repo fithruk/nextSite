@@ -356,7 +356,9 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
                       {dayjs(row.dateOfCreation).format("DD.MM.YYYY")}
                     </TableCell>
                     <TableCell align="right">
-                      {dayjs(row.dateOfLastActivation).format("DD.MM.YYYY")}
+                      {row.dateOfLastActivation
+                        ? dayjs(row.dateOfLastActivation).format("DD.MM.YYYY")
+                        : "Тренування ще не було"}
                     </TableCell>
                   </TableRow>
                 );

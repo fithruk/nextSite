@@ -25,6 +25,7 @@ export type WplanRespTypes = {
 export type AbonDataTypes = {
   abonementDuration: number;
   dateOfCreation: Date;
+  dateOfLastActivation: Date | null;
 };
 
 export type ExerciseResult = {

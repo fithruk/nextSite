@@ -123,6 +123,7 @@ const Clients = () => {
         setCurrentAbonement({
           abonementDuration: abonement.data.abonement.abonementDuration,
           dateOfCreation: abonement.data.abonement.dateOfCreation,
+          dateOfLastActivation: null,
         });
       }
       if (exercises.status === 200) {

@@ -26,6 +26,7 @@ import {
   WorkoutTypes,
   WplanRespTypes,
 } from "@/Types/types";
+import EndedAbonement from "@/components/EndedAbonement/EndedAbonement";
 
 type WorkoutEvent = {
   title: string;
@@ -177,108 +178,96 @@ const Workouts = () => {
 
   const isRenderTable = wPlan.length > 0;
 
-  return (
-    <Grid
-      container
-      spacing={{ xs: 2, sm: 2, md: 4 }}
-      sx={{
-        minHeight: "100vh",
-        "@media(max-width:600px)": {
-          minHeight: "max-content",
-        },
-      }}
-    >
-      <Grid size={{ xs: 12, md: 8 }}>
-        {" "}
-        <AppBox>
-          <CalendarComponent
-            events={events}
-            selectedEvent={selectedEvent}
-            onSelectEvent={onSelectEventHandler}
-          />
-          <Divider sx={{ margin: "2rem 0" }} />
-          {isPastWorkout && isRenderTable ? (
-            <PassedWorkout
-              apiService={apiService}
-              eventDate={selectedEvent?.start ?? new Date()}
-              name={name ?? ""}
+  {
+    return abonData?.abonementDuration === 0 ? (
+      <EndedAbonement
+        clientName={name ?? ""}
+        workoutsLeft={abonData?.abonementDuration}
+        dateOfLastWorkout={abonData.dateOfLastActivation}
+      />
+    ) : (
+      <Grid
+        container
+        spacing={{ xs: 2, sm: 2, md: 4 }}
+        sx={{
+          minHeight: "100vh",
+          "@media(max-width:600px)": {
+            minHeight: "max-content",
+          },
+        }}
+      >
+        <Grid size={{ xs: 12, md: 8 }}>
+          {" "}
+          <AppBox>
+            <CalendarComponent
+              events={events}
+              selectedEvent={selectedEvent}
+              onSelectEvent={onSelectEventHandler}
             />
-          ) : (
-            <WorkoutSession
-              exercises={wPlan}
-              exLibrary={exLibrary}
-              setsAndValuesResults={setsAndValuesResults}
-              apiService={apiService}
-              eventDate={selectedEvent?.start}
-              name={name ?? ""}
-              addNewSetHandler={addNewSetHandler}
-            />
-          )}
-        </AppBox>
-      </Grid>
-      <Grid size={{ xs: 12, md: 4 }}>
-        <AppBox>
-          <Stack spacing={2}>
-            <SnackbarContent
-              component={"h1"}
-              message="Загальна інформація:"
-              sx={{
-                marginTop: "1rem",
-                borderRadius: "1rem",
-                backgroundColor: "var(--blue)",
+            <Divider sx={{ margin: "2rem 0" }} />
+            {isPastWorkout && isRenderTable ? (
+              <PassedWorkout
+                apiService={apiService}
+                eventDate={selectedEvent?.start ?? new Date()}
+                name={name ?? ""}
+              />
+            ) : (
+              <WorkoutSession
+                exercises={wPlan}
+                exLibrary={exLibrary}
+                setsAndValuesResults={setsAndValuesResults}
+                apiService={apiService}
+                eventDate={selectedEvent?.start}
+                name={name ?? ""}
+                addNewSetHandler={addNewSetHandler}
+              />
+            )}
+          </AppBox>
+        </Grid>
+        <Grid size={{ xs: 12, md: 4 }}>
+          <AppBox>
+            <Stack spacing={2}>
+              <SnackbarContent
+                component={"h1"}
+                message="Загальна інформація:"
+                sx={{
+                  marginTop: "1rem",
+                  borderRadius: "1rem",
+                  backgroundColor: "var(--blue)",
 
-                "@media(max-width: 600px)": {
-                  ".MuiSnackbarContent-message": { fontSize: "4vw" },
-                },
-              }}
-            />
-            <SnackbarContent
-              sx={{
-                borderRadius: "1rem",
-                backgroundColor: "var(--blue)",
-
-                "@media(max-width: 600px)": {
-                  ".MuiSnackbarContent-message": {
-                    display: "block",
-                    width: "100%",
+                  "@media(max-width: 600px)": {
+                    ".MuiSnackbarContent-message": { fontSize: "4vw" },
                   },
+                }}
+              />
+              <SnackbarContent
+                sx={{
+                  borderRadius: "1rem",
+                  backgroundColor: "var(--blue)",
 
-                  ".MuiSnackbarContent-message .MuiTypography-root": {
-                    fontSize: "4vw",
-                    whiteSpace: "normal",
-                    wordBreak: "break-word",
-                    overflowWrap: "break-word",
-                  },
-                },
-              }}
-              message={
-                <Typography component={"h4"}>
-                  Дата початку поточного абонементу:{" "}
-                  {dayjs(abonData?.dateOfCreation)
-                    .toDate()
-                    .toLocaleDateString()}
-                </Typography>
-              }
-            />
-            <SnackbarContent
-              sx={{
-                borderRadius: "1rem",
-                backgroundColor: "var(--blue)",
+                  "@media(max-width: 600px)": {
+                    ".MuiSnackbarContent-message": {
+                      display: "block",
+                      width: "100%",
+                    },
 
-                "@media(max-width: 600px)": {
-                  ".MuiSnackbarContent-message .MuiTypography-root": {
-                    fontSize: "4vw",
+                    ".MuiSnackbarContent-message .MuiTypography-root": {
+                      fontSize: "4vw",
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                    },
                   },
-                },
-              }}
-              message={
-                <Typography component={"h4"}>
-                  Кількість тренувань, які залишилися:{" "}
-                  {abonData?.abonementDuration}
-                </Typography>
-              }
-            />
-            {events[0] && (
+                }}
+                message={
+                  <Typography component={"h4"}>
+                    Дата початку поточного абонементу:{" "}
+                    {dayjs(abonData?.dateOfCreation)
+                      .toDate()
+                      .toLocaleDateString()}
+                  </Typography>
+                }
+              />
               <SnackbarContent
                 sx={{
                   borderRadius: "1rem",
@@ -292,18 +281,38 @@ const Workouts = () => {
                 }}
                 message={
                   <Typography component={"h4"}>
-                    Тренувань всього, починаючи з{" "}
-                    {dayjs(events[0].start).format("DD.MM.YYYY").toString()}(
-                    {wkStat?.wkAmount})
+                    Кількість тренувань, які залишилися:{" "}
+                    {abonData?.abonementDuration}
                   </Typography>
                 }
               />
-            )}
-          </Stack>
-        </AppBox>
+              {events[0] && (
+                <SnackbarContent
+                  sx={{
+                    borderRadius: "1rem",
+                    backgroundColor: "var(--blue)",
+
+                    "@media(max-width: 600px)": {
+                      ".MuiSnackbarContent-message .MuiTypography-root": {
+                        fontSize: "4vw",
+                      },
+                    },
+                  }}
+                  message={
+                    <Typography component={"h4"}>
+                      Тренувань всього, починаючи з{" "}
+                      {dayjs(events[0].start).format("DD.MM.YYYY").toString()}(
+                      {wkStat?.wkAmount})
+                    </Typography>
+                  }
+                />
+              )}
+            </Stack>
+          </AppBox>
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
+  }
 };
 
 export default Workouts;
