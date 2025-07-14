@@ -139,6 +139,7 @@ const Header = () => {
             component={"p"}
             marginTop={{ xs: "", md: "1rem" }}
             fontSize={{ xs: "2vh", md: "1rem" }}
+            textAlign={"center"}
           >
             Вистачить гратись у фітнес. IronCode — це не мотивація, це система.
             Жодних відмазок, тільки чіткий план, жорсткий контроль і підтримка,
@@ -151,7 +152,7 @@ const Header = () => {
             sx={{ width: "-webkit-fill-available" }}
             marginTop={{ xs: "5vh", md: "1rem" }}
           >
-            <AppButton sx={{ paddingLeft: "5rem", paddingRight: "5rem" }}>
+            {/* <AppButton sx={{ paddingLeft: "5rem", paddingRight: "5rem" }}>
               Explore programs
             </AppButton>
             <AppButton
@@ -162,7 +163,7 @@ const Header = () => {
               }}
             >
               Start your journey
-            </AppButton>
+            </AppButton> */}
           </Grid>
         </Grid>
         <Grid
