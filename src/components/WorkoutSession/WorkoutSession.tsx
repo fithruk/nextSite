@@ -1,4 +1,4 @@
-import { Divider, Grid, TextField } from "@mui/material";
+import { CircularProgress, Divider, Grid, TextField } from "@mui/material";
 import { MouseEvent } from "react";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -259,6 +259,7 @@ const ExerciseSession = ({
   addNewSetHandler: (exerciseName: string, newSet: OneSet) => void;
 }) => {
   const [items, setItems] = useState<WorkoutTypes[]>(exercises);
+  const [isSavingWorkout, setIsSavingWorkout] = useState<boolean>(false);
   const { removeItem } = useLocalStorage();
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -271,16 +272,26 @@ const ExerciseSession = ({
 
   const onSaveWorkout = async () => {
     console.log(setsAndValuesResults);
-    const { status } = await apiService.post("/workouts/saveWorkoutResults", {
-      name,
-      date: eventDate,
-      workoutResult: setsAndValuesResults,
-    });
-    if (status === 200) {
-      removeItem("workout");
-      alert("Тренування збережено");
+    setIsSavingWorkout(true);
+
+    try {
+      const { status } = await apiService.post("/workouts/saveWorkoutResults", {
+        name,
+        date: eventDate,
+        workoutResult: setsAndValuesResults,
+      });
+
+      if (status === 200) {
+        removeItem("workout");
+        alert("Тренування збережено");
+      }
+
+      console.log(status + " status /workouts/saveWorkoutResults");
+    } catch (error) {
+      alert((error as Error).message);
+    } finally {
+      setIsSavingWorkout(false);
     }
-    console.log(status + " status /workouts/saveWorkoutResults");
   };
 
   useEffect(() => {
@@ -318,12 +329,23 @@ const ExerciseSession = ({
       </DndContext>
       <Divider sx={{ margin: "2rem 0" }} />
       {items.length > 0 ? (
-        <AppButton onClick={onSaveWorkout} sx={{ marginTop: "0" }}>
-          Завершити тренування
+        <AppButton
+          onClick={onSaveWorkout}
+          sx={{
+            marginTop: "0",
+          }}
+          disabled={isSavingWorkout}
+        >
+          {isSavingWorkout ? (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <CircularProgress size={40} color="primary" />
+            </Box>
+          ) : (
+            "Завершити тренування"
+          )}
         </AppButton>
       ) : (
         <Typography color="info" variant="h4" textAlign={"center"}>
-          {" "}
           Вибери тренування у календарі
         </Typography>
       )}
