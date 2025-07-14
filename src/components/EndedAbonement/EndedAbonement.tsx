@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 interface SubscriptionInfoProps {
   clientName: string;
   workoutsLeft: number;
-  dateOfLastWorkout: Date;
+  dateOfLastWorkout: Date | null;
 }
 
 const EndedAbonement: React.FC<SubscriptionInfoProps> = ({
