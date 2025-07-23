@@ -123,43 +123,6 @@ const createfrequentMuscleGroupstConfig = (
   };
 };
 
-// const createTonnagePerWorkoutConfig = (
-//   tonnagePerWorkoutData: { date: string; tonnage: Record<string, number> }[],
-//   groupedBy: "day" | "week" | "month"
-// ) => {
-//   const xAxisData = tonnagePerWorkoutData.map((item) =>
-//     dayjs(item.date).format("DD.MM")
-//   );
-//   console.log(groupedBy + " groupedBy in createTonnagePerWorkoutConfig");
-
-//   const dataTonnage = tonnagePerWorkoutData.map((item) => {
-//     let commonTonnage = 0;
-//     for (const gr in item.tonnage) {
-//       commonTonnage += item.tonnage[gr];
-//     }
-//     return commonTonnage;
-//   });
-
-//   return {
-//     height: 300,
-//     sx: {
-//       width: { xs: "auto", md: "auto" },
-//       margin: "auto",
-//     },
-//     xAxis: [
-//       {
-//         scaleType: "band" as const,
-//         data: xAxisData,
-//       },
-//     ],
-//     series: [
-//       {
-//         data: dataTonnage,
-//       },
-//     ],
-//   };
-// };
-
 const createTonnagePerWorkoutConfig = (
   tonnagePerWorkoutData: {
     date: string;

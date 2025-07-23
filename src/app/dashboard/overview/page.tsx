@@ -37,7 +37,6 @@ const Overview = () => {
   const token = session.data?.user.accessToken;
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
   const [commonStat, setCommonStat] = useState<OverviewRespType | null>();
-  console.log(commonStat);
 
   useEffect(() => {
     (async () => {
