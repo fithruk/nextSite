@@ -1,10 +1,57 @@
-import { Grid, Typography } from "@mui/material";
-import image from "../../../../public/images/logo/underConstruction.png";
+"use client";
+import { Grid } from "@mui/material";
+
 import { AppBox } from "@/components/UI/AppBox/AppBox";
-import { AppButton } from "@/components/UI/AppButton/AppButton";
+import ApiService from "@/app/apiService/apiService";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { AbonDataTypes } from "@/Types/types";
+
+import dayjs from "dayjs";
+
+import utc from "dayjs/plugin/utc";
+import CommonStatistics from "@/components/Statistics/CommonStatictics/CommonStatistics";
+import StatisticsComingSoon from "@/components/StatisticsComingSoon/StatisticsComingSoon";
+import DetailedStatistics from "@/components/Statistics/DetailedStatistics/DetailedStatistics";
+
+dayjs.extend(utc);
+
+export type OverviewRespType = Partial<{
+  abonement: AbonDataTypes;
+  totalWorkouts: number;
+  totalReps: number;
+  strengthProgression: {
+    exercise: string;
+    date: string;
+    averageWeight: number;
+  }[];
+  workoutDates: Date[];
+  maxWeights: Record<string, number>;
+  tonnagePerWorkout: { date: string; tonnage: Record<string, number> }[];
+  frequentMuscleGroups: Record<string, number>;
+}>;
+
 const Overview = () => {
+  const session = useSession();
+  const name = session.data?.user.name;
+  const token = session.data?.user.accessToken;
+  const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
+  const [commonStat, setCommonStat] = useState<OverviewRespType | null>();
+  console.log(commonStat);
+
+  useEffect(() => {
+    (async () => {
+      const { data, status } = await apiService.get<OverviewRespType>(
+        `/statistics/getStatisticsByName/${encodeURIComponent(name ?? "")}`
+      );
+      if (status === 200) {
+        setCommonStat(data);
+      }
+    })();
+  }, []);
+
   return (
-    <>
+    <Grid container spacing={{ xs: 2, md: 4 }}>
       <Grid
         size={{ xs: 12, md: 8 }}
         display="flex"
@@ -12,32 +59,28 @@ const Overview = () => {
         justifyContent="center"
         alignItems="center"
         sx={{
-          minHeight: "60vh",
+          minHeight: "100vh",
           textAlign: "center",
-          px: 2,
         }}
       >
+        {/* <StatisticsComingSoon /> */}
+        <DetailedStatistics
+          tonnagePerWorkout={commonStat?.tonnagePerWorkout}
+          maxWeights={commonStat?.maxWeights}
+          frequentMuscleGroups={commonStat?.frequentMuscleGroups}
+          abonement={commonStat?.abonement}
+        />
+      </Grid>
+      <Grid size={{ xs: 12, md: 4 }}>
         <AppBox>
-          <img
-            src={image.src}
-            alt="Відсутня статистика"
-            width={300}
-            height={300}
-            style={{ marginBottom: "1.5rem", opacity: 0.7 }}
+          <CommonStatistics
+            {...commonStat}
+            clientName={name ?? ""}
+            apiApiservice={apiService}
           />
-
-          <Typography variant="h5" fontWeight={600} gutterBottom>
-            Розділ статистики в розробці
-          </Typography>
-
-          <Typography variant="body1" color="text.secondary" maxWidth={500}>
-            Наразі тут ще немає достатньо даних, щоб відобразити повну
-            аналітику. Тренуйся, заповнюй тренування — і статистика з’явиться
-            автоматично.
-          </Typography>
         </AppBox>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
