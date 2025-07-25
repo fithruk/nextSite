@@ -55,12 +55,10 @@ const Overview = () => {
         }
       } catch (error) {
         console.log(error);
-
         // alert(error);
       }
     })();
   }, [session]);
-  console.log(session);
 
   return (
     <Grid container spacing={{ xs: 2, md: 4 }}>
@@ -76,7 +74,7 @@ const Overview = () => {
         }}
       >
         {/* <StatisticsComingSoon /> */}
-        {isLoading ? (
+        {isLoading && (
           <AppBox
             height={"100%"}
             width={"100%"}
@@ -86,7 +84,9 @@ const Overview = () => {
           >
             <CircularProgress color="error" />
           </AppBox>
-        ) : (
+        )}
+        {!isLoading && commonStat?.totalReps === 0 && <StatisticsComingSoon />}
+        {!isLoading && commonStat?.totalReps !== 0 && (
           <DetailedStatistics
             tonnagePerWorkout={commonStat?.tonnagePerWorkout}
             maxWeights={commonStat?.maxWeights}
