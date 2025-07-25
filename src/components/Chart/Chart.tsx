@@ -50,7 +50,8 @@ const Chart = ({ chartType, data }: ChartTypes) => {
       return (
         <>
           <Typography variant="h6" gutterBottom>
-            Динаміка зміни робочого навантаження під час тренувань
+            Динаміка зміни робочого навантаження під час тренувань у ключових
+            вправах
           </Typography>
           <Box sx={{ width: "100%", overflowX: "auto" }}>
             <Box
@@ -74,7 +75,9 @@ const Chart = ({ chartType, data }: ChartTypes) => {
       return (
         <>
           <RadarChart
-            {...createfrequentMuscleGroupstConfig(data.frequentMuscleGroups!)}
+            {...createfrequentMuscleGroupstConfig(
+              data.frequentMuscleGroups ?? {}
+            )}
           />
         </>
       );

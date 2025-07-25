@@ -166,7 +166,7 @@ const Workouts = () => {
           alert(err.message + " Плану тренування немає");
       }
     })();
-  }, [name]);
+  }, [name, session]);
 
   useEffect(() => {
     if (Object.values(setsAndValuesResults).length) {

@@ -51,23 +51,43 @@ const Navigation = () => {
     >
       {!isMobile && (
         <List component="nav" aria-label="main mailbox folders">
-          <ListItemButton
-            selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, 0)}
-          >
-            <ListItemIcon>
-              {
-                <ReactSVG
-                  src={"/images/navigation/overview.svg"}
-                  beforeInjection={(svg) => {
-                    svg.setAttribute("class", styles.icon);
-                  }}
-                />
-              }
-            </ListItemIcon>
+          {role === "admin" ? (
+            <ListItemButton
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemIcon>
+                {
+                  <ReactSVG
+                    src={"/images/navigation/overview.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                }
+              </ListItemIcon>
 
-            <AppLink href={`/dashboard/overview`}>Огляд</AppLink>
-          </ListItemButton>
+              <AppLink href={`/dashboard/admin/overview`}>Огляд</AppLink>
+            </ListItemButton>
+          ) : (
+            <ListItemButton
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
+              <ListItemIcon>
+                {
+                  <ReactSVG
+                    src={"/images/navigation/overview.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                }
+              </ListItemIcon>
+
+              <AppLink href={`/dashboard/overview`}>Огляд</AppLink>
+            </ListItemButton>
+          )}
           {role === "admin" ? (
             <ListItemButton
               selected={selectedIndex === 1}
@@ -145,40 +165,81 @@ const Navigation = () => {
             },
           }}
         >
-          <BottomNavigationAction
-            label="Огляд"
-            sx={{
-              flexDirection: "column",
-              color: "inherit",
-              "& .MuiBottomNavigationAction-label": {
-                fontSize: "0.75rem",
-                marginTop: "4px",
-                fontWeight: 500,
-              },
-            }}
-            icon={
-              <Grid
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                <ReactSVG
-                  src="/images/navigation/overview.svg"
-                  beforeInjection={(svg) => {
-                    svg.setAttribute("class", styles.icon);
-                    svg
-                      .querySelectorAll("[fill]")
-                      .forEach((el) => el.removeAttribute("fill"));
-                    svg
-                      .querySelectorAll("path")
-                      .forEach((el) => el.setAttribute("fill", "currentColor"));
-                  }}
-                />
-              </Grid>
-            }
-            component={AppLink}
-            href={`/dashboard/overview`}
-          />
+          {role === "admin" ? (
+            <BottomNavigationAction
+              label="Огляд"
+              sx={{
+                flexDirection: "column",
+                color: "inherit",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  marginTop: "4px",
+                  fontWeight: 500,
+                },
+              }}
+              icon={
+                <Grid
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ReactSVG
+                    src="/images/navigation/overview.svg"
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                      svg
+                        .querySelectorAll("[fill]")
+                        .forEach((el) => el.removeAttribute("fill"));
+                      svg
+                        .querySelectorAll("path")
+                        .forEach((el) =>
+                          el.setAttribute("fill", "currentColor")
+                        );
+                    }}
+                  />
+                </Grid>
+              }
+              component={AppLink}
+              href={`/dashboard/admin/overview`}
+            />
+          ) : (
+            <BottomNavigationAction
+              label="Огляд"
+              sx={{
+                flexDirection: "column",
+                color: "inherit",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  marginTop: "4px",
+                  fontWeight: 500,
+                },
+              }}
+              icon={
+                <Grid
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ReactSVG
+                    src="/images/navigation/overview.svg"
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                      svg
+                        .querySelectorAll("[fill]")
+                        .forEach((el) => el.removeAttribute("fill"));
+                      svg
+                        .querySelectorAll("path")
+                        .forEach((el) =>
+                          el.setAttribute("fill", "currentColor")
+                        );
+                    }}
+                  />
+                </Grid>
+              }
+              component={AppLink}
+              href={`/dashboard/overview`}
+            />
+          )}
 
           {role === "admin" ? (
             <BottomNavigationAction
