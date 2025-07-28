@@ -217,7 +217,7 @@ const TableOfClients = ({ apiService }: TableOfClientsProps) => {
   const [orderBy, setOrderBy] = useState<keyof Data>("name");
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [clientsAbonements, setClientsAbonements] = useState<
     CompliteAbonementType[]
   >([]);
