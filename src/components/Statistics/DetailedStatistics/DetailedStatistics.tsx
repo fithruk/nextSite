@@ -139,7 +139,7 @@ const DetailedStatistics = ({
                   Гранична дата закінчення:{" "}
                   <Typography component="span" fontWeight="bold">
                     {dayjs(abonement.dateOfCreation)
-                      .add(40, "day")
+                      .add(35, "day")
                       .format("DD.MM.YYYY")}
                   </Typography>
                 </Typography>
