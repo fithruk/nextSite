@@ -21,16 +21,20 @@ import {
   Exercise,
   OneSet,
   SetsAndValuesResults,
+  WeightChangeDynamicsDataTypes,
   WorkoutTypes,
 } from "@/Types/types";
 import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
 import dayjs from "dayjs";
+import Chart, { ChartNamesEnum } from "../Chart/Chart";
 
 type ExerciseItemTypes = {
   item: WorkoutTypes;
   exLibrary: Exercise[];
   setsAndValuesResults: SetsAndValuesResults;
   addNewSetHandler: (exerciseName: string, newSet: OneSet) => void;
+  name: string;
+  apiService: ApiService;
 };
 
 const ExerciseItem = ({
@@ -38,11 +42,16 @@ const ExerciseItem = ({
   exLibrary,
   setsAndValuesResults,
   addNewSetHandler,
+  name,
+  apiService,
 }: ExerciseItemTypes) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.exercise });
 
   const [isOpen, setIsOpen] = useState(false);
+  const [chartData, setChartData] = useState<
+    WeightChangeDynamicsDataTypes[] | undefined
+  >(undefined);
 
   const targetExercise = exLibrary.find(
     (ex) => ex.ExerciseName == item.exercise
@@ -116,6 +125,50 @@ const ExerciseItem = ({
     }
   };
 
+  const loadWeightChangeDynamicsData = async () => {
+    try {
+      const { data, status } = await apiService.get<
+        WeightChangeDynamicsDataTypes[]
+      >(
+        `statistics/GetWeightChangeDynamicsDataByName/${encodeURIComponent(
+          name
+        )}/${encodeURIComponent(item.exercise)}`
+      );
+      if (status === 200) {
+        return data;
+      }
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
+  const alignChartData = (data: WeightChangeDynamicsDataTypes[]) => {
+    const newData = data.length > 10 ? data.slice(-10) : [...data];
+    const alignedData = newData.map((item) => {
+      const averageWeight =
+        item.sets.reduce((acc, item) => (acc += item.weightValue ?? 0), 0) /
+        item.sets.length;
+      const averageReps =
+        item.sets.reduce((acc, item) => (acc += item.numberOfreps ?? 0), 0) /
+        item.sets.length;
+      return {
+        numberOfReps: averageReps,
+        valueOfWeight: averageWeight,
+      };
+    });
+
+    return alignedData;
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      (async () => {
+        const data = await loadWeightChangeDynamicsData();
+        setChartData(data);
+      })();
+    }
+  }, [isOpen]);
+
   return (
     <Paper ref={setNodeRef} sx={style}>
       <Box
@@ -147,10 +200,18 @@ const ExerciseItem = ({
         {isOpen && (
           <Box mt={2}>
             <Grid container display={"flex"} alignItems={"center"}>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
                 <ExerciseDetails exercise={targetExercise!} locale="ua" />
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
+                <Chart
+                  chartType={ChartNamesEnum.weightChangeDynamics}
+                  data={{
+                    weightChangeDynamics: alignChartData(chartData ?? []),
+                  }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 12 }}>
                 {Array.from({ length: item.sets }).map((_, i) => (
                   <Grid container key={i} display="flex" gap={2} mb={1}>
                     <Grid size={{ xs: 12, md: 12 }} component={"form"}>
@@ -321,6 +382,8 @@ const ExerciseSession = ({
                   exLibrary={exLibrary}
                   setsAndValuesResults={setsAndValuesResults}
                   addNewSetHandler={addNewSetHandler}
+                  name={name}
+                  apiService={apiService}
                 />
               </Grid>
             ))}

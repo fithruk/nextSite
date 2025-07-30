@@ -18,7 +18,12 @@ import { useState, MouseEvent, ChangeEvent, FormEvent, useEffect } from "react";
 import dayjs from "dayjs";
 import { AppButton } from "../UI/AppButton/AppButton";
 import ApiService from "@/app/apiService/apiService";
-import { Exercise, WorkoutTypes } from "@/Types/types";
+import {
+  Exercise,
+  WeightChangeDynamicsDataTypes,
+  WorkoutTypes,
+} from "@/Types/types";
+import Chart, { ChartNamesEnum } from "../Chart/Chart";
 
 const initialState = {
   musclesGroup: "",
@@ -47,6 +52,9 @@ const WorkoutCreator = ({
   ];
 
   const [workoutExercises, setWorkoutExercises] = useState<WorkoutTypes[]>([]);
+  const [chartData, setChartData] = useState<
+    WeightChangeDynamicsDataTypes[] | undefined
+  >(undefined);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelect((state) => ({
@@ -98,6 +106,41 @@ const WorkoutCreator = ({
     }
   };
 
+  const loadWeightChangeDynamicsData = async () => {
+    try {
+      const { data, status } = await apiService.get<
+        WeightChangeDynamicsDataTypes[]
+      >(
+        `statistics/GetWeightChangeDynamicsDataByName/${encodeURIComponent(
+          name
+        )}/${encodeURIComponent(select.exercise)}`
+      );
+      if (status === 200) {
+        return data;
+      }
+    } catch (error) {
+      console.log((error as Error).message);
+    }
+  };
+
+  const alignChartData = (data: WeightChangeDynamicsDataTypes[]) => {
+    const newData = data.length > 10 ? data.slice(-10) : [...data];
+    const alignedData = newData.map((item) => {
+      const averageWeight =
+        item.sets.reduce((acc, item) => (acc += item.weightValue ?? 0), 0) /
+        item.sets.length;
+      const averageReps =
+        item.sets.reduce((acc, item) => (acc += item.numberOfreps ?? 0), 0) /
+        item.sets.length;
+      return {
+        numberOfReps: averageReps,
+        valueOfWeight: averageWeight,
+      };
+    });
+
+    return alignedData;
+  };
+
   useEffect(() => {
     if (dayjs(date).date() === dayjs(new Date()).date()) {
       (async () => {
@@ -114,6 +157,15 @@ const WorkoutCreator = ({
       })();
     }
   }, [date, name]);
+
+  useEffect(() => {
+    if (select.exercise && select.musclesGroup) {
+      (async () => {
+        const data = await loadWeightChangeDynamicsData();
+        setChartData(data);
+      })();
+    }
+  }, [select.musclesGroup, select.exercise, name]);
 
   return (
     <Paper
@@ -228,6 +280,14 @@ const WorkoutCreator = ({
                 }}
               />
             </Grid>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
+            {select.exercise && select.musclesGroup && (
+              <Chart
+                chartType={ChartNamesEnum.weightChangeDynamics}
+                data={{ weightChangeDynamics: alignChartData(chartData ?? []) }}
+              />
+            )}
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <AppButton

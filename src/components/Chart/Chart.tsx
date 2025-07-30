@@ -3,6 +3,7 @@ import {
   createStrengthProgressionByExerciseConfig,
   createTonnagePerWorkoutConfig,
   createfrequentMuscleGroupstConfig,
+  weightChangeDynamicsConfig,
 } from "../../../configs/chartConfig";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart, RadarChart } from "@mui/x-charts";
@@ -14,6 +15,7 @@ export enum ChartNamesEnum {
   strengthProgressionByExercise = "strengthProgressionByExercise",
   frequentMuscleGroups = "frequentMuscleGroups",
   tonnagePerWorkout = "tonnagePerWorkout",
+  weightChangeDynamics = "weightChangeDynamics",
 }
 
 type ChartData = {
@@ -24,6 +26,7 @@ type ChartData = {
   }[];
   frequentMuscleGroups?: Record<string, number>;
   tonnagePerWorkout?: { date: string; tonnage: Record<string, number> }[];
+  weightChangeDynamics?: { numberOfReps: number; valueOfWeight: number }[];
 };
 
 type ChartTypes = {
@@ -35,7 +38,6 @@ const Chart = ({ chartType, data }: ChartTypes) => {
   const [tonnagePerWorkoutGroupe, setTonnagePerWorkoutGroupe] = useState<
     "day" | "week" | "month"
   >("day");
-  console.log(tonnagePerWorkoutGroupe);
 
   const handleTonnage = (e: MouseEvent<HTMLButtonElement>) => {
     const value = (e.target as HTMLButtonElement).value as
@@ -187,6 +189,13 @@ const Chart = ({ chartType, data }: ChartTypes) => {
             />
           </Box>
         </>
+      );
+
+    case ChartNamesEnum.weightChangeDynamics:
+      return (
+        <LineChart
+          {...weightChangeDynamicsConfig(data.weightChangeDynamics!)}
+        />
       );
     default:
       break;

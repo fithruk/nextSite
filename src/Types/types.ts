@@ -67,3 +67,8 @@ export interface Exercise {
   ImageUrl: string;
   Steps: ExerciseStep[];
 }
+
+export type WeightChangeDynamicsDataTypes = {
+  date: string;
+  sets: OneSet[];
+};
