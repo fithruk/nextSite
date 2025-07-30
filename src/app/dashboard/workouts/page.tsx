@@ -207,7 +207,7 @@ const Workouts = () => {
               onSelectEvent={onSelectEventHandler}
             />
             <Divider sx={{ margin: "2rem 0" }} />
-            {isPastWorkout && isRenderTable ? (
+            {isPastWorkout && isRenderTable && token ? (
               <PassedWorkout
                 apiService={apiService}
                 eventDate={selectedEvent?.start ?? new Date()}
