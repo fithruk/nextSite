@@ -165,7 +165,7 @@ export default function AllTimeClientsTable({
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <Typography sx={{ p: 2 }} variant="h6" component="div">
-          Clients
+          Клієнти за весь час ({allTimeClients.length})
         </Typography>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} size={dense ? "small" : "medium"}>

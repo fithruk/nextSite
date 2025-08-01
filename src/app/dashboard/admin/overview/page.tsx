@@ -39,7 +39,7 @@ const AdminOverview = () => {
     })();
   }, [token]);
   return (
-    <Grid container>
+    <Grid container spacing={{ xs: 2, md: 3 }}>
       <Grid size={{ xs: 12, md: 8 }}>
         <AppBox
           width={"100%"}
@@ -50,6 +50,17 @@ const AdminOverview = () => {
         >
           <AllTameClientsTable allTimeClients={allTimeClients} />
         </AppBox>
+      </Grid>
+      <Grid size={{ xs: 12, md: 4 }}>
+        <AppBox
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          Заглушка
+        </AppBox>{" "}
       </Grid>
     </Grid>
   );
