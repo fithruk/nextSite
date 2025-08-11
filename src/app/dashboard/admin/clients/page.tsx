@@ -30,6 +30,7 @@ import { SlotInfo } from "react-big-calendar";
 import { AbonDataTypes, CombinedWorkoutData, Exercise } from "@/Types/types";
 import DisplayingPassedWorkouts from "@/components/DisplayingPassedWorkouts/DisplayingPassedWorkouts";
 import TableOfClients from "@/components/TableOfClients/TableOfClients";
+
 dayjs.locale("uk");
 
 type ClientTypes = {
@@ -45,6 +46,7 @@ const Clients = () => {
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
 
   const [clients, setClients] = useState<ClientTypes[]>([]);
+
   const [selectValue, setSelectValue] = useState("");
   const [abonDuration, setAbonDuration] = useState("");
   const [message, setMessage] = useState("");
@@ -90,7 +92,6 @@ const Clients = () => {
 
   const handleChangeClient = async (event: SelectChangeEvent) => {
     const value = event.target.value;
-    console.log(value + " value");
 
     if (!value) return;
     if (typeof value === "string") {

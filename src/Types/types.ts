@@ -72,3 +72,15 @@ export type WeightChangeDynamicsDataTypes = {
   date: string;
   sets: OneSet[];
 };
+
+export type SocketMessageType = {
+  name: string;
+  msg: string;
+  role: "user" | "admin";
+};
+
+export interface WorkoutResultType {
+  dateOfWorkout: Date;
+  clientName: string;
+  workoutResult: Map<string, OneSet[]>;
+}

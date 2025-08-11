@@ -321,6 +321,7 @@ const ExerciseSession = ({
 }) => {
   const [items, setItems] = useState<WorkoutTypes[]>(exercises);
   const [isSavingWorkout, setIsSavingWorkout] = useState<boolean>(false);
+
   const { removeItem } = useLocalStorage();
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;

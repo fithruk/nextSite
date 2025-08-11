@@ -35,7 +35,12 @@ const Navigation = () => {
     setSelectedIndex(index);
     router.push(href as string);
   };
+
   const handleSignOut = async () => {
+    // if (isSockedExist() && isSockedConnected()) {
+    //   emitEvent(SocketEventsEnum.clientDisconnected);
+    //   disconnectSocket();
+    // }
     await signOut({ callbackUrl: "/" });
   };
 
@@ -123,6 +128,25 @@ const Navigation = () => {
               </ListItemIcon>
 
               <AppLink href={`/dashboard/workouts`}>Мої тренування</AppLink>
+            </ListItemButton>
+          )}
+          {role === "admin" && (
+            <ListItemButton
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
+              <ListItemIcon>
+                {
+                  <ReactSVG
+                    src={"/images/navigation/connect.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                }
+              </ListItemIcon>
+
+              <AppLink href={`/dashboard/admin/socketPage`}>Сокети</AppLink>
             </ListItemButton>
           )}
           <ListItemButton
@@ -300,7 +324,36 @@ const Navigation = () => {
               href={`/dashboard/workouts`}
             />
           )}
-
+          {role === "admin" && (
+            <BottomNavigationAction
+              label="Сокети"
+              sx={{
+                flexDirection: "column",
+                color: "inherit",
+                "& .MuiBottomNavigationAction-label": {
+                  fontSize: "0.75rem",
+                  marginTop: "4px",
+                  fontWeight: 500,
+                },
+              }}
+              icon={
+                <Grid
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <ReactSVG
+                    src={"/images/navigation/connect.svg"}
+                    beforeInjection={(svg) => {
+                      svg.setAttribute("class", styles.icon);
+                    }}
+                  />
+                </Grid>
+              }
+              component={AppLink}
+              href={`/dashboard/admin/socketPage`}
+            />
+          )}
           <BottomNavigationAction
             label="Logout"
             sx={{
