@@ -134,17 +134,21 @@ const createTonnagePerWorkoutConfig = (
   }[],
   groupedBy: "day" | "week" | "month"
 ) => {
-  const xAxisData = tonnagePerWorkoutData.map((item) => {
-    if (groupedBy === "day") {
-      return dayjs(item.date).format("DD.MM");
-    } else if (groupedBy === "week") {
-      return item.date; // уже строка "Week N"
-    } else if (groupedBy === "month") {
-      return dayjs(item.date).format("MMMM YYYY");
-    }
-  });
+  const xAxisData = tonnagePerWorkoutData
+    .map((item) => {
+      if (groupedBy === "day") {
+        return dayjs(item.date).format("DD.MM");
+      } else if (groupedBy === "week") {
+        return item.date; // уже строка "Week N"
+      } else if (groupedBy === "month") {
+        return dayjs(item.date).format("MMMM YYYY");
+      }
+    })
+    .slice(-10);
 
-  const seriesData = tonnagePerWorkoutData.map((item) => item.tonnage);
+  const seriesData = tonnagePerWorkoutData
+    .map((item) => item.tonnage)
+    .slice(-10);
 
   return {
     height: 300,

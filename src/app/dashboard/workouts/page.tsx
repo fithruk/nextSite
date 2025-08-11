@@ -27,6 +27,8 @@ import {
   WplanRespTypes,
 } from "@/Types/types";
 import EndedAbonement from "@/components/EndedAbonement/EndedAbonement";
+import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
+import { SocketEventsEnum } from "../layout";
 
 type WorkoutEvent = {
   title: string;
@@ -49,7 +51,7 @@ const Workouts = () => {
   const [wkStat, setWkStat] = useState<WKStatTypes | null>();
   const [abonData, setAbonData] = useState<AbonDataTypes | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<WorkoutEvent | null>(null);
-
+  const { socket } = useSocketContext();
   const [wPlan, setWplan] = useState<WorkoutTypes[]>([]);
   const [exLibrary, setExLibrary] = useState<Exercise[]>([]);
 
@@ -169,8 +171,39 @@ const Workouts = () => {
   }, [name, session]);
 
   useEffect(() => {
-    if (Object.values(setsAndValuesResults).length) {
-      storage.setItem("workout", setsAndValuesResults);
+    console.log(Object.keys(setsAndValuesResults).length);
+
+    if (!socket) return;
+
+    const cleanWorkoutData = (workoutData: typeof setsAndValuesResults) => {
+      const cleaned: typeof setsAndValuesResults = {};
+
+      for (const [exercise, sets] of Object.entries(workoutData)) {
+        const hasValidSet = sets.some(
+          (set) => set.numberOfreps! > 0 && set.weightValue! > 0
+        );
+        if (hasValidSet) {
+          cleaned[exercise] = sets;
+        }
+      }
+
+      return cleaned;
+    };
+
+    const cleanedResults = cleanWorkoutData(setsAndValuesResults);
+
+    if (!Object.keys(cleanedResults).length) return; // Пофиксить случаи когда надо стереть все подходы из базы, сейчас один остается
+
+    const updateMsg = {
+      name,
+      date: new Date(),
+      workoutResult: cleanedResults,
+    };
+
+    socket.emit(SocketEventsEnum.updateWorkout, JSON.stringify(updateMsg));
+
+    if (Object.values(cleanedResults).length) {
+      storage.setItem("workout", cleanedResults);
     }
   }, [setsAndValuesResults]);
 
