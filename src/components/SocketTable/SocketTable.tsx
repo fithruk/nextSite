@@ -63,6 +63,7 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                 sets: array[1],
               })
             );
+            console.log(exercises);
 
             return (
               <TableRow
@@ -85,6 +86,9 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                       <TableRow sx={{ backgroundColor: "#e8f4ff" }}>
                         <TableCell sx={{ fontWeight: "bold" }}>
                           Exercise
+                        </TableCell>
+                        <TableCell sx={{ fontWeight: "bold" }}>
+                          Current Set
                         </TableCell>
                         <TableCell align="right" sx={{ fontWeight: "bold" }}>
                           Weight Range
@@ -118,6 +122,7 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                         return (
                           <TableRow key={ex.exerciseName}>
                             <TableCell>{ex.exerciseName}</TableCell>
+                            <TableCell>{ex.sets.length}</TableCell>
                             <TableCell align="right">
                               {hasSets ? getMinMaxWeigthRangeString(ex) : "-"}
                             </TableCell>
