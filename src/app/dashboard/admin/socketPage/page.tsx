@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import ApiService from "@/app/apiService/apiService";
 import { SocketEventsEnum } from "../../layout";
-import { usePathname } from "next/navigation";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 
 import { WorkoutResultType, WplanRespTypes } from "@/Types/types";
@@ -18,7 +17,7 @@ const SocketPage = () => {
   const name = session.data?.user.name;
   const token = session.data?.user.accessToken;
   const role = session.data?.user.role;
-  const pathname = usePathname();
+
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
 
   const getAllWorkoutsPlanForToday = async () => {
@@ -38,7 +37,6 @@ const SocketPage = () => {
   const [clientWhoAreTrainingNow, setClientWhoAreTrainingNow] = useState<
     WorkoutResultType[]
   >([]);
-  console.log(clientWhoAreTrainingNow);
 
   const handleGetClients = (data?: string) => {
     if (!data) return;
@@ -59,7 +57,16 @@ const SocketPage = () => {
           (ex) => ex.clientName === newWorkoutData.name
         );
 
-        if (!clientExists) return state;
+        if (!clientExists) {
+          return [
+            ...state,
+            {
+              ...newWorkoutData,
+              clientName: newWorkoutData.name,
+              workoutResult: newWorkoutData.workoutResult,
+            },
+          ];
+        }
 
         return state.map((client) =>
           client.clientName === newWorkoutData.name
@@ -70,13 +77,22 @@ const SocketPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (!socket) return;
+  const getClientsWhoAreTrainingNow = async () => {
+    const { data, status } = await apiService.get<WorkoutResultType[]>(
+      "/admin/getClientsWhoAreTrainingNow"
+    );
+    if (status === 200) {
+      setClientWhoAreTrainingNow(data);
+    }
+  };
 
-    socket.emit(SocketEventsEnum.getClientWhoAreTrainingNow);
+  useEffect(() => {
+    (async () => {
+      await getClientsWhoAreTrainingNow();
+    })();
 
     return () => {};
-  }, [pathname, socket]);
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
