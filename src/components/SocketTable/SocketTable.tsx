@@ -63,7 +63,7 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                 sets: array[1],
               })
             );
-            console.log(exercises);
+            // console.log(exercises);
 
             return (
               <TableRow
@@ -105,17 +105,19 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                       {exercises.map((ex) => {
                         const hasSets = ex.sets && ex.sets.length > 0;
 
-                        // Исправленный расчёт "плановой тоннажности"
+                        const exPlan = wPlans
+                          .find((pl) => pl.clientName === row.clientName)
+                          ?.workoutPlan.find(
+                            (erx) => erx.exercise === ex.exerciseName
+                          );
+
                         const plannedValue: PlannedValueTypes[] = [
                           {
                             exName: ex.exerciseName,
-                            tonnage: ex.sets.reduce(
-                              (prev, item) =>
-                                prev +
-                                (item.numberOfreps ?? 0) *
-                                  (item.weightValue ?? 0),
-                              0
-                            ),
+                            tonnage:
+                              (exPlan?.reps ?? 0) *
+                              (exPlan?.weight ?? 0) *
+                              (exPlan?.sets ?? 0),
                           },
                         ];
 
