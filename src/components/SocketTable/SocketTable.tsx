@@ -63,7 +63,6 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
                 sets: array[1],
               })
             );
-            // console.log(exercises);
 
             return (
               <TableRow
