@@ -38,11 +38,37 @@ const SocketPage = () => {
     WorkoutResultType[]
   >([]);
 
+  // const handleGetClients = (data?: string) => {
+  //   if (!data) return;
+  //   const parsedData: WorkoutResultType[] = JSON.parse(data);
+
+  //   setClientWhoAreTrainingNow(parsedData);
+  // };
+
   const handleGetClients = (data?: string) => {
     if (!data) return;
+
     const parsedData: WorkoutResultType[] = JSON.parse(data);
 
-    setClientWhoAreTrainingNow(parsedData);
+    setClientWhoAreTrainingNow((prev) => {
+      const updated = [...prev];
+
+      parsedData.forEach((newClient) => {
+        const index = updated.findIndex(
+          (c) => c.clientName === newClient.clientName
+        );
+
+        if (index !== -1) {
+          // Обновляем существующего
+          updated[index] = newClient;
+        } else {
+          // Добавляем нового
+          updated.push(newClient);
+        }
+      });
+
+      return updated;
+    });
   };
 
   const updateServerWorkout = (data: string) => {
