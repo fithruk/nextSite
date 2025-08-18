@@ -29,6 +29,7 @@ import {
 import EndedAbonement from "@/components/EndedAbonement/EndedAbonement";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 import { SocketEventsEnum } from "../layout";
+import Abonement from "@/components/Abonement/Abonement";
 
 type WorkoutEvent = {
   title: string;
@@ -36,7 +37,7 @@ type WorkoutEvent = {
   end: Date;
 };
 
-type WKStatTypes = {
+export type WKStatTypes = {
   wkAmount: number;
 };
 
@@ -260,90 +261,7 @@ const Workouts = () => {
           </AppBox>
         </Grid>
         <Grid size={{ xs: 12, md: 4 }}>
-          <AppBox>
-            <Stack spacing={2}>
-              <SnackbarContent
-                component={"h1"}
-                message="Загальна інформація:"
-                sx={{
-                  marginTop: "1rem",
-                  borderRadius: "1rem",
-                  backgroundColor: "var(--blue)",
-
-                  "@media(max-width: 600px)": {
-                    ".MuiSnackbarContent-message": { fontSize: "4vw" },
-                  },
-                }}
-              />
-              <SnackbarContent
-                sx={{
-                  borderRadius: "1rem",
-                  backgroundColor: "var(--blue)",
-
-                  "@media(max-width: 600px)": {
-                    ".MuiSnackbarContent-message": {
-                      display: "block",
-                      width: "100%",
-                    },
-
-                    ".MuiSnackbarContent-message .MuiTypography-root": {
-                      fontSize: "4vw",
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
-                      overflowWrap: "break-word",
-                    },
-                  },
-                }}
-                message={
-                  <Typography component={"h4"}>
-                    Дата початку поточного абонементу:{" "}
-                    {dayjs(abonData?.dateOfCreation)
-                      .toDate()
-                      .toLocaleDateString()}
-                  </Typography>
-                }
-              />
-              <SnackbarContent
-                sx={{
-                  borderRadius: "1rem",
-                  backgroundColor: "var(--blue)",
-
-                  "@media(max-width: 600px)": {
-                    ".MuiSnackbarContent-message .MuiTypography-root": {
-                      fontSize: "4vw",
-                    },
-                  },
-                }}
-                message={
-                  <Typography component={"h4"}>
-                    Кількість тренувань, які залишилися:{" "}
-                    {abonData?.abonementDuration}
-                  </Typography>
-                }
-              />
-              {events[0] && (
-                <SnackbarContent
-                  sx={{
-                    borderRadius: "1rem",
-                    backgroundColor: "var(--blue)",
-
-                    "@media(max-width: 600px)": {
-                      ".MuiSnackbarContent-message .MuiTypography-root": {
-                        fontSize: "4vw",
-                      },
-                    },
-                  }}
-                  message={
-                    <Typography component={"h4"}>
-                      Тренувань всього, починаючи з{" "}
-                      {dayjs(events[0].start).format("DD.MM.YYYY").toString()}(
-                      {wkStat?.wkAmount})
-                    </Typography>
-                  }
-                />
-              )}
-            </Stack>
-          </AppBox>
+          <Abonement wkStat={wkStat} abonData={abonData} event={events[0]} />
         </Grid>
       </Grid>
     );
