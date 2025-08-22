@@ -397,7 +397,7 @@ const ExerciseSession = ({
         </SortableContext>
       </DndContext>
       <Divider sx={{ margin: "2rem 0" }} />
-      {items.length > 0 ? (
+      {items.length > 0 && dayjs(eventDate).isSame(dayjs(), "day") ? (
         <AppButton
           onClick={onSaveWorkout}
           sx={{
@@ -415,7 +415,9 @@ const ExerciseSession = ({
         </AppButton>
       ) : (
         <Typography color="info" variant="h4" textAlign={"center"}>
-          Вибери тренування у календарі
+          {dayjs(eventDate).isSame(dayjs(), "day")
+            ? "Вибери тренування у календарі"
+            : "На сьогоднi тренувань нема"}
         </Typography>
       )}
     </>
