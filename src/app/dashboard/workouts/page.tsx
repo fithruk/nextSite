@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  Grid,
-  SnackbarContent,
-  Stack,
-  Typography,
-  Divider,
-} from "@mui/material";
+import { Grid, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
