@@ -11,7 +11,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Box, Paper, Typography } from "@mui/material";
 import { AppButton } from "../UI/AppButton/AppButton";
@@ -325,7 +325,7 @@ const ExerciseSession = ({
 }) => {
   const [items, setItems] = useState<WorkoutTypes[]>(exercises);
   const [isSavingWorkout, setIsSavingWorkout] = useState<boolean>(false);
-
+  const router = useRouter();
   const { removeItem } = useLocalStorage();
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -355,6 +355,7 @@ const ExerciseSession = ({
       console.log(status + " status /workouts/saveWorkoutResults");
     } catch (error) {
       alert((error as Error).message);
+      router.push("/login");
     } finally {
       setIsSavingWorkout(false);
     }
