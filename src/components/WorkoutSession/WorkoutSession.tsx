@@ -35,6 +35,7 @@ type ExerciseItemTypes = {
   addNewSetHandler: (exerciseName: string, newSet: OneSet) => void;
   name: string;
   apiService: ApiService;
+  eventDate?: Date;
 };
 
 const ExerciseItem = ({
@@ -44,6 +45,7 @@ const ExerciseItem = ({
   addNewSetHandler,
   name,
   apiService,
+  eventDate,
 }: ExerciseItemTypes) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: item.exercise });
@@ -189,13 +191,15 @@ const ExerciseItem = ({
           <Box {...attributes} {...listeners} sx={{ cursor: "grab", ml: 2 }}>
             <DragIndicatorIcon />
           </Box>
-          <AppButton
-            sx={{ cursor: "pointer", ml: 2, marginTop: "0" }}
-            onClick={handleClick}
-            data-open-button="true"
-          >
-            {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </AppButton>
+          {eventDate && dayjs(eventDate).isSame(dayjs(), "day") && (
+            <AppButton
+              sx={{ cursor: "pointer", ml: 2, marginTop: "0" }}
+              onClick={handleClick}
+              data-open-button="true"
+            >
+              {isOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </AppButton>
+          )}
         </Box>
         {isOpen && (
           <Box mt={2}>
@@ -385,6 +389,7 @@ const ExerciseSession = ({
                   addNewSetHandler={addNewSetHandler}
                   name={name}
                   apiService={apiService}
+                  eventDate={eventDate}
                 />
               </Grid>
             ))}
