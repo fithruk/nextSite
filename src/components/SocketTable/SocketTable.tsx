@@ -18,11 +18,16 @@ import { usePlanPercentages } from "@/hooks/usePlanPercentages";
 type SocketTableProps = {
   wPlans: WplanRespTypes[];
   clientWhoAreTrainingNow: WorkoutResultType[];
+  onSelectClientForSendNotification: (clientName: string) => void;
 };
 
 import { ExerciseResult } from "@/Types/types";
 
-const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
+const SocketTable = ({
+  wPlans,
+  clientWhoAreTrainingNow,
+  onSelectClientForSendNotification,
+}: SocketTableProps) => {
   const {
     getMinMaxWeigthRangeString,
     getMinMaxRepsRangeString,
@@ -66,6 +71,9 @@ const SocketTable = ({ wPlans, clientWhoAreTrainingNow }: SocketTableProps) => {
 
             return (
               <TableRow
+                onClick={() =>
+                  onSelectClientForSendNotification(row.clientName)
+                }
                 key={row.clientName}
                 sx={{
                   backgroundColor: rowIndex % 2 === 0 ? "#fafafa" : "white",

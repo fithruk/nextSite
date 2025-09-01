@@ -79,6 +79,7 @@ export const authConfig: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.accessToken;
+        token.id = user.id; //? Добавил для обновления уведомлений, возможно все ляжет :)
 
         if (!token.exp) {
           const decoded = jwt.decode(user.accessToken) as jwt.JwtPayload;
@@ -91,6 +92,7 @@ export const authConfig: AuthOptions = {
         token.role = user.role;
         token.name = user.name;
         token.email = user.email;
+        token.id = user.id; // ? Добавил для обновления уведомлений, возможно все ляжет :)
       }
       return token;
     },
@@ -100,6 +102,7 @@ export const authConfig: AuthOptions = {
         session.user.name = token.name!;
         session.user.email = token.email!;
         session.user.accessToken = token.accessToken!;
+        session.user.id = token.id!; // ? Добавил для обновления уведомлений, возможно все ляжет :)
         if (token.exp) {
           session.expires = new Date(token.exp * 1000).toISOString();
         }
