@@ -1,0 +1,7 @@
+.icon {
+  width: 28px;
+  height: 28px;
+  fill: white;
+  transition: transform 0.2s ease;
+  color: #ebe0e0;
+}

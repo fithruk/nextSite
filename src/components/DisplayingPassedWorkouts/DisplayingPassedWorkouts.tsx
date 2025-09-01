@@ -144,27 +144,27 @@ const DisplayingPassedWorkouts = ({
                               <TableRow>
                                 <TableCell>
                                   <Typography component={"span"} color="error">
-                                    Еблан прогулял
+                                    -
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography component={"span"} color="error">
-                                    Еблан прогулял
+                                    -
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography component={"span"} color="error">
-                                    Еблан прогулял
+                                    -
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography component={"span"} color="error">
-                                    Еблан прогулял
+                                    -
                                   </Typography>
                                 </TableCell>
                                 <TableCell>
                                   <Typography component={"span"} color="error">
-                                    Еблан прогулял
+                                    -
                                   </Typography>
                                 </TableCell>
                               </TableRow>

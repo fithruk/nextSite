@@ -27,17 +27,16 @@ import "dayjs/locale/uk";
 import { AppButton } from "@/components/UI/AppButton/AppButton";
 import WorkoutCreator from "@/components/WorkoutCreator/WorkoutCreator";
 import { SlotInfo } from "react-big-calendar";
-import { AbonDataTypes, CombinedWorkoutData, Exercise } from "@/Types/types";
+import {
+  AbonDataTypes,
+  CombinedWorkoutData,
+  Exercise,
+  ClientTypes,
+} from "@/Types/types";
 import DisplayingPassedWorkouts from "@/components/DisplayingPassedWorkouts/DisplayingPassedWorkouts";
 import TableOfClients from "@/components/TableOfClients/TableOfClients";
 
 dayjs.locale("uk");
-
-type ClientTypes = {
-  name: string;
-  email: string;
-  id: string;
-};
 
 const Clients = () => {
   const session = useSession();

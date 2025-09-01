@@ -3,12 +3,13 @@ import SocketTable from "@/components/SocketTable/SocketTable";
 import { AppBox } from "@/components/UI/AppBox/AppBox";
 import { Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import ApiService from "@/app/apiService/apiService";
 import { SocketEventsEnum } from "../../layout";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 
-import { WorkoutResultType, WplanRespTypes } from "@/Types/types";
+import { WorkoutResultType, WplanRespTypes, ClientTypes } from "@/Types/types";
+import NotificationForm from "@/components/NotificationForm/NotificationForm";
 
 const SocketPage = () => {
   const session = useSession();
@@ -33,17 +34,12 @@ const SocketPage = () => {
     }
   };
 
-  const [selectedClients, setSelectedClients] = useState<string[]>();
+  // const [clients, setClients] = useState<ClientTypes[]>([]);
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [notMessage, setNotMessage] = useState({ title: "", message: "" });
   const [clientWhoAreTrainingNow, setClientWhoAreTrainingNow] = useState<
     WorkoutResultType[]
   >([]);
-
-  // const handleGetClients = (data?: string) => {
-  //   if (!data) return;
-  //   const parsedData: WorkoutResultType[] = JSON.parse(data);
-
-  //   setClientWhoAreTrainingNow(parsedData);
-  // };
 
   const handleGetClients = (data?: string) => {
     if (!data) return;
@@ -59,10 +55,8 @@ const SocketPage = () => {
         );
 
         if (index !== -1) {
-          // Обновляем существующего
           updated[index] = newClient;
         } else {
-          // Добавляем нового
           updated.push(newClient);
         }
       });
@@ -112,9 +106,59 @@ const SocketPage = () => {
     }
   };
 
+  const onNotificationChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setNotMessage((state) => ({ ...state, [name]: value }));
+  };
+
+  const onSubmitNotification = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!socket) {
+      alert("Soket is not connected");
+      return;
+    }
+    console.log(selectedClients);
+    console.log(notMessage);
+    const newNotification = {
+      clientName: selectedClients[selectedClients.length - 1],
+      ...notMessage,
+    }; // Костыль
+
+    socket.emit(
+      SocketEventsEnum.newNotification,
+      JSON.stringify(newNotification)
+    );
+
+    setNotMessage({ title: "", message: "" });
+  };
+
+  const onSelectClientForSendNotification = (clientName: string) => {
+    setSelectedClients((state) => {
+      if (state.includes(clientName)) return state;
+      return [...state, clientName];
+    });
+  };
+
   useEffect(() => {
     (async () => {
-      await getClientsWhoAreTrainingNow();
+      try {
+        await getClientsWhoAreTrainingNow();
+        // const { data, status } = await apiService.get<{ users: ClientTypes[] }>(
+        //   "/admin/getAllClients"
+        // );
+        // if (status === 200) {
+        //   setClients(
+        //     data.users
+        //       .filter((client) => client.name !== "белов сергей")
+        //       .sort((a, b) => a.name.localeCompare(b.name))
+        //   );
+        // }
+      } catch (error) {
+        console.log(error);
+      }
     })();
 
     return () => {};
@@ -146,11 +190,21 @@ const SocketPage = () => {
           <SocketTable
             wPlans={wPlans}
             clientWhoAreTrainingNow={clientWhoAreTrainingNow}
+            onSelectClientForSendNotification={
+              onSelectClientForSendNotification
+            }
           />
         </AppBox>
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
-        <AppBox>Additional</AppBox>
+        <AppBox>
+          <NotificationForm
+            onSubmitNotification={onSubmitNotification}
+            onNotificationChange={onNotificationChange}
+            notMessage={notMessage}
+            selectedClients={selectedClients ?? []}
+          />
+        </AppBox>
       </Grid>
     </Grid>
   );
