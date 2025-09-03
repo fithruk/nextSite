@@ -16,13 +16,14 @@ import { useState, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const Navigation = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
   const router = useRouter();
   const session = useSession();
   const isMobile = useMediaQuery("(max-width:600px)");
-
+  const { removeItem } = useLocalStorage();
   const role = session.data?.user.role;
 
   const [navValue, setNavValue] = useState(0);
@@ -37,10 +38,7 @@ const Navigation = () => {
   };
 
   const handleSignOut = async () => {
-    // if (isSockedExist() && isSockedConnected()) {
-    //   emitEvent(SocketEventsEnum.clientDisconnected);
-    //   disconnectSocket();
-    // }
+    removeItem("authToken");
     await signOut({ callbackUrl: "/" });
   };
 

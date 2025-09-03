@@ -24,6 +24,8 @@ import EndedAbonement from "@/components/EndedAbonement/EndedAbonement";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 import { SocketEventsEnum } from "../layout";
 import Abonement from "@/components/Abonement/Abonement";
+import AppError from "@/app/Error/Error";
+import { useRouter } from "next/navigation";
 
 type WorkoutEvent = {
   title: string;
@@ -36,6 +38,7 @@ export type WKStatTypes = {
 };
 
 const Workouts = () => {
+  const router = useRouter();
   const session = useSession();
   const { getItem } = useLocalStorage();
   const name = session.data?.user.name;
@@ -159,10 +162,20 @@ const Workouts = () => {
               abonementRes.data.abonement.dateOfLastActivation,
           });
         }
+
+        if (workoutRes.status === 401) {
+          throw AppError.UnauthorizedError();
+        }
+        if (workoutRes.status === 400) {
+          throw AppError.BadRequest("План тренування відсутній");
+        }
       } catch (err) {
         console.error("Fetch error:", err);
-        if (err instanceof Error)
-          alert(err.message + " Плану тренування немає");
+        if (err instanceof AppError) {
+          if (err.status === 401) router.push("/login");
+          if (err.status === 400) alert(err.message);
+        }
+        if (err instanceof Error) alert(err.message);
       }
     })();
   }, [name, session]);
