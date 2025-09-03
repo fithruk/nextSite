@@ -37,8 +37,10 @@ export type WKStatTypes = {
 
 const Workouts = () => {
   const session = useSession();
+  const { getItem } = useLocalStorage();
   const name = session.data?.user.name;
-  const token = session.data?.user.accessToken;
+  const token =
+    session.data?.user.accessToken ?? (getItem("authToken") as string);
   const storage = useLocalStorage<SetsAndValuesResults>();
 
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
