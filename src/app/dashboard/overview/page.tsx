@@ -13,6 +13,7 @@ import utc from "dayjs/plugin/utc";
 import CommonStatistics from "@/components/Statistics/CommonStatictics/CommonStatistics";
 import StatisticsComingSoon from "@/components/StatisticsComingSoon/StatisticsComingSoon";
 import DetailedStatistics from "@/components/Statistics/DetailedStatistics/DetailedStatistics";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 dayjs.extend(utc);
 
@@ -32,9 +33,11 @@ export type OverviewRespType = Partial<{
 }>;
 
 const Overview = () => {
+  const { getItem } = useLocalStorage();
   const session = useSession();
   const name = session.data?.user.name;
-  const token = session.data?.user.accessToken;
+  const token =
+    session.data?.user.accessToken ?? (getItem("authToken") as string);
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
   const router = useRouter();
   const [commonStat, setCommonStat] = useState<OverviewRespType | null>();

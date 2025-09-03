@@ -4,10 +4,11 @@ import { NotificationTypes } from "@/Types/types";
 import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import { ReactSVG } from "react-svg";
 import { AppButton } from "../UI/AppButton/AppButton";
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { useVisibleNotifications } from "@/hooks/useVisibleNotifications ";
 import { Socket } from "socket.io-client";
 import { SocketEventsEnum } from "@/app/dashboard/layout";
+import dayjs from "dayjs";
 
 type ClientNotificationsProps = {
   userId: string;
@@ -120,14 +121,16 @@ const ClientNotoficationQueue = ({
       container
       position={isMobile ? "fixed" : "absolute"}
       flexDirection={"column"}
-      maxHeight={"fit-content"}
-      width={{ xs: "auto", md: "25rem" }}
+      // maxHeight={"fit-content"}
+      height={{ xs: isNotifOpen && isMobile ? "calc(100vh - 64px)" : "auto" }}
+      width={{ xs: isNotifOpen ? "100%" : "auto", md: "25rem" }}
       padding={"1rem"}
       borderRadius={"var(--border-radius-primary)"}
       sx={{
         zIndex: 500,
         bottom: { xs: "64px", md: "5px" },
         right: { xs: 0, md: "5px" },
+
         backgroundColor: {
           xs: isNotifOpen ? "var(--background-secondary)" : "transparent",
           md: "var(--background-secondary)",
@@ -188,14 +191,53 @@ const ClientNotoficationQueue = ({
         <Grid
           component={"div"}
           ref={notificationBox}
-          maxHeight={isMobile ? "calc(100vh - 128px)" : "500px"}
+          maxHeight={isMobile ? "calc(80vh)" : "500px"}
           flexWrap={"nowrap"}
           position={"relative"}
           sx={{ overflowY: "scroll" }}
         >
-          {notifications.map((n) => (
-            <Notification {...n} key={n._id} />
-          ))}
+          {notifications.length ? (
+            notifications.map((n, i, arr) => {
+              const prevNotification = arr[i - 1];
+              const isNewDate =
+                !prevNotification ||
+                !dayjs(prevNotification.createdAt).isSame(n.createdAt, "date");
+
+              return (
+                <Fragment key={n._id}>
+                  {isNewDate && (
+                    <Grid
+                      display="flex"
+                      alignItems="center"
+                      sx={{ margin: "1rem 0" }}
+                    >
+                      <Box flex={1} sx={{ borderBottom: "1px solid #ccc" }} />
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          margin: "0 0.5rem",
+                          whiteSpace: "nowrap",
+                          color: "var(--text-secondary, #666)",
+                          fontSize: "0.8rem",
+                          backgroundColor: "var(--background-secondary)",
+                          padding: "0 0.5rem",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        {dayjs(n.createdAt).format("DD MMMM YYYY")}
+                      </Typography>
+                      <Box flex={1} sx={{ borderBottom: "1px solid #ccc" }} />
+                    </Grid>
+                  )}
+                  <Notification {...n} />
+                </Fragment>
+              );
+            })
+          ) : (
+            <Typography variant="h5" textAlign={"center"} color="info">
+              There are not any notifications
+            </Typography>
+          )}
 
           <div ref={bottomRef}></div>
         </Grid>

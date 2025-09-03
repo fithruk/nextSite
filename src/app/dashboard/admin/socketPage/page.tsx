@@ -146,16 +146,6 @@ const SocketPage = () => {
     (async () => {
       try {
         await getClientsWhoAreTrainingNow();
-        // const { data, status } = await apiService.get<{ users: ClientTypes[] }>(
-        //   "/admin/getAllClients"
-        // );
-        // if (status === 200) {
-        //   setClients(
-        //     data.users
-        //       .filter((client) => client.name !== "белов сергей")
-        //       .sort((a, b) => a.name.localeCompare(b.name))
-        //   );
-        // }
       } catch (error) {
         console.log(error);
       }

@@ -20,12 +20,15 @@ import { useSocketContext } from "../Contexts/SocketContext/SoketContext";
 import { useSession } from "next-auth/react";
 import ClientNotoficationQueue from "@/components/ClientNotifications/ClientNotifications";
 import { NotificationTypes } from "@/Types/types";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const { setSocket, setName, setRole, socket } = useSocketContext();
   const [notifications, setNotifications] = useState<NotificationTypes[]>([]);
   const [isNotifOpen, setIsNotifOpen] = useState<boolean>(false);
   const { data: session } = useSession();
+
+  const { setItem } = useLocalStorage();
 
   const token = session?.user.accessToken;
   const name = session?.user.name;
@@ -44,7 +47,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             n.isRead === parsedNotifications[i].isRead
         )
       ) {
-        return prev; // одинаковые — не обновляем
+        return prev;
       }
       return parsedNotifications;
     });
@@ -55,13 +58,15 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    if (!token) return;
+    setItem("authToken", token);
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL!, {
       withCredentials: true,
       auth: {
-        token: session?.user.accessToken,
+        token: token,
       },
       query: {
-        name: session?.user.name,
+        name: name,
         role: role,
       },
     });
