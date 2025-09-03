@@ -27,6 +27,7 @@ import {
 import ExerciseDetails from "../ExerciseDetails/ExerciseDetails";
 import dayjs from "dayjs";
 import Chart, { ChartNamesEnum } from "../Chart/Chart";
+import AppError from "@/app/Error/Error";
 
 type ExerciseItemTypes = {
   item: WorkoutTypes;
@@ -352,10 +353,16 @@ const ExerciseSession = ({
         alert("Тренування збережено");
       }
 
+      if (status === 401) {
+        throw AppError.UnauthorizedError();
+      }
+
       console.log(status + " status /workouts/saveWorkoutResults");
     } catch (error) {
-      alert((error as Error).message);
-      router.push("/login");
+      if (error instanceof AppError) {
+        alert(error.message);
+        router.push("/login");
+      }
     } finally {
       setIsSavingWorkout(false);
     }
