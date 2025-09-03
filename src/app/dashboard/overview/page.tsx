@@ -14,6 +14,7 @@ import CommonStatistics from "@/components/Statistics/CommonStatictics/CommonSta
 import StatisticsComingSoon from "@/components/StatisticsComingSoon/StatisticsComingSoon";
 import DetailedStatistics from "@/components/Statistics/DetailedStatistics/DetailedStatistics";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import AppError from "@/app/Error/Error";
 
 dayjs.extend(utc);
 
@@ -56,9 +57,19 @@ const Overview = () => {
           setCommonStat(data);
           setIsLoading(false);
         }
+
+        if (status === 401) {
+          throw AppError.UnauthorizedError();
+        }
       } catch (error) {
-        console.log(error);
-        // alert(error);
+        if (error instanceof AppError) {
+          if (error.status === 401) {
+            alert(error.message);
+            router.push("/login");
+            return;
+          }
+        }
+        alert((error as Error).message);
       }
     })();
   }, [session]);
