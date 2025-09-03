@@ -13,6 +13,8 @@ import {
   TextField,
 } from "@mui/material";
 
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, MouseEvent, ChangeEvent, FormEvent, useEffect } from "react";
 import dayjs from "dayjs";
@@ -24,6 +26,8 @@ import {
   WorkoutTypes,
 } from "@/Types/types";
 import Chart, { ChartNamesEnum } from "../Chart/Chart";
+
+dayjs.extend(isSameOrAfter);
 
 const initialState = {
   musclesGroup: "",
@@ -142,7 +146,9 @@ const WorkoutCreator = ({
   };
 
   useEffect(() => {
-    if (dayjs(date).date() === dayjs(new Date()).date()) {
+    if (dayjs(date).isSameOrAfter(dayjs(), "day")) {
+      console.log("Her");
+
       (async () => {
         try {
           const { data, status } = await apiService.get<WorkoutTypes[]>(
