@@ -1,4 +1,6 @@
 import {
+  Button,
+  ButtonGroup,
   FormControl,
   Grid,
   IconButton,
@@ -11,6 +13,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  Typography,
 } from "@mui/material";
 
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
@@ -39,18 +42,33 @@ const initialState = {
 
 type WorkoutCreatorProps = {
   date: Date | undefined;
+  replaceDate: Date | undefined;
   exercises: Exercise[];
   name: string;
   apiService: ApiService;
 };
 
+enum CreatorOptionsEnum {
+  create = "create",
+  update = "update",
+  delete = "delete",
+}
+
 const WorkoutCreator = ({
   date,
+  replaceDate,
   exercises,
   name,
   apiService,
 }: WorkoutCreatorProps) => {
   const [select, setSelect] = useState<WorkoutTypes>({ ...initialState });
+  const [creatorOptions, setCreatorOptions] = useState<
+    Record<CreatorOptionsEnum, boolean>
+  >({
+    [CreatorOptionsEnum.create]: true,
+    [CreatorOptionsEnum.update]: false,
+    [CreatorOptionsEnum.delete]: false,
+  });
   const musclGroupes = [
     ...new Set(exercises.map((ex) => ex.ExerciseMuscleGroup)),
   ];
@@ -145,23 +163,28 @@ const WorkoutCreator = ({
     return alignedData;
   };
 
-  useEffect(() => {
-    if (dayjs(date).isSameOrAfter(dayjs(), "day")) {
-      console.log("Her");
+  const onChangeCreatorOption = (op: CreatorOptionsEnum) => {
+    setCreatorOptions(() =>
+      Object.values(CreatorOptionsEnum).reduce((acc, key) => {
+        acc[key] = key === op;
+        return acc;
+      }, {} as Record<CreatorOptionsEnum, boolean>)
+    );
+  };
 
-      (async () => {
-        try {
-          const { data, status } = await apiService.get<WorkoutTypes[]>(
-            `/admin/getCurrentWorkoutPlan/${encodeURIComponent(name)}/${date}`
-          );
-          if (status === 200) {
-            setWorkoutExercises(data);
-          }
-        } catch (error) {
-          console.log((error as Error).message);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data, status } = await apiService.get<WorkoutTypes[]>(
+          `/admin/getCurrentWorkoutPlan/${encodeURIComponent(name)}/${date}`
+        );
+        if (status === 200) {
+          setWorkoutExercises(data);
         }
-      })();
-    }
+      } catch (error) {
+        console.log((error as Error).message);
+      }
+    })();
   }, [date, name]);
 
   useEffect(() => {
@@ -184,7 +207,36 @@ const WorkoutCreator = ({
         <Grid container spacing={3}>
           <Grid size={{ xs: 12, md: 12 }} marginTop={{ xs: "5vh", md: "2rem" }}>
             {" "}
-            Нове тренування для {name} {dayjs(date).format("DD.MM.YYYY")}
+            <ButtonGroup
+              variant="contained"
+              sx={{ marginBottom: { xs: "1vh", md: "1rem" } }}
+            >
+              {Object.keys(creatorOptions).map((op) => (
+                <Button
+                  key={op}
+                  onClick={() =>
+                    onChangeCreatorOption(op as CreatorOptionsEnum)
+                  }
+                >
+                  {op}
+                </Button>
+              ))}
+            </ButtonGroup>
+            {dayjs(date).isSameOrAfter(dayjs(), "day") ? (
+              <Typography variant="body1">
+                Створити нове тренування для{" "}
+                <Typography color="info" component={"span"}>
+                  {name}
+                </Typography>{" "}
+                на{" "}
+                <Typography component={"span"} color="info">
+                  {dayjs(date).format("DD.MM.YYYY")}
+                </Typography>{" "}
+                або {dayjs(replaceDate).format("DD.MM.YYYY")}
+              </Typography>
+            ) : (
+              `План минулого тренування на ${dayjs(date).format("DD.MM.YYYY")}`
+            )}
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <FormControl fullWidth>
