@@ -51,6 +51,7 @@ const Clients = () => {
   const [message, setMessage] = useState("");
   const [clientWorkouts, setClientWorkous] = useState<WorkoutEvent[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<WorkoutEvent | null>(null);
+  const [plannedEvent, setPlannedEvent] = useState<WorkoutEvent | null>(null);
   const [allExrecises, setAllExercises] = useState<Exercise[]>([]);
   const [combinedWorkouts, setCombinedWorkouts] = useState<
     CombinedWorkoutData[]
@@ -67,27 +68,6 @@ const Clients = () => {
     console.log("Клик по событию:", event);
     setSelectedEvent(event);
   };
-
-  useEffect(() => {
-    if (!token) return;
-
-    (async () => {
-      try {
-        const { data, status } = await apiService.get<{ users: ClientTypes[] }>(
-          "/admin/getAllClients"
-        );
-        if (status === 200) {
-          setClients(
-            data.users
-              .filter((client) => client.name !== "белов сергей")
-              .sort((a, b) => a.name.localeCompare(b.name))
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, [token]);
 
   const handleChangeClient = async (event: SelectChangeEvent) => {
     const value = event.target.value;
@@ -125,6 +105,12 @@ const Clients = () => {
           dateOfCreation: abonement.data.abonement.dateOfCreation,
           dateOfLastActivation: null,
         });
+
+        if (abonement.data.abonement.abonementDuration != 0) {
+          setAbonDurationDates({
+            start: dayjs(abonement.data.abonement.dateOfCreation),
+          });
+        }
       }
       if (exercises.status === 200) {
         setAllExercises(exercises.data.exercises);
@@ -146,7 +132,11 @@ const Clients = () => {
 
     try {
       const { data, status } = await apiService.post<{
-        abonement: { name: string; abonDuration: number; dateOfStart: Date };
+        abonement: {
+          name: string;
+          abonementDuration: number;
+          dateOfCreation: Date;
+        };
       }>("/admin/createNewAbonement", {
         name: selectValue,
         abonementDuration: abonDuration,
@@ -154,11 +144,16 @@ const Clients = () => {
       });
 
       if (status === 200) {
-        console.log(data);
-        setMessage("Succes!");
-        setAbonDuration("");
-        setAbonDurationDates({ start: dayjs() });
+        setMessage("Абонемент успішно оновлено!");
+
+        setCurrentAbonement({
+          abonementDuration: data.abonement.abonementDuration,
+          dateOfCreation: dayjs(data.abonement.dateOfCreation).toDate(),
+          dateOfLastActivation: null,
+        });
+        setAbonDurationDates({ start: dayjs(data.abonement.dateOfCreation) });
       }
+      setAbonDuration("");
     } catch (error) {
       if (error instanceof Error) {
         setMessage(error.message);
@@ -172,6 +167,15 @@ const Clients = () => {
     // console.log("End:", slotInfo.end);
     // console.log("Все слоты:", slotInfo.slots);
     // console.log("Действие:", slotInfo.action);
+
+    if (slotInfo.slots.length === 1) {
+      setPlannedEvent({
+        title: "WPlan",
+        start: dayjs(slotInfo.slots[0]).toDate(),
+        end: dayjs(slotInfo.slots[0]).add(1, "hour").toDate(),
+      });
+      return;
+    }
 
     try {
       const { data, status } = await apiService.post<CombinedWorkoutData[]>(
@@ -189,6 +193,32 @@ const Clients = () => {
       console.log((error as Error).message);
     }
   };
+
+  useEffect(() => {
+    if (!token) return;
+
+    (async () => {
+      try {
+        const { data, status } = await apiService.get<{ users: ClientTypes[] }>(
+          "/admin/getAllClients"
+        );
+        if (status === 200) {
+          setClients(
+            data.users
+              .filter((client) => client.name !== "белов сергей")
+              .sort((a, b) => a.name.localeCompare(b.name))
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [token]);
+
+  useEffect(() => {
+    setAbonDurationDates({ start: dayjs() });
+    setAbonDuration("");
+  }, [selectValue]);
 
   return (
     <Grid
@@ -266,6 +296,7 @@ const Clients = () => {
           {selectValue && (
             <WorkoutCreator
               date={selectedEvent?.start}
+              replaceDate={plannedEvent?.start}
               exercises={allExrecises}
               name={selectValue}
               apiService={apiService}
@@ -349,6 +380,26 @@ const Clients = () => {
                         }}
                       >
                         <MenuItem
+                          value={"-1"}
+                          sx={{
+                            "@media(max-width: 600px)": {
+                              fontSize: "4vw",
+                            },
+                          }}
+                        >
+                          -1
+                        </MenuItem>
+                        <MenuItem
+                          value={"1"}
+                          sx={{
+                            "@media(max-width: 600px)": {
+                              fontSize: "4vw",
+                            },
+                          }}
+                        >
+                          1
+                        </MenuItem>
+                        <MenuItem
                           value={"5"}
                           sx={{
                             "@media(max-width: 600px)": {
@@ -423,8 +474,15 @@ const Clients = () => {
                         />
                       </LocalizationProvider>
                     </FormControl>
-                    <AppButton type="submit" variant="outlined">
-                      Створити абонемент
+                    <AppButton
+                      type="submit"
+                      variant="outlined"
+                      disabled={!abonDuration}
+                    >
+                      {currentAbonement &&
+                      currentAbonement.abonementDuration > 0
+                        ? "Оновити абонемент"
+                        : "Створити абонемент"}
                     </AppButton>
                     <Typography
                       component={"p"}
