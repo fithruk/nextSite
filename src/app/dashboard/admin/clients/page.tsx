@@ -171,7 +171,7 @@ const Clients = () => {
     if (slotInfo.slots.length === 1) {
       setPlannedEvent({
         title: "WPlan",
-        start: dayjs(slotInfo.slots[0]).toDate(),
+        start: dayjs(slotInfo.slots[0].setHours(12, 0, 0, 0)).toDate(),
         end: dayjs(slotInfo.slots[0]).add(1, "hour").toDate(),
       });
       return;

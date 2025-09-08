@@ -54,6 +54,12 @@ enum CreatorOptionsEnum {
   delete = "delete",
 }
 
+const creatorOptions = [
+  CreatorOptionsEnum.create,
+  CreatorOptionsEnum.update,
+  CreatorOptionsEnum.delete,
+];
+
 const WorkoutCreator = ({
   date,
   replaceDate,
@@ -62,18 +68,15 @@ const WorkoutCreator = ({
   apiService,
 }: WorkoutCreatorProps) => {
   const [select, setSelect] = useState<WorkoutTypes>({ ...initialState });
-  const [creatorOptions, setCreatorOptions] = useState<
-    Record<CreatorOptionsEnum, boolean>
-  >({
-    [CreatorOptionsEnum.create]: true,
-    [CreatorOptionsEnum.update]: false,
-    [CreatorOptionsEnum.delete]: false,
-  });
+  const [creatorOption, setCreatorOption] = useState<CreatorOptionsEnum>(
+    CreatorOptionsEnum.create
+  );
   const musclGroupes = [
     ...new Set(exercises.map((ex) => ex.ExerciseMuscleGroup)),
   ];
 
   const [workoutExercises, setWorkoutExercises] = useState<WorkoutTypes[]>([]);
+
   const [chartData, setChartData] = useState<
     WeightChangeDynamicsDataTypes[] | undefined
   >(undefined);
@@ -113,15 +116,69 @@ const WorkoutCreator = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const { status } = await apiService.post("workouts/saveWorkoutPlan", {
-        dateOfWorkout: date,
-        clientName: name,
-        workoutPlan: workoutExercises,
-      });
-      if (status === 200) {
-        alert("Succes");
-        setSelect({ ...initialState });
-        setWorkoutExercises([]);
+      switch (creatorOption) {
+        case CreatorOptionsEnum.delete:
+          console.log(creatorOption);
+
+          const { status: deleteStatus } = await apiService.delete(
+            "workouts/deleteWorkoutPlan",
+            {
+              data: {
+                dateOfWorkout: date,
+                clientName: name,
+              },
+            }
+          );
+          if (deleteStatus === 200) {
+            alert("Workout has been removed");
+            setWorkoutExercises([]);
+          }
+          break;
+
+        case CreatorOptionsEnum.update:
+          const { status: updateStatus } = await apiService.post(
+            "workouts/saveWorkoutPlan",
+            {
+              dateOfWorkout:
+                creatorOption === CreatorOptionsEnum.update
+                  ? replaceDate
+                  : date,
+              clientName: name,
+              workoutPlan: workoutExercises,
+            }
+          );
+          if (updateStatus === 200) {
+            alert("Succes");
+            setSelect({ ...initialState });
+            setWorkoutExercises([]);
+          }
+          break;
+
+        case CreatorOptionsEnum.create:
+          const { status: createStatus } = await apiService.post(
+            "workouts/saveWorkoutPlan",
+            {
+              dateOfWorkout:
+                creatorOption === CreatorOptionsEnum.create
+                  ? replaceDate
+                  : date,
+              clientName: name,
+              workoutPlan: workoutExercises,
+            }
+          );
+          if (createStatus === 200) {
+            alert("Succes");
+            setSelect({ ...initialState });
+            setWorkoutExercises([]);
+          }
+          break;
+
+        default:
+          break;
+      }
+
+      if (creatorOption !== CreatorOptionsEnum.delete) {
+        console.log("deleteStatus");
       }
     } catch (error) {
       alert((error as Error).message);
@@ -164,28 +221,58 @@ const WorkoutCreator = ({
   };
 
   const onChangeCreatorOption = (op: CreatorOptionsEnum) => {
-    setCreatorOptions(() =>
-      Object.values(CreatorOptionsEnum).reduce((acc, key) => {
-        acc[key] = key === op;
-        return acc;
-      }, {} as Record<CreatorOptionsEnum, boolean>)
+    setCreatorOption(op);
+  };
+
+  const loadWorkoutPlanByDate = async () => {
+    const { data, status } = await apiService.get<WorkoutTypes[]>(
+      `/admin/getCurrentWorkoutPlan/${encodeURIComponent(name)}/${date}`
     );
+    return { data, status };
   };
 
   useEffect(() => {
     (async () => {
       try {
-        const { data, status } = await apiService.get<WorkoutTypes[]>(
-          `/admin/getCurrentWorkoutPlan/${encodeURIComponent(name)}/${date}`
-        );
-        if (status === 200) {
-          setWorkoutExercises(data);
+        const {
+          data: loadWorkoutPlanByDateData,
+          status: loadWorkoutPlanByDateStatus,
+        } = await loadWorkoutPlanByDate();
+        setWorkoutExercises(loadWorkoutPlanByDateData);
+
+        if (!loadWorkoutPlanByDateData.length)
+          setCreatorOption(CreatorOptionsEnum.create);
+
+        switch (creatorOption) {
+          case CreatorOptionsEnum.create:
+            if (
+              loadWorkoutPlanByDateStatus === 200 &&
+              loadWorkoutPlanByDateData.length
+            ) {
+              setCreatorOption(CreatorOptionsEnum.update);
+            } else {
+              setCreatorOption(CreatorOptionsEnum.create);
+            }
+
+            break;
+          case CreatorOptionsEnum.update:
+            console.log(CreatorOptionsEnum.update);
+
+            break;
+          case CreatorOptionsEnum.delete:
+            console.log(CreatorOptionsEnum.delete);
+
+            break;
+
+          default:
+            setCreatorOption(CreatorOptionsEnum.create);
+            break;
         }
       } catch (error) {
         console.log((error as Error).message);
       }
     })();
-  }, [date, name]);
+  }, [date, name, creatorOption]);
 
   useEffect(() => {
     if (select.exercise && select.musclesGroup) {
@@ -211,9 +298,10 @@ const WorkoutCreator = ({
               variant="contained"
               sx={{ marginBottom: { xs: "1vh", md: "1rem" } }}
             >
-              {Object.keys(creatorOptions).map((op) => (
+              {creatorOptions.map((op) => (
                 <Button
                   key={op}
+                  color={op === creatorOption ? "info" : "inherit"}
                   onClick={() =>
                     onChangeCreatorOption(op as CreatorOptionsEnum)
                   }
@@ -229,13 +317,34 @@ const WorkoutCreator = ({
                   {name}
                 </Typography>{" "}
                 на{" "}
-                <Typography component={"span"} color="info">
-                  {dayjs(date).format("DD.MM.YYYY")}
-                </Typography>{" "}
-                або {dayjs(replaceDate).format("DD.MM.YYYY")}
+                {date ? (
+                  <Typography component={"span"} color="info">
+                    {dayjs(date).format("DD.MM.YYYY")}
+                  </Typography>
+                ) : (
+                  " Select the date "
+                )}
               </Typography>
             ) : (
-              `План минулого тренування на ${dayjs(date).format("DD.MM.YYYY")}`
+              <Typography>
+                План минулого тренування на{" "}
+                {
+                  <Typography component={"span"} color="info">
+                    {dayjs(date).format("DD.MM.YYYY")}
+                  </Typography>
+                }{" "}
+                . Оберіть дату для копіювання плану попереднього тренування на
+                іншу дату:{" "}
+                {replaceDate ? (
+                  <Typography component={"span"} color="warning">
+                    {dayjs(replaceDate).format("DD.MM.YYYY")}
+                  </Typography>
+                ) : (
+                  <Typography component={"span"} color="warning">
+                    Select the date
+                  </Typography>
+                )}
+              </Typography>
             )}
           </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -384,7 +493,22 @@ const WorkoutCreator = ({
           {workoutExercises.length !== 0 && (
             <Grid size={{ xs: 12, md: 4 }}>
               <AppButton sx={{ width: "-webkit-fill-available" }} type="submit">
-                Save
+                {creatorOption === CreatorOptionsEnum.create && (
+                  <Typography component={"span"}>
+                    Створити тернування на {dayjs(date).format("DD.MM.YYYY")}
+                  </Typography>
+                )}
+                {creatorOption === CreatorOptionsEnum.update && (
+                  <Typography component={"span"}>
+                    Створити тернування на{" "}
+                    {dayjs(replaceDate).format("DD.MM.YYYY")}
+                  </Typography>
+                )}
+                {creatorOption === CreatorOptionsEnum.delete && (
+                  <Typography component={"span"}>
+                    Видалити тернування на {dayjs(date).format("DD.MM.YYYY")}
+                  </Typography>
+                )}
               </AppButton>
             </Grid>
           )}
