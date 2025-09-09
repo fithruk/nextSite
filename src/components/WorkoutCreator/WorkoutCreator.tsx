@@ -113,6 +113,14 @@ const WorkoutCreator = ({
     setWorkoutExercises(newExercises);
   };
 
+  /////////////////
+  const onExerciseUpdate = (ind: number) => {
+    console.log(ind + " ind");
+    console.log("click");
+  };
+
+  ///////////////
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -155,13 +163,14 @@ const WorkoutCreator = ({
           break;
 
         case CreatorOptionsEnum.create:
+          console.log(date + " date");
           const { status: createStatus } = await apiService.post(
             "workouts/saveWorkoutPlan",
             {
               dateOfWorkout:
                 creatorOption === CreatorOptionsEnum.create
-                  ? replaceDate
-                  : date,
+                  ? date
+                  : replaceDate,
               clientName: name,
               workoutPlan: workoutExercises,
             }
@@ -175,10 +184,6 @@ const WorkoutCreator = ({
 
         default:
           break;
-      }
-
-      if (creatorOption !== CreatorOptionsEnum.delete) {
-        console.log("deleteStatus");
       }
     } catch (error) {
       alert((error as Error).message);
@@ -472,6 +477,10 @@ const WorkoutCreator = ({
               {workoutExercises.map((ex, ind) => (
                 <ListItem
                   key={`${ex.exercise} ${ind}`}
+                  component={"li"}
+                  onClick={() => {
+                    onExerciseUpdate(ind);
+                  }}
                   secondaryAction={
                     <IconButton
                       onClick={() => handleDelete(ind)}
