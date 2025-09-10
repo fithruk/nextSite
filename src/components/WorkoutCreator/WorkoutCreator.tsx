@@ -98,7 +98,24 @@ const WorkoutCreator = ({
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     console.log(e.currentTarget.textContent);
 
-    setWorkoutExercises((state) => [...state, { ...select }]);
+    setWorkoutExercises((state) => {
+      const exists = state.some((ex) => ex.exercise === select.exercise);
+
+      if (exists) {
+        return state.map((ex) =>
+          ex.exercise === select.exercise
+            ? {
+                ...ex,
+                reps: select.reps,
+                sets: select.sets,
+                weight: select.weight,
+              }
+            : ex
+        );
+      } else {
+        return [...state, { ...select }];
+      }
+    });
     setSelect({
       musclesGroup: select.musclesGroup,
       exercise: "",
@@ -114,9 +131,20 @@ const WorkoutCreator = ({
   };
 
   /////////////////
-  const onExerciseUpdate = (ind: number) => {
+  const onExerciseUpdate = (ind: number, exerciseName: string) => {
     console.log(ind + " ind");
-    console.log("click");
+    const muscleGrope = exercises.find(
+      (ex) => ex.ExerciseName === exerciseName
+    )?.ExerciseMuscleGroup;
+
+    console.log(muscleGrope);
+    setSelect({
+      musclesGroup: muscleGrope!,
+      exercise: exerciseName,
+      sets: 0,
+      reps: 0,
+      weight: 0,
+    });
   };
 
   ///////////////
@@ -479,7 +507,7 @@ const WorkoutCreator = ({
                   key={`${ex.exercise} ${ind}`}
                   component={"li"}
                   onClick={() => {
-                    onExerciseUpdate(ind);
+                    onExerciseUpdate(ind, ex.exercise);
                   }}
                   secondaryAction={
                     <IconButton

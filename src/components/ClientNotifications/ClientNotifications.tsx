@@ -121,7 +121,6 @@ const ClientNotoficationQueue = ({
       container
       position={isMobile ? "fixed" : "absolute"}
       flexDirection={"column"}
-      // maxHeight={"fit-content"}
       height={{ xs: isNotifOpen && isMobile ? "calc(100vh - 64px)" : "auto" }}
       width={{ xs: isNotifOpen ? "100%" : "auto", md: "25rem" }}
       padding={"1rem"}
