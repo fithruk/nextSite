@@ -91,28 +91,6 @@ export type ClientTypes = {
   id: string;
 };
 
-// createdAt
-// :
-// "2025-08-29T10:44:38.752Z"
-// isRead
-// :
-// false
-// message
-// :
-// "Konya"
-// title
-// :
-// "Jopa"
-// userId
-// :
-// "68657837960b2b346c18352a"
-// __v
-// :
-// 0
-// _id
-// :
-// "68b184962e31b666dcecae71"
-
 export type NotificationTypes = {
   createdAt: Date;
   isRead: boolean;
