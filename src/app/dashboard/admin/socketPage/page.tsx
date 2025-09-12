@@ -34,7 +34,13 @@ const SocketPage = () => {
     }
   };
 
-  // const [clients, setClients] = useState<ClientTypes[]>([]);
+  const getAllSiteClients = async () => {
+    return await apiService.get<{ users: ClientTypes[] }>(
+      "/admin/getAllClients"
+    );
+  };
+
+  const [allSiteClients, setAllSiteClients] = useState<ClientTypes[]>([]);
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
   const [notMessage, setNotMessage] = useState({ title: "", message: "" });
   const [clientWhoAreTrainingNow, setClientWhoAreTrainingNow] = useState<
@@ -69,7 +75,6 @@ const SocketPage = () => {
     const newWorkoutData: Omit<WorkoutResultType, "clientName"> & {
       name: string;
     } = JSON.parse(data);
-    console.log(newWorkoutData);
 
     if (newWorkoutData) {
       setClientWhoAreTrainingNow((state) => {
@@ -98,12 +103,9 @@ const SocketPage = () => {
   };
 
   const getClientsWhoAreTrainingNow = async () => {
-    const { data, status } = await apiService.get<WorkoutResultType[]>(
+    return await apiService.get<WorkoutResultType[]>(
       "/admin/getClientsWhoAreTrainingNow"
     );
-    if (status === 200) {
-      setClientWhoAreTrainingNow(data);
-    }
   };
 
   const onNotificationChange = (
@@ -120,24 +122,35 @@ const SocketPage = () => {
       alert("Soket is not connected");
       return;
     }
-    console.log(selectedClients);
-    console.log(notMessage);
-    const newNotification = {
-      clientName: selectedClients[selectedClients.length - 1],
-      ...notMessage,
-    }; // Костыль
 
-    socket.emit(
-      SocketEventsEnum.newNotification,
-      JSON.stringify(newNotification)
-    );
+    if (selectedClients) {
+      socket.emit(
+        SocketEventsEnum.newNotification,
+        JSON.stringify({
+          clientNames: selectedClients,
+          ...notMessage,
+        })
+      );
+    }
+
+    // const newNotification = {
+    //   clientName: selectedClients[selectedClients.length - 1],
+    //   ...notMessage,
+    // }; // Костыль
+
+    // socket.emit(
+    //   SocketEventsEnum.newNotification,
+    //   JSON.stringify(newNotification)
+    // );
 
     setNotMessage({ title: "", message: "" });
+    setSelectedClients([]);
   };
 
   const onSelectClientForSendNotification = (clientName: string) => {
     setSelectedClients((state) => {
-      if (state.includes(clientName)) return state;
+      if (state.includes(clientName))
+        return state.filter((name) => name !== clientName);
       return [...state, clientName];
     });
   };
@@ -145,7 +158,16 @@ const SocketPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        await getClientsWhoAreTrainingNow();
+        const [trainingNowClients, allSiteClients] = await Promise.all([
+          await getClientsWhoAreTrainingNow(),
+          await getAllSiteClients(),
+        ]);
+        if (trainingNowClients.status === 200) {
+          setClientWhoAreTrainingNow(trainingNowClients.data);
+        }
+        if (allSiteClients.status === 200) {
+          setAllSiteClients(allSiteClients.data.users);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -193,6 +215,10 @@ const SocketPage = () => {
             onNotificationChange={onNotificationChange}
             notMessage={notMessage}
             selectedClients={selectedClients ?? []}
+            allSiteClients={allSiteClients ?? []}
+            onSelectClientForSendNotification={
+              onSelectClientForSendNotification
+            }
           />
         </AppBox>
       </Grid>
