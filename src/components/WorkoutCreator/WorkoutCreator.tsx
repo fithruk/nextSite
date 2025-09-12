@@ -172,6 +172,7 @@ const WorkoutCreator = ({
           break;
 
         case CreatorOptionsEnum.update:
+          console.log(date + " date");
           const { status: updateStatus } = await apiService.post(
             "workouts/saveWorkoutPlan",
             {

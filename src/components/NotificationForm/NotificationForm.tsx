@@ -1,14 +1,18 @@
-import { TextField, Typography } from "@mui/material";
+import { Grid, TextField, Typography } from "@mui/material";
 import { AppButton } from "../UI/AppButton/AppButton";
 import { ChangeEvent, FormEvent } from "react";
+import { ClientTypes } from "../../Types/types";
+import NotificationFormHeader from "./NotificationFormHeader";
 
 type NitificationFormTypes = {
   onSubmitNotification: (e: FormEvent<HTMLFormElement>) => void;
   onNotificationChange: (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  onSelectClientForSendNotification: (clientName: string) => void;
   notMessage: { title: string; message: string };
   selectedClients: string[];
+  allSiteClients: ClientTypes[];
 };
 
 const NotificationForm = ({
@@ -16,15 +20,40 @@ const NotificationForm = ({
   onNotificationChange,
   notMessage,
   selectedClients,
+  allSiteClients,
+  onSelectClientForSendNotification,
 }: NitificationFormTypes) => {
-  const clientName = selectedClients[selectedClients.length - 1]; // Костыль
-  console.log(clientName);
-
   return (
     <form onSubmit={onSubmitNotification}>
       <Typography variant="h5">
-        {clientName && `Створити сповіщення для ${clientName}`}
+        {selectedClients.length > 0 && `Створити сповіщення для: `}
       </Typography>
+      <Grid container>
+        {selectedClients.map((cl) => (
+          <Grid
+            component={"div"}
+            onClick={() => {
+              onSelectClientForSendNotification(cl);
+            }}
+            sx={{
+              cursor: "pointer",
+              margin: { xs: "0.5vh", md: "0.5rem" },
+              backgroundColor: "var(--blue)",
+              color: "var(--background-primary)",
+              padding: { xs: "0.5vh", md: "0.5rem" },
+              borderRadius: "var(--border-radius-secondary)",
+            }}
+            key={cl}
+          >
+            {cl}
+          </Grid>
+        ))}
+      </Grid>
+      <NotificationFormHeader
+        allSiteClients={allSiteClients}
+        onSelectClientForSendNotification={onSelectClientForSendNotification}
+        selectedClients={selectedClients}
+      />
       <TextField
         label="Заголовок"
         name="title"
