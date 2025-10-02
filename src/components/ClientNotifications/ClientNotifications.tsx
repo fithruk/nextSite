@@ -25,6 +25,8 @@ const Notification = ({
   createdAt,
   _id,
 }: NotificationTypes) => {
+  console.log(message);
+
   return (
     <Grid
       component={"div"}
@@ -39,44 +41,61 @@ const Notification = ({
       sx={{ backgroundColor: "var(--background-primary)" }}
     >
       <Grid
-        display={"flex"}
-        justifyContent={"center"}
+        container
+        justifyContent={"space-between"}
         alignItems={"center"}
-        borderRadius={"50%"}
-        sx={{ backgroundColor: "var(--blue)" }}
-        width={"3rem"}
-        height={"3rem"}
+        spacing={1}
       >
-        {" "}
-        {isRead ? (
-          <ReactSVG
-            src={"/images/readedNotification.svg"}
-            beforeInjection={(svg) => {
-              svg.setAttribute("class", styles.icon);
-              svg.querySelectorAll("[fill]").forEach((el) => {
-                el.removeAttribute("fill");
-              });
-            }}
-          />
-        ) : (
-          <ReactSVG
-            src={"/images/notification.svg"}
-            beforeInjection={(svg) => {
-              svg.setAttribute("class", styles.icon);
-              svg.querySelectorAll("[fill]").forEach((el) => {
-                el.removeAttribute("fill");
-              });
-            }}
-          />
-        )}
-      </Grid>
-      <Grid flexGrow={0.7} flexBasis={"50%"}>
-        <Typography variant="h5" color="textPrimary">
-          {title}
-        </Typography>
-        <Typography variant="body2" color="var(--blue)">
-          {message}
-        </Typography>
+        <Grid
+          size={2}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          borderRadius={"50%"}
+          sx={{ backgroundColor: "var(--blue)" }}
+          width={"3rem"}
+          height={"3rem"}
+        >
+          {" "}
+          {isRead ? (
+            <ReactSVG
+              src={"/images/readedNotification.svg"}
+              beforeInjection={(svg) => {
+                svg.setAttribute("class", styles.icon);
+                svg.querySelectorAll("[fill]").forEach((el) => {
+                  el.removeAttribute("fill");
+                });
+              }}
+            />
+          ) : (
+            <ReactSVG
+              src={"/images/notification.svg"}
+              beforeInjection={(svg) => {
+                svg.setAttribute("class", styles.icon);
+                svg.querySelectorAll("[fill]").forEach((el) => {
+                  el.removeAttribute("fill");
+                });
+              }}
+            />
+          )}
+        </Grid>
+        <Grid size={9}>
+          {" "}
+          <Typography variant="h5" color="textPrimary">
+            {title}
+          </Typography>
+        </Grid>
+        <Grid size={12} flexWrap={"wrap"}>
+          {" "}
+          <Typography variant="body2" color="var(--blue)">
+            {message.split("\n").map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );
