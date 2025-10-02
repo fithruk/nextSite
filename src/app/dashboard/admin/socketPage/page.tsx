@@ -8,17 +8,12 @@ import ApiService from "@/app/apiService/apiService";
 import { SocketEventsEnum } from "../../layout";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 
-export enum TemplateNotificationEnum {
-  "progressStatisticsCurrentAbon" = "Статистика прогресу за поточним абонентом",
-  "testNotification" = "Test notification template",
-  "customNotification" = "Кастомне повідомлення",
-}
-
 import {
   WorkoutResultType,
   WplanRespTypes,
   ClientTypes,
   AbonDataTypes,
+  TemplateNotificationEnum,
 } from "@/Types/types";
 import NotificationForm from "@/components/NotificationForm/NotificationForm";
 
