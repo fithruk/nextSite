@@ -51,7 +51,9 @@ const LoginPage = () => {
     if (res && !res.error) {
       router.push("/dashboard/overview");
     } else {
-      console.log(res);
+      if (res?.status === 401) {
+        alert("неправильний логін або пароль");
+      }
     }
   };
 
