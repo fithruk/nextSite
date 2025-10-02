@@ -12,7 +12,7 @@ import { AppButton } from "../UI/AppButton/AppButton";
 import { ChangeEvent, FormEvent } from "react";
 import { AbonDataTypes, ClientTypes } from "../../Types/types";
 import NotificationFormHeader from "./NotificationFormHeader";
-import { TemplateNotificationEnum } from "@/app/dashboard/admin/socketPage/page";
+import { TemplateNotificationEnum } from "../../Types/types";
 
 type NitificationFormTypes = {
   onSubmitNotification: (e: FormEvent<HTMLFormElement>) => void;
