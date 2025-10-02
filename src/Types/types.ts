@@ -23,6 +23,7 @@ export type WplanRespTypes = {
 };
 
 export type AbonDataTypes = {
+  name?: string;
   abonementDuration: number;
   dateOfCreation: Date;
   dateOfLastActivation: Date | null;

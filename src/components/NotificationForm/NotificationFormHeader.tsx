@@ -13,21 +13,31 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ClientTypes } from "../../Types/types";
+import { AbonDataTypes, ClientTypes } from "../../Types/types";
 import { ChangeEvent, useState, MouseEvent } from "react";
 
 type NotFormHeadTypes = {
   allSiteClients: ClientTypes[];
   onSelectClientForSendNotification: (clientName: string) => void;
   selectedClients: string[];
+  allAbonements: AbonDataTypes[];
 };
 
 const NotificationFormHeader = ({
   allSiteClients,
   onSelectClientForSendNotification,
   selectedClients,
+  allAbonements,
 }: NotFormHeadTypes) => {
-  const rows = [...allSiteClients];
+  const rows = [
+    ...allSiteClients.map((cl) => {
+      const clientAbonement = allAbonements.find((ab) => ab.name === cl.name);
+      return {
+        ...cl,
+        clientAbonement: clientAbonement?.abonementDuration ?? 0,
+      };
+    }),
+  ].sort((a, b) => a.clientAbonement - b.clientAbonement);
   const [inputValue, setInputValue] = useState<string>("");
 
   const [page, setPage] = useState(0);
@@ -61,7 +71,6 @@ const NotificationFormHeader = ({
   );
 
   const onCheckBoxChange = (e: ChangeEvent<HTMLInputElement>, name: string) => {
-    console.log(name);
     onSelectClientForSendNotification(name);
   };
 
@@ -79,6 +88,7 @@ const NotificationFormHeader = ({
         value={inputValue}
         onChange={onChangeHandler}
         sx={{ marginBottom: { xs: "1hv", md: "1rem" } }}
+        fullWidth
       />
 
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -87,7 +97,7 @@ const NotificationFormHeader = ({
             <TableCell align="left">Checked</TableCell>
             <TableCell align="left">№</TableCell>
             <TableCell align="left">Name</TableCell>
-            <TableCell align="left">Email</TableCell>
+            <TableCell align="left">Visits remaining</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -117,7 +127,7 @@ const NotificationFormHeader = ({
               </TableCell>
               <TableCell align="left">{page * rowsPerPage + ind + 1}</TableCell>
               <TableCell align="left">{row.name}</TableCell>
-              <TableCell align="left">{row.email}</TableCell>
+              <TableCell align="left">{row.clientAbonement}</TableCell>
             </TableRow>
           ))}
         </TableBody>
