@@ -1,8 +1,18 @@
-import { Grid, TextField, Typography } from "@mui/material";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AppButton } from "../UI/AppButton/AppButton";
 import { ChangeEvent, FormEvent } from "react";
-import { ClientTypes } from "../../Types/types";
+import { AbonDataTypes, ClientTypes } from "../../Types/types";
 import NotificationFormHeader from "./NotificationFormHeader";
+import { TemplateNotificationEnum } from "@/app/dashboard/admin/socketPage/page";
 
 type NitificationFormTypes = {
   onSubmitNotification: (e: FormEvent<HTMLFormElement>) => void;
@@ -13,6 +23,11 @@ type NitificationFormTypes = {
   notMessage: { title: string; message: string };
   selectedClients: string[];
   allSiteClients: ClientTypes[];
+  allAbonements: AbonDataTypes[];
+  notifTemplateState: keyof typeof TemplateNotificationEnum;
+  onHandleSelectNotifTemplate: (
+    e: SelectChangeEvent<keyof typeof TemplateNotificationEnum>
+  ) => void;
 };
 
 const NotificationForm = ({
@@ -21,7 +36,10 @@ const NotificationForm = ({
   notMessage,
   selectedClients,
   allSiteClients,
+  allAbonements,
   onSelectClientForSendNotification,
+  onHandleSelectNotifTemplate,
+  notifTemplateState,
 }: NitificationFormTypes) => {
   return (
     <form onSubmit={onSubmitNotification}>
@@ -53,7 +71,49 @@ const NotificationForm = ({
         allSiteClients={allSiteClients}
         onSelectClientForSendNotification={onSelectClientForSendNotification}
         selectedClients={selectedClients}
+        allAbonements={allAbonements}
       />
+
+      <Typography
+        color="info"
+        variant="h5"
+        margin={{ xs: "1vh 0 0.5vh 0", md: "1rem 0 0.5vh 0" }}
+      >
+        Надіслати шаблон сповіщення
+      </Typography>
+      <FormControl
+        fullWidth
+        sx={{ margin: { xs: "1vh 0 0.5vh 0", md: "1rem 0 0.5vh 0" } }}
+      >
+        <InputLabel id="notificationSelectLabel">
+          Шаблон повідомлення
+        </InputLabel>
+        <Select
+          labelId="notificationSelectLabel"
+          id="notificationSelect"
+          value={notifTemplateState}
+          label="notificationSelect"
+          onChange={onHandleSelectNotifTemplate}
+        >
+          {(
+            Object.keys(
+              TemplateNotificationEnum
+            ) as (keyof typeof TemplateNotificationEnum)[]
+          ).map((key) => (
+            <MenuItem key={key} value={key}>
+              {TemplateNotificationEnum[key]}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <Typography
+        color="info"
+        variant="h5"
+        margin={{ xs: "1vh 0 0.5vh 0", md: "1rem 0 0.5vh 0" }}
+      >
+        Створити власне сповіщення
+      </Typography>
       <TextField
         label="Заголовок"
         name="title"

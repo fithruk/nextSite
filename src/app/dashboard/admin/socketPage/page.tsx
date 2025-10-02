@@ -1,23 +1,43 @@
 "use client";
 import SocketTable from "@/components/SocketTable/SocketTable";
 import { AppBox } from "@/components/UI/AppBox/AppBox";
-import { Grid } from "@mui/material";
+import { Grid, SelectChangeEvent } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import ApiService from "@/app/apiService/apiService";
 import { SocketEventsEnum } from "../../layout";
 import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 
-import { WorkoutResultType, WplanRespTypes, ClientTypes } from "@/Types/types";
+export enum TemplateNotificationEnum {
+  "progressStatisticsCurrentAbon" = "Статистика прогресу за поточним абонентом",
+  "testNotification" = "Test notification template",
+  "customNotification" = "Кастомне повідомлення",
+}
+
+import {
+  WorkoutResultType,
+  WplanRespTypes,
+  ClientTypes,
+  AbonDataTypes,
+} from "@/Types/types";
 import NotificationForm from "@/components/NotificationForm/NotificationForm";
 
 const SocketPage = () => {
   const session = useSession();
   const { socket } = useSocketContext();
   const [wPlans, setWplans] = useState<WplanRespTypes[]>([]);
-  const name = session.data?.user.name;
+  const [allSiteClients, setAllSiteClients] = useState<ClientTypes[]>([]);
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [allAbonements, setAllAbonements] = useState<AbonDataTypes[]>([]);
+  const [notMessage, setNotMessage] = useState({ title: "", message: "" });
+  const [clientWhoAreTrainingNow, setClientWhoAreTrainingNow] = useState<
+    WorkoutResultType[]
+  >([]);
+  const [notifTemplateState, setNotifTemplateState] = useState<
+    keyof typeof TemplateNotificationEnum | ""
+  >("");
+
   const token = session.data?.user.accessToken;
-  const role = session.data?.user.role;
 
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
 
@@ -39,13 +59,6 @@ const SocketPage = () => {
       "/admin/getAllClients"
     );
   };
-
-  const [allSiteClients, setAllSiteClients] = useState<ClientTypes[]>([]);
-  const [selectedClients, setSelectedClients] = useState<string[]>([]);
-  const [notMessage, setNotMessage] = useState({ title: "", message: "" });
-  const [clientWhoAreTrainingNow, setClientWhoAreTrainingNow] = useState<
-    WorkoutResultType[]
-  >([]);
 
   const handleGetClients = (data?: string) => {
     if (!data) return;
@@ -108,11 +121,16 @@ const SocketPage = () => {
     );
   };
 
+  const getAllAbonements = async () => {
+    return await apiService.get<AbonDataTypes[]>("/admin/getAllAbonements");
+  };
+
   const onNotificationChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
 
+    setNotifTemplateState("customNotification");
     setNotMessage((state) => ({ ...state, [name]: value }));
   };
 
@@ -155,18 +173,37 @@ const SocketPage = () => {
     });
   };
 
+  const onHandleSelectNotifTemplate = (
+    e: SelectChangeEvent<keyof typeof TemplateNotificationEnum>
+  ) => {
+    const value = e.target.value as keyof typeof TemplateNotificationEnum;
+    setNotifTemplateState(value);
+    if (value === "customNotification") {
+      setNotMessage({ title: "", message: "" });
+      return;
+    }
+    if (value === "progressStatisticsCurrentAbon") {
+      setNotMessage({ title: value, message: `workoutsRange:12` });
+    }
+  };
+
   useEffect(() => {
     (async () => {
       try {
-        const [trainingNowClients, allSiteClients] = await Promise.all([
-          await getClientsWhoAreTrainingNow(),
-          await getAllSiteClients(),
-        ]);
+        const [trainingNowClients, allSiteClients, allAbonements] =
+          await Promise.all([
+            await getClientsWhoAreTrainingNow(),
+            await getAllSiteClients(),
+            await getAllAbonements(),
+          ]);
         if (trainingNowClients.status === 200) {
           setClientWhoAreTrainingNow(trainingNowClients.data);
         }
         if (allSiteClients.status === 200) {
           setAllSiteClients(allSiteClients.data.users);
+        }
+        if (allAbonements.status === 200) {
+          setAllAbonements(allAbonements.data);
         }
       } catch (error) {
         console.log(error);
@@ -216,8 +253,13 @@ const SocketPage = () => {
             notMessage={notMessage}
             selectedClients={selectedClients ?? []}
             allSiteClients={allSiteClients ?? []}
+            allAbonements={allAbonements ?? []}
             onSelectClientForSendNotification={
               onSelectClientForSendNotification
+            }
+            onHandleSelectNotifTemplate={onHandleSelectNotifTemplate}
+            notifTemplateState={
+              notifTemplateState as keyof typeof TemplateNotificationEnum
             }
           />
         </AppBox>

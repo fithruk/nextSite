@@ -37,6 +37,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
   const onLoadClientNotifications = (data: string) => {
     const parsedNotifications: NotificationTypes[] = JSON.parse(data);
+    console.log(parsedNotifications);
 
     setNotifications((prev) => {
       if (

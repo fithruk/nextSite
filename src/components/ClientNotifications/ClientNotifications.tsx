@@ -108,13 +108,15 @@ const ClientNotoficationQueue = ({
   }, [notifications, isNotifOpen]);
 
   useEffect(() => {
-    if (!socket || !userId) return;
+    if (!socket || !userId || !visibleNotifications.length) return;
+    console.log("markNotificationAsReaded");
+
     const dataForUpdate = { userId, visibleNotifications };
     socket.emit(
       SocketEventsEnum.markNotificationAsReaded,
       JSON.stringify(dataForUpdate)
     );
-  }, [socket, userId, visibleNotifications]);
+  }, [visibleNotifications]);
 
   return (
     <Grid
