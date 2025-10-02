@@ -118,9 +118,33 @@ const Workouts = () => {
         }
         setSetsAndValuesResults(preState);
       }
+      if (status === 400) {
+        throw AppError.BadRequest("Плану тренування немає");
+      }
+      if (status === 401) {
+        throw AppError.UnauthorizedError();
+      }
     } catch (error) {
-      alert((error as Error).message + " Плану тренування немає");
       setWplan([]);
+      // if (error instanceof AppError) {
+      //   if (error.status === 400) alert(error.message);
+      //   if (error.status === 401) {
+      //     alert(error.message);
+      //     router.push("/login");
+      //   }
+      // }
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((error as any).status === 400) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        alert("Плану тренування немає");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if ((error as any).status === 401) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        alert("Unauthorized User");
+        router.push("/login");
+      }
     }
   };
 
@@ -173,7 +197,9 @@ const Workouts = () => {
         console.error("Fetch error:", err);
         if (err instanceof AppError) {
           if (err.status === 401) router.push("/login");
-          if (err.status === 400) alert(err.message);
+          if (err.status === 400) {
+            alert(err.message);
+          }
         }
         if (err instanceof Error) alert(err.message);
       }
