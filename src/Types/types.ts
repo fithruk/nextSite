@@ -99,3 +99,9 @@ export type NotificationTypes = {
   message: string;
   _id: string;
 };
+
+export enum TemplateNotificationEnum {
+  "progressStatisticsCurrentAbon" = "Статистика прогресу за поточним абонентом",
+  "testNotification" = "Test notification template",
+  "customNotification" = "Кастомне повідомлення",
+}
