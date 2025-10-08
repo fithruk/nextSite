@@ -7,6 +7,13 @@ interface SubscriptionInfoProps {
   dateOfLastWorkout: Date | null;
 }
 
+const priceArr = [
+  "5 тренировок - 675 грн",
+  "8 тренировок - 1080 грн",
+  "10 тренировок - 1350 грн",
+  "12 тренировок - 1620 грн",
+];
+
 const EndedAbonement: React.FC<SubscriptionInfoProps> = ({
   clientName,
   workoutsLeft,
@@ -40,6 +47,12 @@ const EndedAbonement: React.FC<SubscriptionInfoProps> = ({
               )}`
             : "Ти ще не купував абонемент"}
         </Typography>
+        <Typography color={"info"}>Текущие цены :</Typography>
+        {priceArr.map((price) => (
+          <Typography key={price} color={"info"}>
+            {price}
+          </Typography>
+        ))}
       </Stack>
     </Paper>
   );
