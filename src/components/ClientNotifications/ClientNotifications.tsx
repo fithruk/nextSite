@@ -22,7 +22,7 @@ const Notification = ({
   title,
   message,
   isRead,
-  createdAt,
+  //createdAt,
   _id,
 }: NotificationTypes) => {
   console.log(message);
@@ -133,7 +133,7 @@ const ClientNotoficationQueue = ({
     const dataForUpdate = { userId, visibleNotifications };
     socket.emit(
       SocketEventsEnum.markNotificationAsReaded,
-      JSON.stringify(dataForUpdate)
+      JSON.stringify(dataForUpdate),
     );
   }, [visibleNotifications]);
 
