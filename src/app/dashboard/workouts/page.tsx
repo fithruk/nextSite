@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Divider } from "@mui/material";
+import { Grid, Divider, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
@@ -25,7 +25,7 @@ import { useSocketContext } from "@/app/Contexts/SocketContext/SoketContext";
 import { SocketEventsEnum } from "../layout";
 import Abonement from "@/components/Abonement/Abonement";
 import AppError from "@/app/Error/Error";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 type WorkoutEvent = {
   title: string;
@@ -39,11 +39,17 @@ export type WKStatTypes = {
 
 const Workouts = () => {
   const router = useRouter();
-  const session = useSession();
-  const { getItem } = useLocalStorage();
-  const name = session.data?.user.name;
-  const token =
-    session.data?.user.accessToken ?? (getItem("authToken") as string);
+  const { data, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/login");
+    },
+  });
+
+  //const { getItem } = useLocalStorage();
+
+  const name = data?.user.name;
+  const token = data?.user.accessToken; //  ?? (getItem("authToken") as string)
   const storage = useLocalStorage<SetsAndValuesResults>();
 
   const apiService = new ApiService(process.env.NEXT_PUBLIC_SERVER_URL!, token);
@@ -63,7 +69,7 @@ const Workouts = () => {
       const prevSets = prev[exerciseName] || [];
 
       const filtered = prevSets.filter(
-        (set) => set.numberOfSet !== newSet.numberOfSet
+        (set) => set.numberOfSet !== newSet.numberOfSet,
       );
 
       return {
@@ -91,7 +97,7 @@ const Workouts = () => {
           Exercise[]
         >("/exercises/loadExercisesByPlan", {
           exercises: data.workoutPlan.workoutPlan.map((ex) =>
-            ex.exercise.toString()
+            ex.exercise.toString(),
           ),
         });
         if (statusLib === 200) {
@@ -99,7 +105,7 @@ const Workouts = () => {
         }
 
         const exercisesKeys = Object.entries(data.workoutPlan.workoutPlan).map(
-          (el) => [(el[0] = el[1].exercise), el[1].sets]
+          (el) => [(el[0] = el[1].exercise), el[1].sets],
         );
 
         const preState = Object.fromEntries(exercisesKeys);
@@ -155,7 +161,7 @@ const Workouts = () => {
       try {
         const [workoutRes, abonementRes] = await Promise.all([
           apiService.get<{ workoutDates: Date[] }>(
-            `/dataBase/getWKDatesByName/${encodeURIComponent(name)}`
+            `/dataBase/getWKDatesByName/${encodeURIComponent(name)}`,
           ),
           apiService.get<{
             abonement: AbonDataTypes;
@@ -204,7 +210,7 @@ const Workouts = () => {
         if (err instanceof Error) alert(err.message);
       }
     })();
-  }, [name, session]);
+  }, [name, data]);
 
   useEffect(() => {
     console.log(Object.keys(setsAndValuesResults).length);
@@ -216,7 +222,7 @@ const Workouts = () => {
 
       for (const [exercise, sets] of Object.entries(workoutData)) {
         const hasValidSet = sets.some(
-          (set) => set.numberOfreps! > 0 && set.weightValue! > 0
+          (set) => set.numberOfreps! > 0 && set.weightValue! > 0,
         );
         if (hasValidSet) {
           cleaned[exercise] = sets;
@@ -230,13 +236,15 @@ const Workouts = () => {
 
     if (!Object.keys(cleanedResults).length) return; // Пофиксить случаи когда надо стереть все подходы из базы, сейчас один остается
 
-    const updateMsg = {
-      name,
-      date: new Date(),
-      workoutResult: cleanedResults,
-    };
+    if (name && name.length !== 0) {
+      const updateMsg = {
+        name,
+        date: new Date(),
+        workoutResult: cleanedResults,
+      };
 
-    socket.emit(SocketEventsEnum.updateWorkout, JSON.stringify(updateMsg));
+      socket.emit(SocketEventsEnum.updateWorkout, JSON.stringify(updateMsg));
+    }
 
     if (Object.values(cleanedResults).length) {
       storage.setItem("workout", cleanedResults);
@@ -249,7 +257,22 @@ const Workouts = () => {
 
   const isRenderTable = wPlan.length > 0;
 
+  const isSessionCheked = status == "loading" ? false : true;
+
   {
+    if (!isSessionCheked) {
+      return (
+        <AppBox
+          height={"100%"}
+          width={"100%"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <CircularProgress color="error" />
+        </AppBox>
+      );
+    }
     return abonData?.abonementDuration === 0 ? (
       <EndedAbonement
         clientName={name ?? ""}
