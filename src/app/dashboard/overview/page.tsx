@@ -54,16 +54,18 @@ const Overview = () => {
     }
     (async () => {
       try {
-        const { data, status } = await apiService.get<OverviewRespType>(
-          `/statistics/getStatisticsByName/${encodeURIComponent(name ?? "")}`,
-        );
-        if (status === 200) {
-          setCommonStat(data);
-          setIsLoading(false);
-        }
+        if (name) {
+          const { data, status } = await apiService.get<OverviewRespType>(
+            `/statistics/getStatisticsByName/${encodeURIComponent(name)}`,
+          );
+          if (status === 200) {
+            setCommonStat(data);
+            setIsLoading(false);
+          }
 
-        if (status === 401) {
-          throw AppError.UnauthorizedError();
+          if (status === 401) {
+            throw AppError.UnauthorizedError();
+          }
         }
       } catch (error) {
         if (error instanceof AppError) {

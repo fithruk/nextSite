@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [isNotifOpen, setIsNotifOpen] = useState<boolean>(false);
   const { data: session } = useSession();
 
-  const { setItem } = useLocalStorage();
+  //const { setItem } = useLocalStorage();
 
   const token = session?.user.accessToken;
   const name = session?.user.name;
@@ -45,7 +45,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         prev.every(
           (n, i) =>
             n._id === parsedNotifications[i]._id &&
-            n.isRead === parsedNotifications[i].isRead
+            n.isRead === parsedNotifications[i].isRead,
         )
       ) {
         return prev;
@@ -60,7 +60,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!token) return;
-    setItem("authToken", token);
+    //setItem("authToken", token);
     const newSocket = io(process.env.NEXT_PUBLIC_SERVER_URL!, {
       withCredentials: true,
       auth: {
