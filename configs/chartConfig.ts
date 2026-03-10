@@ -14,7 +14,7 @@ const createStrengthProgressionByExerciseConfig = (
     exercise: string;
     date: string;
     averageWeight: number;
-  }[]
+  }[],
 ): LineChartProps => {
   // Определяем количество уникальных дней
   const uniqueDates = [
@@ -107,16 +107,17 @@ const createStrengthProgressionByExerciseConfig = (
 };
 
 const createfrequentMuscleGroupstConfig = (
-  frequentMuscleGroupsData: Record<string, number>
+  frequentMuscleGroupsData: Record<string, number>,
 ) => {
   const data = Object.values(frequentMuscleGroupsData);
   const metrics = Object.keys(frequentMuscleGroupsData);
 
   return {
-    height: 300,
+    height: 200,
+
     series: [
       {
-        label: "Пропорційність навантаження на м'язові групи %",
+        label: "Пропорційність %",
         data: data,
       },
     ],
@@ -132,7 +133,7 @@ const createTonnagePerWorkoutConfig = (
     date: string;
     tonnage: number;
   }[],
-  groupedBy: "day" | "week" | "month"
+  groupedBy: "day" | "week" | "month",
 ) => {
   const xAxisData = tonnagePerWorkoutData
     .map((item) => {
@@ -171,7 +172,7 @@ const createTonnagePerWorkoutConfig = (
 };
 
 const weightChangeDynamicsConfig = (
-  data: { numberOfReps: number; valueOfWeight: number }[]
+  data: { numberOfReps: number; valueOfWeight: number }[],
 ) => {
   const wData = data.map((data) => data.valueOfWeight);
   const rData = data.map((data) => data.numberOfReps);
