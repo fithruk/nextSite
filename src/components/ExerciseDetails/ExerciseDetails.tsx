@@ -14,11 +14,14 @@ const ExerciseDetails = ({ exercise, locale }: Props) => {
       <CardContent>
         <Box display="flex" gap={3} flexDirection={{ xs: "column", md: "row" }}>
           <img
-            src={
-              "https://podcast-api-images.s3.amazonaws.com/corona/show/1472067/logo.jpeg"
-            }
+            src={exercise.ImageUrl}
             alt={exercise.ExerciseName}
             style={{ maxWidth: 300, maxHeight: 400, borderRadius: 8 }}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src =
+                "https://podcast-api-images.s3.amazonaws.com/corona/show/1472067/logo.jpeg";
+            }}
           />
 
           <Box flex={1}>
