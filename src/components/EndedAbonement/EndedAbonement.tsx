@@ -8,10 +8,10 @@ interface SubscriptionInfoProps {
 }
 
 const priceArr = [
-  "5 тренувань – 675 грн",
-  "8 тренувань – 1080 грн",
-  "10 тренувань – 1350 грн",
-  "12 тренувань – 1620 грн",
+  "5 тренувань – 750 грн",
+  "8 тренувань – 1200 грн",
+  "10 тренувань – 1500 грн",
+  "12 тренувань – 1800 грн",
 ];
 
 const EndedAbonement: React.FC<SubscriptionInfoProps> = ({
@@ -43,7 +43,7 @@ const EndedAbonement: React.FC<SubscriptionInfoProps> = ({
         <Typography variant="body1" color={"error"} fontWeight={500}>
           {dateOfLastWorkout
             ? `Останнє тренування було ${dayjs(dateOfLastWorkout).format(
-                "DD.MM.YYYY"
+                "DD.MM.YYYY",
               )}`
             : "Ти ще не купував абонемент"}
         </Typography>
